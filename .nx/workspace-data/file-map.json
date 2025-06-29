@@ -1,0 +1,388 @@
+{
+  "version": "6.0",
+  "nxVersion": "21.2.1",
+  "pathMappings": {
+    "@/*": [
+      "apps/frontend/src/*"
+    ]
+  },
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/next/plugin",
+      "options": {
+        "startTargetName": "start",
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "serveStaticTargetName": "serve-static",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "name": "@nx/next/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    }
+  ],
+  "fileMap": {
+    "projectFileMap": {
+      "frontend": [
+        {
+          "file": "apps/frontend/.env.local",
+          "hash": "12647884428714515493"
+        },
+        {
+          "file": "apps/frontend/.swcrc",
+          "hash": "2742566327615098680"
+        },
+        {
+          "file": "apps/frontend/components.json",
+          "hash": "16198794555061719824"
+        },
+        {
+          "file": "apps/frontend/index.d.ts",
+          "hash": "9333080672441282464"
+        },
+        {
+          "file": "apps/frontend/next-env.d.ts",
+          "hash": "5909181270615354023"
+        },
+        {
+          "file": "apps/frontend/next.config.js",
+          "hash": "5492601227279409179"
+        },
+        {
+          "file": "apps/frontend/package-lock.json",
+          "hash": "1866635946365938195"
+        },
+        {
+          "file": "apps/frontend/package.json",
+          "hash": "3080785919165165472",
+          "deps": [
+            "npm:@nx/next",
+            "npm:@types/react",
+            "npm:autoprefixer",
+            "npm:postcss"
+          ]
+        },
+        {
+          "file": "apps/frontend/postcss.config.js",
+          "hash": "17430255171421331363"
+        },
+        {
+          "file": "apps/frontend/project.json",
+          "hash": "13378725005575532638"
+        },
+        {
+          "file": "apps/frontend/public/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/frontend/public/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/frontend/src/app/api/hello/route.ts",
+          "hash": "495073956729887886"
+        },
+        {
+          "file": "apps/frontend/src/app/global.css",
+          "hash": "285617084985742745"
+        },
+        {
+          "file": "apps/frontend/src/app/layout.tsx",
+          "hash": "2910296016824123560",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/page.module.css",
+          "hash": "4786619528779355986"
+        },
+        {
+          "file": "apps/frontend/src/app/page.tsx",
+          "hash": "12537460956912310552"
+        },
+        {
+          "file": "apps/frontend/src/components/ui/avatar.tsx",
+          "hash": "8660661188500548189",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/badge.tsx",
+          "hash": "9820710507085213727",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/button.tsx",
+          "hash": "9267699881977892517",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/calendar.tsx",
+          "hash": "16630878539079354877",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/card.tsx",
+          "hash": "10705375868451136261",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/checkbox.tsx",
+          "hash": "11417592238472237284",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/dialog.tsx",
+          "hash": "9175162809309498817",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/dropdown-menu.tsx",
+          "hash": "5292294336904181534",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/form.tsx",
+          "hash": "10959526343744111343",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/input.tsx",
+          "hash": "10270228290145902228",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/label.tsx",
+          "hash": "17461498100996495370",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/popover.tsx",
+          "hash": "15502370016958710989",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/select.tsx",
+          "hash": "8169151051754820774",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/sheet.tsx",
+          "hash": "16939179561819926374",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/table.tsx",
+          "hash": "10632063416869730844",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/tabs.tsx",
+          "hash": "15637375351129848662",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/textarea.tsx",
+          "hash": "8546314463615081444",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/toast.tsx",
+          "hash": "16887975296491161914",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/toaster.tsx",
+          "hash": "12424583411356286543"
+        },
+        {
+          "file": "apps/frontend/src/hooks/use-toast.ts",
+          "hash": "1926694879104732356",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/lib/utils.ts",
+          "hash": "6483145186850064023"
+        },
+        {
+          "file": "apps/frontend/tailwind.config.js",
+          "hash": "16056126201586391549"
+        },
+        {
+          "file": "apps/frontend/tsconfig.json",
+          "hash": "1463711613211791157"
+        }
+      ],
+      "backend": [
+        {
+          "file": "apps/backend/.env.local",
+          "hash": "14871559513545491379"
+        },
+        {
+          "file": "apps/backend/drizzle.config.ts",
+          "hash": "6964718396459327338",
+          "deps": [
+            "npm:drizzle-kit"
+          ]
+        },
+        {
+          "file": "apps/backend/project.json",
+          "hash": "3753587372935820521"
+        },
+        {
+          "file": "apps/backend/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/backend/src/main.ts",
+          "hash": "6262009400911064360"
+        },
+        {
+          "file": "apps/backend/tsconfig.json",
+          "hash": "16534834231992506539"
+        }
+      ],
+      "shared-types": [
+        {
+          "file": "shared-types/README.md",
+          "hash": "156128404357225643"
+        },
+        {
+          "file": "shared-types/package.json",
+          "hash": "385510977466958015",
+          "deps": [
+            "npm:tslib"
+          ]
+        },
+        {
+          "file": "shared-types/project.json",
+          "hash": "17457515502016035854"
+        },
+        {
+          "file": "shared-types/src/index.ts",
+          "hash": "17477233218007285873"
+        },
+        {
+          "file": "shared-types/src/lib/shared-types.spec.ts",
+          "hash": "8827448832389543054"
+        },
+        {
+          "file": "shared-types/src/lib/shared-types.ts",
+          "hash": "11715063447328923451"
+        },
+        {
+          "file": "shared-types/tsconfig.json",
+          "hash": "10148903843036702529"
+        },
+        {
+          "file": "shared-types/tsconfig.lib.json",
+          "hash": "12380693122600185559"
+        },
+        {
+          "file": "shared-types/tsconfig.spec.json",
+          "hash": "7277455390741021771"
+        },
+        {
+          "file": "shared-types/vite.config.ts",
+          "hash": "5606125569375381644"
+        }
+      ]
+    },
+    "nonProjectFiles": [
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "14178755470592788926"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "14688272390704683536"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "4134969992917317260"
+      },
+      {
+        "file": "README.md",
+        "hash": "3389960224184025568"
+      },
+      {
+        "file": "nx.json",
+        "hash": "1272501549786377492"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "9489450289363844759"
+      },
+      {
+        "file": "package.json",
+        "hash": "12859525005538058982"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "4166665216126726353"
+      },
+      {
+        "file": "vitest.workspace.ts",
+        "hash": "4665328684042819579"
+      }
+    ]
+  }
+}

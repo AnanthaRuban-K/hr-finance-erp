@@ -1,13 +1,26 @@
 {
-  "name": "@hr-finance-erp/source",
-  "version": "0.0.0",
-  "license": "MIT",
-  "scripts": {},
-  "private": true,
-  "dependencies": {},
+  "scripts": {
+    "dev": "nx run-many -t serve --parallel=2",
+    "dev:frontend": "nx serve frontend",
+    "dev:backend": "nx serve backend",
+    "build": "nx run-many -t build",
+    "build:frontend": "nx build frontend",
+    "build:backend": "nx build backend",
+    "test": "nx run-many -t test",
+    "lint": "nx run-many -t lint"
+  },
   "devDependencies": {
-    "@nx/js": "21.2.1",
-    "@nx/workspace": "21.2.1",
-    "nx": "21.2.1"
+    "@nx/next": "^21.2.1",
+    "@types/node": "^24.0.7",
+    "@types/pg": "^8.15.4",
+    "@types/react": "^19.1.8",
+    "drizzle-kit": "^0.20.8",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.4",
+    "drizzle-orm": "^0.30.10",
+    "hono": "^4.8.3",
+    "pg": "^8.16.3"
   }
 }

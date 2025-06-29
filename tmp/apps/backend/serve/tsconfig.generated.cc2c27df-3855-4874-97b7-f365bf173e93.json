@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "apps/frontend/src/*"
+      ]
+    }
+  },
+  "extends": "..\\..\\..\\..\\apps\\backend\\tsconfig.json"
+}
