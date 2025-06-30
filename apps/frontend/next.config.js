@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  
-  transpilePackages: ['@hr-finance-erp/shared-types'],
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true
+  },
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/your-subdirectory' : '',
 }
 
-module.exports = nextConfig
+module.exports = nextConfig;
