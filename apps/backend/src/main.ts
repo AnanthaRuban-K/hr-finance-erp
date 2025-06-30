@@ -1,31 +1,18 @@
+// apps/backend/src/main.ts
 import { serve } from '@hono/node-server';
-import { Hono } from 'hono';
+import { app } from './app';
 
-const app = new Hono();
-
-app.get('/', (c) => {
-  return c.json({ 
-    message: 'HR & Finance ERP API',
-    status: 'running',
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.get('/health', (c) => {
-  return c.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    service: 'ERP Backend'
-  });
-});
-
-const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
+const port = Number(process.env.PORT) || 3001;
 
 console.log(`🚀 Starting ERP Backend on port ${port}`);
+console.log(`📅 Started at: ${new Date().toISOString()}`);
+console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 
 serve({
   fetch: app.fetch,
   port: port,
+}, (info) => {
+  console.log(`✅ Backend running at http://localhost:${info.port}`);
+  console.log(`🔗 Health check: http://localhost:${info.port}/health`);
+  console.log(`📡 API info: http://localhost:${info.port}/`);
 });
-
-console.log(`✅ ERP Backend running on http://localhost:${port}`);

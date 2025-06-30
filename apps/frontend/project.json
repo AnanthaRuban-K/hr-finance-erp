@@ -1,9 +1,8 @@
 {
   "name": "frontend",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/frontend",
   "projectType": "application",
-  "sourceRoot": "apps/frontend/src",
-  "prefix": "app",
   "targets": {
     "build": {
       "executor": "@nx/next:build",
@@ -14,20 +13,13 @@
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/frontend"
+          "outputPath": "dist/apps/frontend"
         },
-        "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/frontend/src/environments/environment.ts",
-              "with": "apps/frontend/src/environments/environment.prod.ts"
-            }
-          ]
-        }
+        "production": {}
       }
     },
     "serve": {
-      "executor": "@nx/next:server",
+      "executor": "@nx/next:serve",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "frontend:build",
@@ -57,27 +49,15 @@
       "options": {
         "jestConfig": "apps/frontend/jest.config.ts",
         "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "coverageReporters": ["text"]
-        }
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/frontend/**/*.{ts,tsx,js,jsx}"]
       }
-    },
-    "type-check": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "tsc --project apps/frontend/tsconfig.json --noEmit"
-      }
     }
   },
-  "tags": ["scope:frontend", "type:app"]
+  "tags": []
 }

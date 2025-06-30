@@ -1,0 +1,538 @@
+{
+  "version": "6.0",
+  "nxVersion": "19.8.14",
+  "deps": {
+    "@clerk/backend": "^1.15.6",
+    "@clerk/nextjs": "^5.6.0",
+    "@hono/node-server": "^1.12.2",
+    "@hono/zod-validator": "^0.2.2",
+    "@neondatabase/serverless": "^0.9.5",
+    "@radix-ui/react-accordion": "^1.2.0",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-checkbox": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
+    "@radix-ui/react-tooltip": "^1.1.2",
+    "@tanstack/react-query": "^5.56.2",
+    "@trpc/client": "^10.45.2",
+    "@trpc/react-query": "^10.45.2",
+    "@trpc/server": "^10.45.2",
+    "bcryptjs": "^2.4.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "drizzle-orm": "^0.33.0",
+    "framer-motion": "^11.5.4",
+    "hono": "^4.6.2",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.441.0",
+    "nanoid": "^5.0.7",
+    "next": "14.2.13",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-hook-form": "^7.53.0",
+    "recharts": "^2.12.7",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8",
+    "zustand": "^4.5.5",
+    "@biomejs/biome": "^1.9.2",
+    "@hookform/resolvers": "^3.9.0",
+    "@nx/esbuild": "19.8.0",
+    "@nx/eslint": "19.8.0",
+    "@nx/js": "19.8.0",
+    "@nx/next": "19.8.0",
+    "@nx/node": "19.8.0",
+    "@nx/webpack": "19.8.0",
+    "@nx/workspace": "19.8.0",
+    "@playwright/test": "^1.47.2",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "22.7.4",
+    "@types/react": "18.3.8",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.24.2",
+    "eslint": "~8.57.0",
+    "eslint-config-next": "14.2.13",
+    "nx": "19.8.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.12",
+    "tsx": "^4.19.1",
+    "typescript": "~5.5.2",
+    "vitest": "^2.1.1"
+  },
+  "pathMappings": {
+    "@hr-finance-erp/shared-types": [
+      "libs/shared-types/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {
+      "backend": [
+        {
+          "file": "apps/backend/.env.production",
+          "hash": "2863255684972599975"
+        },
+        {
+          "file": "apps/backend/drizzle.config.ts",
+          "hash": "6964718396459327338"
+        },
+        {
+          "file": "apps/backend/package.json",
+          "hash": "5185563342599884536",
+          "deps": [
+            "npm:@types/node",
+            "npm:tsx",
+            "npm:typescript",
+            "npm:@hono/node-server",
+            "npm:@hono/zod-validator",
+            "npm:@neondatabase/serverless",
+            "npm:@trpc/server",
+            "npm:drizzle-orm",
+            "npm:hono",
+            "npm:nanoid",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/project.json",
+          "hash": "3753587372935820521"
+        },
+        {
+          "file": "apps/backend/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/backend/src/main.ts",
+          "hash": "6262009400911064360",
+          "deps": [
+            "npm:@hono/node-server"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/app-router.ts",
+          "hash": "13761463381952734947"
+        },
+        {
+          "file": "apps/backend/src/trpc/context.ts",
+          "hash": "5175348812053112440",
+          "deps": [
+            "npm:hono",
+            "npm:@trpc/server"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/routers/auth.ts",
+          "hash": "9755086771529510404",
+          "deps": [
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/routers/health.ts",
+          "hash": "12301869967226882057",
+          "deps": [
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/trpc.ts",
+          "hash": "9584212051531828774",
+          "deps": [
+            "npm:@trpc/server",
+            "npm:zod",
+            "npm:superjson"
+          ]
+        },
+        {
+          "file": "apps/backend/tsconfig.json",
+          "hash": "16534834231992506539"
+        }
+      ],
+      "@hr-finance-erp/source": [
+        {
+          "file": ".dockerignore",
+          "hash": "10717400546826044602"
+        },
+        {
+          "file": ".editorconfig",
+          "hash": "5443105041930014821"
+        },
+        {
+          "file": ".github/workflows/deploy.yml",
+          "hash": "10675688877147270475"
+        },
+        {
+          "file": ".gitignore",
+          "hash": "4966455463897825335"
+        },
+        {
+          "file": ".prettierignore",
+          "hash": "14688272390704683536"
+        },
+        {
+          "file": ".prettierrc",
+          "hash": "16267754514737964994"
+        },
+        {
+          "file": ".vscode/extensions.json",
+          "hash": "4134969992917317260"
+        },
+        {
+          "file": "Dockerfile",
+          "hash": "8085500821586959306"
+        },
+        {
+          "file": "README.md",
+          "hash": "3389960224184025568"
+        },
+        {
+          "file": "nx.json",
+          "hash": "1272501549786377492"
+        },
+        {
+          "file": "package-lock.json",
+          "hash": "6204009174818331698"
+        },
+        {
+          "file": "package.json",
+          "hash": "11989877481788419917",
+          "deps": [
+            "npm:@nx/esbuild",
+            "npm:@nx/eslint",
+            "npm:@nx/js",
+            "npm:@nx/next",
+            "npm:@nx/node",
+            "npm:@nx/webpack",
+            "npm:@nx/workspace",
+            "npm:@types/node",
+            "npm:autoprefixer",
+            "npm:eslint",
+            "npm:nx",
+            "npm:postcss",
+            "npm:tsx",
+            "npm:typescript",
+            "npm:@hono/node-server",
+            "npm:@hono/zod-validator",
+            "npm:@neondatabase/serverless",
+            "npm:@trpc/server",
+            "npm:date-fns",
+            "npm:drizzle-orm",
+            "npm:hono",
+            "npm:nanoid",
+            "npm:next",
+            "npm:react",
+            "npm:react-dom",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "tmp/apps/backend/serve/tsconfig.generated.cc2c27df-3855-4874-97b7-f365bf173e93.json",
+          "hash": "11334421180944483218"
+        },
+        {
+          "file": "tmp/apps/backend/serve/tsconfig.generated.ebcbb8e8-6796-4ba7-96c5-fdfbdafc8b58.json",
+          "hash": "11334421180944483218"
+        },
+        {
+          "file": "tmp/backend/main-with-require-overrides.js",
+          "hash": "721444849026546865"
+        },
+        {
+          "file": "tsconfig.base.json",
+          "hash": "4166665216126726353"
+        },
+        {
+          "file": "vitest.workspace.ts",
+          "hash": "4665328684042819579"
+        }
+      ],
+      "shared-types": [
+        {
+          "file": "shared-types/README.md",
+          "hash": "156128404357225643"
+        },
+        {
+          "file": "shared-types/package.json",
+          "hash": "385510977466958015",
+          "deps": [
+            "npm:@types/node",
+            "npm:typescript",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "shared-types/project.json",
+          "hash": "17457515502016035854"
+        },
+        {
+          "file": "shared-types/src/index.ts",
+          "hash": "17477233218007285873"
+        },
+        {
+          "file": "shared-types/src/lib/shared-types.spec.ts",
+          "hash": "8827448832389543054"
+        },
+        {
+          "file": "shared-types/src/lib/shared-types.ts",
+          "hash": "11715063447328923451"
+        },
+        {
+          "file": "shared-types/tsconfig.json",
+          "hash": "10148903843036702529"
+        },
+        {
+          "file": "shared-types/tsconfig.lib.json",
+          "hash": "12380693122600185559"
+        },
+        {
+          "file": "shared-types/tsconfig.spec.json",
+          "hash": "7277455390741021771"
+        },
+        {
+          "file": "shared-types/vite.config.ts",
+          "hash": "5606125569375381644"
+        }
+      ],
+      "frontend": [
+        {
+          "file": "apps/frontend/.env.production",
+          "hash": "6122906455781651671"
+        },
+        {
+          "file": "apps/frontend/.swcrc",
+          "hash": "2742566327615098680"
+        },
+        {
+          "file": "apps/frontend/components.json",
+          "hash": "16198794555061719824"
+        },
+        {
+          "file": "apps/frontend/index.d.ts",
+          "hash": "9333080672441282464"
+        },
+        {
+          "file": "apps/frontend/next-env.d.ts",
+          "hash": "5909181270615354023"
+        },
+        {
+          "file": "apps/frontend/next.config.js",
+          "hash": "2621438252665874895"
+        },
+        {
+          "file": "apps/frontend/out/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/frontend/out/404.html",
+          "hash": "15156416766558398511"
+        },
+        {
+          "file": "apps/frontend/out/404/index.html",
+          "hash": "15156416766558398511"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/GFt5NCd0tqMwaFFS0yESZ/_buildManifest.js",
+          "hash": "6596712205845454099"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/GFt5NCd0tqMwaFFS0yESZ/_ssgManifest.js",
+          "hash": "2285259522902979167"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/23-6ccac550be683f32.js",
+          "hash": "18020021218636800909"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/app/_not-found/page-05886c10710171db.js",
+          "hash": "14696128939988209230"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/app/layout-6e244a27659366a7.js",
+          "hash": "17937447567899767319"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/app/page-df5bb186a7a8fc2e.js",
+          "hash": "15348747192491234104"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/fd9d1056-2821b0f0cabcd8bd.js",
+          "hash": "4635398045519906851"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/framework-aec844d2ccbe7592.js",
+          "hash": "14341291284357515305"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/main-a5cf67db4c4ab9b6.js",
+          "hash": "14308250965451906872"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/main-app-5be9d7e575143e0a.js",
+          "hash": "11170591846900637664"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/pages/_app-6a626577ffa902a4.js",
+          "hash": "7930941192338004243"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/pages/_error-1be831200e60c5c0.js",
+          "hash": "5773581162378345627"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/polyfills-78c92fac7aa8fdd8.js",
+          "hash": "1955602371502312040"
+        },
+        {
+          "file": "apps/frontend/out/_next/static/chunks/webpack-6a02535fdf11f91d.js",
+          "hash": "6369992836660802063"
+        },
+        {
+          "file": "apps/frontend/out/api/hello",
+          "hash": "368059014246027513"
+        },
+        {
+          "file": "apps/frontend/out/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/frontend/out/index.html",
+          "hash": "10659367782553646534"
+        },
+        {
+          "file": "apps/frontend/out/index.txt",
+          "hash": "4908638843606095970"
+        },
+        {
+          "file": "apps/frontend/package-lock.json",
+          "hash": "1866635946365938195"
+        },
+        {
+          "file": "apps/frontend/package.json",
+          "hash": "3080785919165165472",
+          "deps": [
+            "npm:@types/node",
+            "npm:autoprefixer",
+            "npm:eslint",
+            "npm:postcss",
+            "npm:typescript",
+            "npm:date-fns",
+            "npm:next",
+            "npm:react",
+            "npm:react-dom",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/frontend/postcss.config.js",
+          "hash": "17430255171421331363"
+        },
+        {
+          "file": "apps/frontend/project.json",
+          "hash": "16988833698271792224"
+        },
+        {
+          "file": "apps/frontend/public/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/frontend/public/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/frontend/src/app/api/hello/route.ts",
+          "hash": "6118987257013278530"
+        },
+        {
+          "file": "apps/frontend/src/app/global.css",
+          "hash": "285617084985742745"
+        },
+        {
+          "file": "apps/frontend/src/app/layout.tsx",
+          "hash": "4112812143983205405",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/page.module.css",
+          "hash": "4786619528779355986"
+        },
+        {
+          "file": "apps/frontend/src/app/page.tsx",
+          "hash": "4483127000938361604"
+        },
+        {
+          "file": "apps/frontend/src/components/ui/card.tsx",
+          "hash": "10705375868451136261",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/input.tsx",
+          "hash": "10270228290145902228",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/table.tsx",
+          "hash": "10632063416869730844",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/textarea.tsx",
+          "hash": "8546314463615081444",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/environments/environment.prod.ts",
+          "hash": "15523253380414318391"
+        },
+        {
+          "file": "apps/frontend/src/environments/environment.ts",
+          "hash": "8851628159447310062"
+        },
+        {
+          "file": "apps/frontend/src/lib/trpc.ts",
+          "hash": "18241133481329120668",
+          "deps": [
+            "npm:superjson",
+            "backend"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/lib/utils.ts",
+          "hash": "6483145186850064023"
+        },
+        {
+          "file": "apps/frontend/tailwind.config.js",
+          "hash": "16056126201586391549"
+        },
+        {
+          "file": "apps/frontend/tsconfig.json",
+          "hash": "1463711613211791157"
+        }
+      ]
+    },
+    "nonProjectFiles": []
+  }
+}

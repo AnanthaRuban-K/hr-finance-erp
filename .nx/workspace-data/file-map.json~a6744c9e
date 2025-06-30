@@ -1,6 +1,6 @@
 {
   "version": "6.0",
-  "nxVersion": "19.8.0",
+  "nxVersion": "19.8.14",
   "deps": {
     "@clerk/backend": "^1.15.6",
     "@clerk/nextjs": "^5.7.4",
@@ -83,153 +83,151 @@
   },
   "nxJsonPlugins": [],
   "fileMap": {
+    "nonProjectFiles": [],
     "projectFileMap": {
-      "shared-types": [
+      "@hr-finance-erp/source": [
         {
-          "file": "shared-types/README.md",
-          "hash": "156128404357225643"
+          "file": ".dockerignore",
+          "hash": "10717400546826044602"
         },
         {
-          "file": "shared-types/package.json",
-          "hash": "15615621326961079938",
+          "file": ".editorconfig",
+          "hash": "5443105041930014821"
+        },
+        {
+          "file": ".github/workflows/deploy.yml",
+          "hash": "10675688877147270475"
+        },
+        {
+          "file": ".gitignore",
+          "hash": "4966455463897825335"
+        },
+        {
+          "file": ".prettierignore",
+          "hash": "14688272390704683536"
+        },
+        {
+          "file": ".prettierrc",
+          "hash": "16267754514737964994"
+        },
+        {
+          "file": ".vscode/extensions.json",
+          "hash": "4134969992917317260"
+        },
+        {
+          "file": "Dockerfile",
+          "hash": "8085500821586959306"
+        },
+        {
+          "file": "README.md",
+          "hash": "3389960224184025568"
+        },
+        {
+          "file": "nx.json",
+          "hash": "16930705731125541652"
+        },
+        {
+          "file": "package-lock.json",
+          "hash": "4725485359475400751"
+        },
+        {
+          "file": "package.json",
+          "hash": "6915781859402483683",
           "deps": [
-            "npm:@types/node",
-            "npm:typescript",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "shared-types/project.json",
-          "hash": "17457515502016035854"
-        },
-        {
-          "file": "shared-types/src/index.ts",
-          "hash": "17477233218007285873"
-        },
-        {
-          "file": "shared-types/src/lib/shared-types.spec.ts",
-          "hash": "8827448832389543054"
-        },
-        {
-          "file": "shared-types/src/lib/shared-types.ts",
-          "hash": "11715063447328923451"
-        },
-        {
-          "file": "shared-types/tsconfig.json",
-          "hash": "10148903843036702529"
-        },
-        {
-          "file": "shared-types/tsconfig.lib.json",
-          "hash": "12380693122600185559"
-        },
-        {
-          "file": "shared-types/tsconfig.spec.json",
-          "hash": "7277455390741021771"
-        },
-        {
-          "file": "shared-types/vite.config.ts",
-          "hash": "5606125569375381644",
-          "deps": [
-            "npm:vite"
-          ]
-        }
-      ],
-      "backend": [
-        {
-          "file": "apps/backend/.env.production",
-          "hash": "2863255684972599975"
-        },
-        {
-          "file": "apps/backend/drizzle.config.ts",
-          "hash": "2214527016245862159",
-          "deps": [
-            "npm:drizzle-kit"
-          ]
-        },
-        {
-          "file": "apps/backend/package.json",
-          "hash": "8123720494682854783",
-          "deps": [
+            "npm:@biomejs/biome",
+            "npm:@nx/esbuild",
+            "npm:@nx/eslint",
+            "npm:@nx/js",
+            "npm:@nx/next",
+            "npm:@nx/node",
+            "npm:@nx/webpack",
+            "npm:@nx/workspace",
+            "npm:@playwright/test",
+            "npm:@testing-library/jest-dom",
+            "npm:@testing-library/react",
             "npm:@types/bcryptjs",
             "npm:@types/jsonwebtoken",
             "npm:@types/node",
+            "npm:@types/react",
+            "npm:@types/react-dom",
+            "npm:autoprefixer",
             "npm:drizzle-kit",
+            "npm:esbuild",
+            "npm:eslint",
+            "npm:eslint-config-next",
+            "npm:nx",
+            "npm:postcss",
+            "npm:tailwindcss",
             "npm:tsx",
             "npm:typescript",
+            "npm:vitest",
             "npm:@clerk/backend",
+            "npm:@clerk/nextjs",
+            "npm:@hono/clerk-auth",
             "npm:@hono/node-server",
             "npm:@hono/zod-validator",
+            "npm:@hookform/resolvers",
             "npm:@neondatabase/serverless",
+            "npm:@radix-ui/react-accordion",
+            "npm:@radix-ui/react-alert-dialog",
+            "npm:@radix-ui/react-avatar",
+            "npm:@radix-ui/react-checkbox",
+            "npm:@radix-ui/react-dialog",
+            "npm:@radix-ui/react-dropdown-menu",
+            "npm:@radix-ui/react-label",
+            "npm:@radix-ui/react-popover",
+            "npm:@radix-ui/react-select",
+            "npm:@radix-ui/react-separator",
+            "npm:@radix-ui/react-slot",
+            "npm:@radix-ui/react-tabs",
+            "npm:@radix-ui/react-toast",
+            "npm:@radix-ui/react-tooltip",
+            "npm:@tanstack/react-query",
+            "npm:@trpc/client",
+            "npm:@trpc/react-query",
             "npm:@trpc/server",
             "npm:bcryptjs",
+            "npm:class-variance-authority",
+            "npm:clsx",
+            "npm:date-fns",
             "npm:drizzle-orm",
+            "npm:framer-motion",
             "npm:hono",
             "npm:jsonwebtoken",
+            "npm:lucide-react",
             "npm:nanoid",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/backend/project.json",
-          "hash": "8498860938180538481"
-        },
-        {
-          "file": "apps/backend/src/app.ts",
-          "hash": "6139254634836378900",
-          "deps": [
-            "npm:hono"
-          ]
-        },
-        {
-          "file": "apps/backend/src/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/backend/src/main.ts",
-          "hash": "18422245761770645740",
-          "deps": [
-            "npm:@hono/node-server"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/app-router.ts",
-          "hash": "13761463381952734947"
-        },
-        {
-          "file": "apps/backend/src/trpc/context.ts",
-          "hash": "1587476312714775065",
-          "deps": [
-            "npm:hono",
-            "npm:@trpc/server",
-            "npm:@hono/clerk-auth"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/routers/auth.ts",
-          "hash": "17101333851854696869",
-          "deps": [
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/routers/health.ts",
-          "hash": "385319516024456102",
-          "deps": [
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/trpc.ts",
-          "hash": "5453879241715833795",
-          "deps": [
-            "npm:@trpc/server",
+            "npm:next",
+            "npm:react",
+            "npm:react-dom",
+            "npm:react-hook-form",
+            "npm:recharts",
+            "npm:sonner",
+            "npm:superjson",
+            "npm:tailwind-merge",
+            "npm:tailwindcss-animate",
             "npm:zod",
-            "npm:superjson"
+            "npm:zustand"
           ]
         },
         {
-          "file": "apps/backend/tsconfig.json",
-          "hash": "15898550216656724239"
+          "file": "tmp/apps/backend/serve/tsconfig.generated.cc2c27df-3855-4874-97b7-f365bf173e93.json",
+          "hash": "11334421180944483218"
+        },
+        {
+          "file": "tmp/apps/backend/serve/tsconfig.generated.ebcbb8e8-6796-4ba7-96c5-fdfbdafc8b58.json",
+          "hash": "11334421180944483218"
+        },
+        {
+          "file": "tmp/backend/main-with-require-overrides.js",
+          "hash": "17847199617904651355"
+        },
+        {
+          "file": "tsconfig.base.json",
+          "hash": "9992992449276947345"
+        },
+        {
+          "file": "vitest.workspace.ts",
+          "hash": "4665328684042819579"
         }
       ],
       "frontend": [
@@ -539,152 +537,154 @@
           "hash": "639716793033455431"
         }
       ],
-      "@hr-finance-erp/source": [
+      "shared-types": [
         {
-          "file": ".dockerignore",
-          "hash": "10717400546826044602"
+          "file": "shared-types/README.md",
+          "hash": "156128404357225643"
         },
         {
-          "file": ".editorconfig",
-          "hash": "5443105041930014821"
-        },
-        {
-          "file": ".github/workflows/deploy.yml",
-          "hash": "10675688877147270475"
-        },
-        {
-          "file": ".gitignore",
-          "hash": "4966455463897825335"
-        },
-        {
-          "file": ".prettierignore",
-          "hash": "14688272390704683536"
-        },
-        {
-          "file": ".prettierrc",
-          "hash": "16267754514737964994"
-        },
-        {
-          "file": ".vscode/extensions.json",
-          "hash": "4134969992917317260"
-        },
-        {
-          "file": "Dockerfile",
-          "hash": "8085500821586959306"
-        },
-        {
-          "file": "README.md",
-          "hash": "3389960224184025568"
-        },
-        {
-          "file": "nx.json",
-          "hash": "16930705731125541652"
-        },
-        {
-          "file": "package-lock.json",
-          "hash": "4725485359475400751"
-        },
-        {
-          "file": "package.json",
-          "hash": "6915781859402483683",
+          "file": "shared-types/package.json",
+          "hash": "15615621326961079938",
           "deps": [
-            "npm:@biomejs/biome",
-            "npm:@nx/esbuild",
-            "npm:@nx/eslint",
-            "npm:@nx/js",
-            "npm:@nx/next",
-            "npm:@nx/node",
-            "npm:@nx/webpack",
-            "npm:@nx/workspace",
-            "npm:@playwright/test",
-            "npm:@testing-library/jest-dom",
-            "npm:@testing-library/react",
-            "npm:@types/bcryptjs",
-            "npm:@types/jsonwebtoken",
             "npm:@types/node",
-            "npm:@types/react",
-            "npm:@types/react-dom",
-            "npm:autoprefixer",
-            "npm:drizzle-kit",
-            "npm:esbuild",
-            "npm:eslint",
-            "npm:eslint-config-next",
-            "npm:nx",
-            "npm:postcss",
-            "npm:tailwindcss",
-            "npm:tsx",
             "npm:typescript",
-            "npm:vitest",
-            "npm:@clerk/backend",
-            "npm:@clerk/nextjs",
-            "npm:@hono/clerk-auth",
-            "npm:@hono/node-server",
-            "npm:@hono/zod-validator",
-            "npm:@hookform/resolvers",
-            "npm:@neondatabase/serverless",
-            "npm:@radix-ui/react-accordion",
-            "npm:@radix-ui/react-alert-dialog",
-            "npm:@radix-ui/react-avatar",
-            "npm:@radix-ui/react-checkbox",
-            "npm:@radix-ui/react-dialog",
-            "npm:@radix-ui/react-dropdown-menu",
-            "npm:@radix-ui/react-label",
-            "npm:@radix-ui/react-popover",
-            "npm:@radix-ui/react-select",
-            "npm:@radix-ui/react-separator",
-            "npm:@radix-ui/react-slot",
-            "npm:@radix-ui/react-tabs",
-            "npm:@radix-ui/react-toast",
-            "npm:@radix-ui/react-tooltip",
-            "npm:@tanstack/react-query",
-            "npm:@trpc/client",
-            "npm:@trpc/react-query",
-            "npm:@trpc/server",
-            "npm:bcryptjs",
-            "npm:class-variance-authority",
-            "npm:clsx",
-            "npm:date-fns",
-            "npm:drizzle-orm",
-            "npm:framer-motion",
-            "npm:hono",
-            "npm:jsonwebtoken",
-            "npm:lucide-react",
-            "npm:nanoid",
-            "npm:next",
-            "npm:react",
-            "npm:react-dom",
-            "npm:react-hook-form",
-            "npm:recharts",
-            "npm:sonner",
-            "npm:superjson",
-            "npm:tailwind-merge",
-            "npm:tailwindcss-animate",
-            "npm:zod",
-            "npm:zustand"
+            "npm:zod"
           ]
         },
         {
-          "file": "tmp/apps/backend/serve/tsconfig.generated.cc2c27df-3855-4874-97b7-f365bf173e93.json",
-          "hash": "11334421180944483218"
+          "file": "shared-types/project.json",
+          "hash": "17457515502016035854"
         },
         {
-          "file": "tmp/apps/backend/serve/tsconfig.generated.ebcbb8e8-6796-4ba7-96c5-fdfbdafc8b58.json",
-          "hash": "11334421180944483218"
+          "file": "shared-types/src/index.ts",
+          "hash": "17477233218007285873"
         },
         {
-          "file": "tmp/backend/main-with-require-overrides.js",
-          "hash": "17847199617904651355"
+          "file": "shared-types/src/lib/shared-types.spec.ts",
+          "hash": "8827448832389543054"
         },
         {
-          "file": "tsconfig.base.json",
-          "hash": "9992992449276947345"
+          "file": "shared-types/src/lib/shared-types.ts",
+          "hash": "11715063447328923451"
         },
         {
-          "file": "vitest.workspace.ts",
-          "hash": "4665328684042819579"
+          "file": "shared-types/tsconfig.json",
+          "hash": "10148903843036702529"
+        },
+        {
+          "file": "shared-types/tsconfig.lib.json",
+          "hash": "12380693122600185559"
+        },
+        {
+          "file": "shared-types/tsconfig.spec.json",
+          "hash": "7277455390741021771"
+        },
+        {
+          "file": "shared-types/vite.config.ts",
+          "hash": "5606125569375381644",
+          "deps": [
+            "npm:vite"
+          ]
+        }
+      ],
+      "backend": [
+        {
+          "file": "apps/backend/.env.production",
+          "hash": "2863255684972599975"
+        },
+        {
+          "file": "apps/backend/drizzle.config.ts",
+          "hash": "2214527016245862159",
+          "deps": [
+            "npm:drizzle-kit"
+          ]
+        },
+        {
+          "file": "apps/backend/package.json",
+          "hash": "8123720494682854783",
+          "deps": [
+            "npm:@types/bcryptjs",
+            "npm:@types/jsonwebtoken",
+            "npm:@types/node",
+            "npm:drizzle-kit",
+            "npm:tsx",
+            "npm:typescript",
+            "npm:@clerk/backend",
+            "npm:@hono/node-server",
+            "npm:@hono/zod-validator",
+            "npm:@neondatabase/serverless",
+            "npm:@trpc/server",
+            "npm:bcryptjs",
+            "npm:drizzle-orm",
+            "npm:hono",
+            "npm:jsonwebtoken",
+            "npm:nanoid",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/project.json",
+          "hash": "8498860938180538481"
+        },
+        {
+          "file": "apps/backend/src/app.ts",
+          "hash": "6139254634836378900",
+          "deps": [
+            "npm:hono"
+          ]
+        },
+        {
+          "file": "apps/backend/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/backend/src/main.ts",
+          "hash": "18422245761770645740",
+          "deps": [
+            "npm:@hono/node-server"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/app-router.ts",
+          "hash": "13761463381952734947"
+        },
+        {
+          "file": "apps/backend/src/trpc/context.ts",
+          "hash": "1587476312714775065",
+          "deps": [
+            "npm:hono",
+            "npm:@trpc/server",
+            "npm:@hono/clerk-auth"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/routers/auth.ts",
+          "hash": "17101333851854696869",
+          "deps": [
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/routers/health.ts",
+          "hash": "385319516024456102",
+          "deps": [
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/trpc.ts",
+          "hash": "5453879241715833795",
+          "deps": [
+            "npm:@trpc/server",
+            "npm:zod",
+            "npm:superjson"
+          ]
+        },
+        {
+          "file": "apps/backend/tsconfig.json",
+          "hash": "15898550216656724239"
         }
       ]
-    },
-    "nonProjectFiles": []
+    }
   }
 }
