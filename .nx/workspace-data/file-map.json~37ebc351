@@ -66,84 +66,6 @@
   ],
   "fileMap": {
     "projectFileMap": {
-      "backend": [
-        {
-          "file": "apps/backend/.env.production",
-          "hash": "2863255684972599975"
-        },
-        {
-          "file": "apps/backend/drizzle.config.ts",
-          "hash": "6964718396459327338",
-          "deps": [
-            "npm:drizzle-kit"
-          ]
-        },
-        {
-          "file": "apps/backend/package.json",
-          "hash": "5185563342599884536",
-          "deps": [
-            "npm:hono",
-            "npm:@hono/node-server",
-            "npm:drizzle-orm",
-            "npm:zod",
-            "npm:@trpc/server"
-          ]
-        },
-        {
-          "file": "apps/backend/project.json",
-          "hash": "3753587372935820521"
-        },
-        {
-          "file": "apps/backend/src/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/backend/src/main.ts",
-          "hash": "6262009400911064360",
-          "deps": [
-            "npm:@hono/node-server",
-            "npm:hono"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/app-router.ts",
-          "hash": "13761463381952734947"
-        },
-        {
-          "file": "apps/backend/src/trpc/context.ts",
-          "hash": "5175348812053112440",
-          "deps": [
-            "npm:hono"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/routers/auth.ts",
-          "hash": "9755086771529510404",
-          "deps": [
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/routers/health.ts",
-          "hash": "12301869967226882057",
-          "deps": [
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/backend/src/trpc/trpc.ts",
-          "hash": "9584212051531828774",
-          "deps": [
-            "npm:@trpc/server",
-            "npm:zod",
-            "npm:superjson"
-          ]
-        },
-        {
-          "file": "apps/backend/tsconfig.json",
-          "hash": "16534834231992506539"
-        }
-      ],
       "frontend": [
         {
           "file": "apps/frontend/.env.production",
@@ -411,6 +333,84 @@
         {
           "file": "shared-types/vite.config.ts",
           "hash": "5606125569375381644"
+        }
+      ],
+      "backend": [
+        {
+          "file": "apps/backend/.env.production",
+          "hash": "2863255684972599975"
+        },
+        {
+          "file": "apps/backend/drizzle.config.ts",
+          "hash": "6964718396459327338",
+          "deps": [
+            "npm:drizzle-kit"
+          ]
+        },
+        {
+          "file": "apps/backend/package.json",
+          "hash": "5185563342599884536",
+          "deps": [
+            "npm:hono",
+            "npm:@hono/node-server",
+            "npm:drizzle-orm",
+            "npm:zod",
+            "npm:@trpc/server"
+          ]
+        },
+        {
+          "file": "apps/backend/project.json",
+          "hash": "3753587372935820521"
+        },
+        {
+          "file": "apps/backend/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/backend/src/main.ts",
+          "hash": "6262009400911064360",
+          "deps": [
+            "npm:@hono/node-server",
+            "npm:hono"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/app-router.ts",
+          "hash": "13761463381952734947"
+        },
+        {
+          "file": "apps/backend/src/trpc/context.ts",
+          "hash": "5175348812053112440",
+          "deps": [
+            "npm:hono"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/routers/auth.ts",
+          "hash": "9755086771529510404",
+          "deps": [
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/routers/health.ts",
+          "hash": "12301869967226882057",
+          "deps": [
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/src/trpc/trpc.ts",
+          "hash": "9584212051531828774",
+          "deps": [
+            "npm:@trpc/server",
+            "npm:zod",
+            "npm:superjson"
+          ]
+        },
+        {
+          "file": "apps/backend/tsconfig.json",
+          "hash": "16534834231992506539"
         }
       ]
     },

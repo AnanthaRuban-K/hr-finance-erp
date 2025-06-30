@@ -5,7 +5,6 @@
     "@clerk/nextjs": "^5.0.0",
     "@hono/clerk-auth": "^2.0.1",
     "@hono/node-server": "^1.8.0",
-    "@hono/trpc-server": "^0.4.0",
     "@neondatabase/serverless": "^0.9.0",
     "@trpc/client": "^10.45.0",
     "@trpc/react-query": "^10.45.0",
@@ -142,6 +141,51 @@
         {
           "file": "apps/backend/tsconfig.json",
           "hash": "16534834231992506539"
+        }
+      ],
+      "shared-types": [
+        {
+          "file": "shared-types/README.md",
+          "hash": "156128404357225643"
+        },
+        {
+          "file": "shared-types/package.json",
+          "hash": "385510977466958015",
+          "deps": [
+            "npm:tslib"
+          ]
+        },
+        {
+          "file": "shared-types/project.json",
+          "hash": "17457515502016035854"
+        },
+        {
+          "file": "shared-types/src/index.ts",
+          "hash": "17477233218007285873"
+        },
+        {
+          "file": "shared-types/src/lib/shared-types.spec.ts",
+          "hash": "8827448832389543054"
+        },
+        {
+          "file": "shared-types/src/lib/shared-types.ts",
+          "hash": "11715063447328923451"
+        },
+        {
+          "file": "shared-types/tsconfig.json",
+          "hash": "10148903843036702529"
+        },
+        {
+          "file": "shared-types/tsconfig.lib.json",
+          "hash": "12380693122600185559"
+        },
+        {
+          "file": "shared-types/tsconfig.spec.json",
+          "hash": "7277455390741021771"
+        },
+        {
+          "file": "shared-types/vite.config.ts",
+          "hash": "5606125569375381644"
         }
       ],
       "frontend": [
@@ -366,51 +410,6 @@
         {
           "file": "apps/frontend/tsconfig.json",
           "hash": "1463711613211791157"
-        }
-      ],
-      "shared-types": [
-        {
-          "file": "shared-types/README.md",
-          "hash": "156128404357225643"
-        },
-        {
-          "file": "shared-types/package.json",
-          "hash": "385510977466958015",
-          "deps": [
-            "npm:tslib"
-          ]
-        },
-        {
-          "file": "shared-types/project.json",
-          "hash": "17457515502016035854"
-        },
-        {
-          "file": "shared-types/src/index.ts",
-          "hash": "17477233218007285873"
-        },
-        {
-          "file": "shared-types/src/lib/shared-types.spec.ts",
-          "hash": "8827448832389543054"
-        },
-        {
-          "file": "shared-types/src/lib/shared-types.ts",
-          "hash": "11715063447328923451"
-        },
-        {
-          "file": "shared-types/tsconfig.json",
-          "hash": "10148903843036702529"
-        },
-        {
-          "file": "shared-types/tsconfig.lib.json",
-          "hash": "12380693122600185559"
-        },
-        {
-          "file": "shared-types/tsconfig.spec.json",
-          "hash": "7277455390741021771"
-        },
-        {
-          "file": "shared-types/vite.config.ts",
-          "hash": "5606125569375381644"
         }
       ]
     },

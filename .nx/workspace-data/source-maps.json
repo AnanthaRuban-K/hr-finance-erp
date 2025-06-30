@@ -8,74 +8,6 @@
       "apps/frontend/next.config.js",
       "@nx/next/plugin"
     ],
-    "targets.build": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.options": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.dependsOn": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.build.cache": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.build.inputs": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.build.outputs": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.build.executor": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.options.cwd": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.options.tty": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.build.options.command": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.start": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.start.continuous": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.start.options": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.start.dependsOn": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.start.executor": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.start.options.cwd": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.start.options.command": [
-      "apps/frontend/project.json",
-      "nx/core/project-json"
-    ],
     "targets.serve-static": [
       "apps/frontend/next.config.js",
       "@nx/next/plugin"
@@ -101,14 +33,6 @@
       "@nx/next/plugin"
     ],
     "targets.serve-static.options.command": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.build-deps": [
-      "apps/frontend/next.config.js",
-      "@nx/next/plugin"
-    ],
-    "targets.build-deps.dependsOn": [
       "apps/frontend/next.config.js",
       "@nx/next/plugin"
     ],
@@ -204,31 +128,31 @@
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
-    "targets.lint": [
+    "targets.start": [
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
-    "targets.lint.executor": [
+    "targets.start.executor": [
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
-    "targets.lint.options": [
+    "targets.start.options": [
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
-    "targets.lint.metadata": [
+    "targets.start.metadata": [
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
-    "targets.lint.options.script": [
+    "targets.start.options.script": [
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
-    "targets.lint.metadata.scriptContent": [
+    "targets.start.metadata.scriptContent": [
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
-    "targets.lint.metadata.runCommand": [
+    "targets.start.metadata.runCommand": [
       "apps/frontend/package.json",
       "nx/core/package-json"
     ],
@@ -236,11 +160,67 @@
       "apps/frontend/project.json",
       "nx/core/project-json"
     ],
+    "projectType": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
     "sourceRoot": [
       "apps/frontend/project.json",
       "nx/core/project-json"
     ],
-    "projectType": [
+    "prefix": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "tags.scope:frontend": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "tags.type:app": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.defaultConfiguration": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.outputPath": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.outputPath": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.fileReplacements": [
       "apps/frontend/project.json",
       "nx/core/project-json"
     ],
@@ -252,15 +232,143 @@
       "apps/frontend/project.json",
       "nx/core/project-json"
     ],
+    "targets.serve.defaultConfiguration": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
     "targets.serve.options": [
       "apps/frontend/project.json",
       "nx/core/project-json"
     ],
-    "targets.serve.options.command": [
+    "targets.serve.configurations": [
       "apps/frontend/project.json",
       "nx/core/project-json"
     ],
-    "targets.serve.options.cwd": [
+    "targets.serve.options.buildTarget": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options.dev": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options.port": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.development": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.development.buildTarget": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.development.dev": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.production": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.production.buildTarget": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.production.dev": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export.executor": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export.options": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export.options.buildTarget": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.outputs": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.configurations": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.jestConfig": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.configurations.ci": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.configurations.ci.ci": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.configurations.ci.coverageReporters": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.outputs": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.options": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.options.lintFilePatterns": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.type-check": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.type-check.executor": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.type-check.options": [
+      "apps/frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.type-check.options.command": [
       "apps/frontend/project.json",
       "nx/core/project-json"
     ]

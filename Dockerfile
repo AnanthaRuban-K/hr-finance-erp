@@ -1,30 +1,50 @@
-# Multi-stage build for smaller final image
-
-# 🟢 Base image for dependencies
+# Dockerfile
 FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
+
+# Copy package files
 COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig.base.json ./
+
+# Install dependencies
 RUN npm ci --only=production
 
-# 🟡 Build stage
-FROM node:18-alpine AS build
+# Rebuild the source code only when needed
+FROM base AS builder
 WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm ci
-RUN npm run build:prod
 
-# 🟣 Final production image
-FROM node:18-alpine AS production
+# Set environment variables for build
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
+
+# Build only the backend for this deployment
+RUN npm run build:backend
+
+# Production image, copy all the files and run the backend
+FROM base AS runner
 WORKDIR /app
 
-# Copy only what you need
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/apps/frontend/.next ./apps/frontend/.next
-COPY --from=build /app/package.json ./
-COPY --from=base /app/node_modules ./node_modules
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 
-# Expose both frontend (Next.js) and backend ports
-EXPOSE 3000 3001
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
 
-# Start both processes
-CMD ["sh", "-c", "npm run start:backend & cd apps/frontend && npm start"]
+# Copy built backend
+COPY --from=builder --chown=nodejs:nodejs /app/dist/apps/backend ./
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+
+USER nodejs
+
+EXPOSE 3001
+
+ENV PORT 3001
+
+CMD ["node", "main.js"]
