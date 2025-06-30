@@ -12,8 +12,7 @@
     "postbuild": "npm run build:frontend",
     "start": "npm run start:backend",
     "start:backend": "node dist/apps/backend/main.js",
-    "start:frontend": "cd apps/frontend && npm start",
-    
+    "start:frontend": "cd apps/frontend && npx next start"
   },
   "devDependencies": {
     "@nx/esbuild": "^21.2.1",
