@@ -80,6 +80,35 @@
           "hash": "5606125569375381644"
         }
       ],
+      "backend": [
+        {
+          "file": "apps/backend/.env.production",
+          "hash": "2863255684972599975"
+        },
+        {
+          "file": "apps/backend/drizzle.config.ts",
+          "hash": "6964718396459327338",
+          "deps": [
+            "npm:drizzle-kit"
+          ]
+        },
+        {
+          "file": "apps/backend/project.json",
+          "hash": "3753587372935820521"
+        },
+        {
+          "file": "apps/backend/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/backend/src/main.ts",
+          "hash": "6262009400911064360"
+        },
+        {
+          "file": "apps/backend/tsconfig.json",
+          "hash": "16534834231992506539"
+        }
+      ],
       "frontend": [
         {
           "file": "apps/frontend/.env.production",
@@ -306,35 +335,6 @@
         {
           "file": "apps/frontend/tsconfig.json",
           "hash": "1463711613211791157"
-        }
-      ],
-      "backend": [
-        {
-          "file": "apps/backend/.env.production",
-          "hash": "2863255684972599975"
-        },
-        {
-          "file": "apps/backend/drizzle.config.ts",
-          "hash": "6964718396459327338",
-          "deps": [
-            "npm:drizzle-kit"
-          ]
-        },
-        {
-          "file": "apps/backend/project.json",
-          "hash": "3753587372935820521"
-        },
-        {
-          "file": "apps/backend/src/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/backend/src/main.ts",
-          "hash": "6262009400911064360"
-        },
-        {
-          "file": "apps/backend/tsconfig.json",
-          "hash": "16534834231992506539"
         }
       ]
     },

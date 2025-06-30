@@ -9,14 +9,17 @@
     "test": "nx run-many -t test",
     "lint": "nx run-many -t lint",
     "build:prod": "nx run-many -t build --configuration=production",
-    "start": "node dist/apps/backend/main.js",
     "postbuild": "npm run build:frontend",
+    "start": "npm run start:backend",
+    "start:backend": "node dist/apps/backend/main.js",
+    "start:frontend": "cd apps/frontend && npm start",
     
-  "start:backend": "node dist/apps/backend/main.js",
-  "start:frontend": "cd apps/frontend && npm start"
   },
   "devDependencies": {
+    "@nx/esbuild": "^21.2.1",
+    "@nx/js": "^21.2.1",
     "@nx/next": "^21.2.1",
+    "@nx/webpack": "^21.2.1",
     "@types/node": "^24.0.7",
     "@types/pg": "^8.15.4",
     "@types/react": "^19.1.8",

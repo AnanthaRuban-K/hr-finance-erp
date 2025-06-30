@@ -3159,6 +3159,15 @@
         "hash": "sha512-sbc8l6qdc9GER5gUeh+IKecyKA+uUv0V/bf45nibUziUuQN2C1nh9bFJHzBeFeySonmEbF+I0aZ3aoafM5FVuQ=="
       }
     },
+    "npm:@nx/esbuild": {
+      "type": "npm",
+      "name": "npm:@nx/esbuild",
+      "data": {
+        "version": "21.2.1",
+        "packageName": "@nx/esbuild",
+        "hash": "sha512-/bLNdq0FxmQtGfmWlcW8XYU4EEyUdW35BfeopJV/Ew8xVUBenyESmkeiK5Um0DNkJnt7Qm6hKjrDEySlNzhcrQ=="
+      }
+    },
     "npm:@nx/eslint": {
       "type": "npm",
       "name": "npm:@nx/eslint",
@@ -14803,6 +14812,41 @@
     {
       "source": "npm:@nx/devkit",
       "target": "npm:yargs-parser",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/esbuild",
+      "target": "npm:esbuild",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/esbuild",
+      "target": "npm:@nx/devkit",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/esbuild",
+      "target": "npm:@nx/js",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/esbuild",
+      "target": "npm:picocolors",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/esbuild",
+      "target": "npm:tinyglobby",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/esbuild",
+      "target": "npm:tsconfig-paths",
+      "type": "static"
+    },
+    {
+      "source": "npm:@nx/esbuild",
+      "target": "npm:tslib",
       "type": "static"
     },
     {
