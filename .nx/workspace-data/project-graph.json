@@ -5373,6 +5373,15 @@
         "hash": "sha512-VRSzKkbMm5jMDoKLbltAkFQ5Qr7VDiTFGXxYFXXowVj387GeGNOCsOH6Msy00SGZ3Fp84b1Naa1psqgcCIEP5Q=="
       }
     },
+    "npm:clsx": {
+      "type": "npm",
+      "name": "npm:clsx",
+      "data": {
+        "version": "2.1.1",
+        "packageName": "clsx",
+        "hash": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="
+      }
+    },
     "npm:co": {
       "type": "npm",
       "name": "npm:co",
@@ -10467,6 +10476,15 @@
         "hash": "sha512-GTt8rSKje5FilG+wEdfCkOcLL7LWqpMlr2c3LRuKt/YXxcJ52aGSbGBAdI4L3aaqfrBt6y711El53ItyH1NWzg=="
       }
     },
+    "npm:tailwind-merge": {
+      "type": "npm",
+      "name": "npm:tailwind-merge",
+      "data": {
+        "version": "3.3.1",
+        "packageName": "tailwind-merge",
+        "hash": "sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g=="
+      }
+    },
     "npm:tapable": {
       "type": "npm",
       "name": "npm:tapable",
@@ -11170,7 +11188,12 @@
     "backend": [
       {
         "source": "backend",
-        "target": "npm:drizzle-kit",
+        "target": "npm:@hono/node-server",
+        "type": "static"
+      },
+      {
+        "source": "backend",
+        "target": "npm:hono",
         "type": "static"
       }
     ],
@@ -24236,6 +24259,199 @@
     ]
   },
   "version": "6.0",
-  "errors": [],
-  "computedAt": 1751266892728
+  "errors": [
+    {
+      "stack": " - apps/frontend/hr-finance-erp/apps/web/next.config.mjs: Error: ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'\n    at readdirSync (node:fs:1585:26)\n    at t.readdirSync (node:electron/js2c/node_init:2:16005)\n    at createNodesInternal (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:66:47)\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:95\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:8:35)\n    at exports.createNodesV2 (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:60)\n    at LoadedNxPlugin.createNodes (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:22:65)\n    at LoadedNxPlugin.createNodes.<computed> (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:32:34)",
+      "message": "An error occurred while processing files for the @nx/next/plugin plugin (Defined at nx.json#plugins[1])\n.\n  - apps/frontend/hr-finance-erp/apps/web/next.config.mjs: ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'",
+      "errors": [
+        [
+          "apps/frontend/hr-finance-erp/apps/web/next.config.mjs",
+          {
+            "stack": "Error: ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'\n    at readdirSync (node:fs:1585:26)\n    at t.readdirSync (node:electron/js2c/node_init:2:16005)\n    at createNodesInternal (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:66:47)\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:95\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:8:35)\n    at exports.createNodesV2 (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:60)\n    at LoadedNxPlugin.createNodes (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:22:65)\n    at LoadedNxPlugin.createNodes.<computed> (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:32:34)",
+            "message": "ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'",
+            "errno": -4058,
+            "code": "ENOENT",
+            "syscall": "scandir",
+            "path": "d:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web"
+          }
+        ]
+      ],
+      "partialResults": [
+        [
+          "apps/frontend/next.config.js",
+          {
+            "projects": {
+              "apps/frontend": {
+                "root": "apps/frontend",
+                "targets": {
+                  "build": {
+                    "command": "next build",
+                    "options": {
+                      "cwd": "apps/frontend",
+                      "tty": false
+                    },
+                    "dependsOn": [
+                      "^build"
+                    ],
+                    "cache": true,
+                    "inputs": [
+                      "default",
+                      "^production",
+                      {
+                        "externalDependencies": [
+                          "next"
+                        ]
+                      }
+                    ],
+                    "outputs": [
+                      "{workspaceRoot}/apps/frontend/.next/!(cache)/**/*",
+                      "{workspaceRoot}/apps/frontend/.next/!(cache)"
+                    ]
+                  },
+                  "dev": {
+                    "continuous": true,
+                    "command": "next dev",
+                    "options": {
+                      "cwd": "apps/frontend"
+                    }
+                  },
+                  "start": {
+                    "continuous": true,
+                    "command": "next start",
+                    "options": {
+                      "cwd": "apps/frontend"
+                    },
+                    "dependsOn": [
+                      "build"
+                    ]
+                  },
+                  "serve-static": {
+                    "continuous": true,
+                    "command": "next start",
+                    "options": {
+                      "cwd": "apps/frontend"
+                    },
+                    "dependsOn": [
+                      "build"
+                    ]
+                  },
+                  "build-deps": {
+                    "dependsOn": [
+                      "^build"
+                    ]
+                  },
+                  "watch-deps": {
+                    "continuous": true,
+                    "dependsOn": [
+                      "build-deps"
+                    ],
+                    "command": "npx nx watch --projects frontend --includeDependentProjects -- npx nx build-deps frontend"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "name": "AggregateCreateNodesError",
+      "pluginIndex": 1
+    },
+    {
+      "stack": " - apps/frontend/hr-finance-erp/apps/web/next.config.mjs: Error: ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'\n    at readdirSync (node:fs:1585:26)\n    at t.readdirSync (node:electron/js2c/node_init:2:16005)\n    at createNodesInternal (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:66:47)\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:95\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:8:35)\n    at exports.createNodesV2 (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:60)\n    at LoadedNxPlugin.createNodes (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:22:65)\n    at LoadedNxPlugin.createNodes.<computed> (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:32:34)",
+      "message": "An error occurred while processing files for the @nx/next/plugin plugin\n.\n  - apps/frontend/hr-finance-erp/apps/web/next.config.mjs: ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'",
+      "errors": [
+        [
+          "apps/frontend/hr-finance-erp/apps/web/next.config.mjs",
+          {
+            "stack": "Error: ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'\n    at readdirSync (node:fs:1585:26)\n    at t.readdirSync (node:electron/js2c/node_init:2:16005)\n    at createNodesInternal (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:66:47)\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:95\n    at d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\utils.js:8:35)\n    at exports.createNodesV2 (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\@nx\\next\\src\\plugins\\plugin.js:40:60)\n    at LoadedNxPlugin.createNodes (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:22:65)\n    at LoadedNxPlugin.createNodes.<computed> (d:\\office project\\HR SOFT\\main\\hr-finance-erp\\node_modules\\nx\\src\\project-graph\\plugins\\loaded-nx-plugin.js:32:34)",
+            "message": "ENOENT: no such file or directory, scandir 'd:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web'",
+            "errno": -4058,
+            "code": "ENOENT",
+            "syscall": "scandir",
+            "path": "d:\\office project\\HR SOFT\\main\\hr-finance-erp\\apps\\frontend\\hr-finance-erp\\apps\\web"
+          }
+        ]
+      ],
+      "partialResults": [
+        [
+          "apps/frontend/next.config.js",
+          {
+            "projects": {
+              "apps/frontend": {
+                "root": "apps/frontend",
+                "targets": {
+                  "build": {
+                    "command": "next build",
+                    "options": {
+                      "cwd": "apps/frontend",
+                      "tty": false
+                    },
+                    "dependsOn": [
+                      "^build"
+                    ],
+                    "cache": true,
+                    "inputs": [
+                      "default",
+                      "^production",
+                      {
+                        "externalDependencies": [
+                          "next"
+                        ]
+                      }
+                    ],
+                    "outputs": [
+                      "{workspaceRoot}/apps/frontend/.next/!(cache)/**/*",
+                      "{workspaceRoot}/apps/frontend/.next/!(cache)"
+                    ]
+                  },
+                  "dev": {
+                    "continuous": true,
+                    "command": "next dev",
+                    "options": {
+                      "cwd": "apps/frontend"
+                    }
+                  },
+                  "start": {
+                    "continuous": true,
+                    "command": "next start",
+                    "options": {
+                      "cwd": "apps/frontend"
+                    },
+                    "dependsOn": [
+                      "build"
+                    ]
+                  },
+                  "serve-static": {
+                    "continuous": true,
+                    "command": "next start",
+                    "options": {
+                      "cwd": "apps/frontend"
+                    },
+                    "dependsOn": [
+                      "build"
+                    ]
+                  },
+                  "build-deps": {
+                    "dependsOn": [
+                      "^build"
+                    ]
+                  },
+                  "watch-deps": {
+                    "continuous": true,
+                    "dependsOn": [
+                      "build-deps"
+                    ],
+                    "command": "npx nx watch --projects frontend --includeDependentProjects -- npx nx build-deps frontend"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "name": "AggregateCreateNodesError",
+      "pluginIndex": 0
+    }
+  ],
+  "computedAt": 1751268368383
 }
