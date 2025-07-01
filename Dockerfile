@@ -1,4 +1,4 @@
-# Use Node.js 18 Alpine
+# Dockerfile
 FROM node:18-alpine AS base
 
 # Install dependencies only when needed
@@ -7,8 +7,12 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package*.json ./
+COPY nx.json ./
+COPY tsconfig.base.json ./
+
+# Install dependencies
+RUN npm ci --only=production
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -18,11 +22,12 @@ COPY . .
 
 # Set environment variables for build
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
 
-# Build the application
-RUN npm run build
+# Build only the backend for this deployment
+RUN npm run build:backend
 
-# Production image, copy all the files and run next
+# Production image, copy all the files and run the backend
 FROM base AS runner
 WORKDIR /app
 
@@ -30,18 +35,16 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN adduser --system --uid 1001 nodejs
 
-# Copy built application
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Copy built backend
+COPY --from=builder --chown=nodejs:nodejs /app/dist/apps/backend ./
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
 
-USER nextjs
+USER nodejs
 
-EXPOSE 3000
+EXPOSE 3001
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT 3001
 
-CMD ["node", "server.js"]
+CMD ["node", "main.js"]
