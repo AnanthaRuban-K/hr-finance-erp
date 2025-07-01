@@ -1,8 +1,8 @@
 {
   "name": "frontend",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/frontend",
   "projectType": "application",
+  "sourceRoot": "apps/frontend/src",
   "targets": {
     "build": {
       "executor": "@nx/next:build",
@@ -13,34 +13,24 @@
       },
       "configurations": {
         "development": {
-          "outputPath": "dist/apps/frontend"
+          "outputPath": "apps/frontend"
         },
         "production": {}
       }
     },
     "serve": {
-      "executor": "@nx/next:serve",
-      "defaultConfiguration": "development",
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "frontend:build",
-        "dev": true,
-        "port": 3000
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "frontend:build:development",
-          "dev": true
-        },
-        "production": {
-          "buildTarget": "frontend:build:production",
-          "dev": false
-        }
+        "command": "npm run dev",
+        "cwd": "apps/frontend",
+        "color": true
       }
     },
-    "export": {
-      "executor": "@nx/next:export",
+    "start": {
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "frontend:build:production"
+        "command": "npm start",
+        "cwd": "apps/frontend"
       }
     },
     "test": {

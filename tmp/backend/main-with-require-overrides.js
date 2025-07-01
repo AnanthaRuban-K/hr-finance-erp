@@ -9,7 +9,7 @@ const path = require('path');
 const fs = require('fs');
 const originalResolveFilename = Module._resolveFilename;
 const distPath = __dirname;
-const manifest = [{"module":"@hr-finance-erp/shared-types","exactMatch":"libs/shared-types/src/index.js","pattern":"libs/shared-types/src/index.ts"}];
+const manifest = [{"module":"@hr-finance-erp/shared-types","exactMatch":"libs/shared-types/src/index.cjs","pattern":"libs/shared-types/src/index.ts"}];
 
 Module._resolveFilename = function(request, parent) {
   let found;
@@ -52,4 +52,4 @@ function isFile(s) {
 }
 
 // Call the user-defined main.
-module.exports = require('./apps/backend/src/main.js');
+module.exports = require('./apps/backend/src/main.cjs');
