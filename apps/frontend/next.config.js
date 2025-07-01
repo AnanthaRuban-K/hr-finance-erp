@@ -1,48 +1,53 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove output: 'export' if you're using API routes or server features
-  // output: 'export', // Comment this out or remove it
-  
-  // Enable standalone output for Docker deployment
-  output: 'standalone',
-  
-  // Disable static optimization for API routes
-  trailingSlash: false,
-  
-  // Environment variables
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-  },
-  
-  // Clerk configuration
+  output: 'standalone', // Important for Docker deployment
   experimental: {
     serverComponentsExternalPackages: ['@clerk/nextjs'],
   },
+  images: {
+    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  // Ensure static assets are served correctly
+  assetPrefix: process.env.NODE_ENV === 'production' ? undefined : undefined,
   
-  // Webpack configuration for better builds
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
+  // Handle trailing slashes
+  trailingSlash: false,
+  
+  // Redirect configuration
+  async redirects() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/api/:path*',
+        permanent: false,
+      },
+    ];
   },
   
-  // TypeScript configuration
-  typescript: {
-    // Dangerously allow production builds to successfully complete even if your project has type errors
-    ignoreBuildErrors: false,
+  // Headers for security
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+        ],
+      },
+    ];
   },
-  
-  // ESLint configuration
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
-}
+};
 
 module.exports = nextConfig;
