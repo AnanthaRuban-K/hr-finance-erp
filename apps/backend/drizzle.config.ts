@@ -1,12 +1,17 @@
-// ✅ CORRECT drizzle.config.ts for Neon
+// drizzle.config.ts
 import type { Config } from 'drizzle-kit';
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error('DATABASE_URL environment variable is not set.');
+}
 
 export default {
   schema: './src/db/schema/*',
   out: './src/db/migrations',
-  dialect: 'postgresql', // Use dialect instead of driver
+  dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL!, // Use url instead of connectionString
+    url: databaseUrl,
   },
   verbose: true,
   strict: true,

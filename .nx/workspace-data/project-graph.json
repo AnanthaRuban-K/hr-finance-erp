@@ -15525,11 +15525,6 @@
       },
       {
         "source": "@hr-finance-erp/source",
-        "target": "npm:date-fns",
-        "type": "static"
-      },
-      {
-        "source": "@hr-finance-erp/source",
         "target": "npm:drizzle-orm",
         "type": "static"
       },
