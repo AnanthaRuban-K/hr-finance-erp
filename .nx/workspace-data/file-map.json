@@ -9,11 +9,7 @@
     "nx": "^19.0.0",
     "typescript": "^5.5.2"
   },
-  "pathMappings": {
-    "@hr-finance-erp/shared-types": [
-      "libs/shared-types/src/index.ts"
-    ]
-  },
+  "pathMappings": {},
   "nxJsonPlugins": [],
   "fileMap": {
     "projectFileMap": {

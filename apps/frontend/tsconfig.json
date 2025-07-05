@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "es6"],
@@ -17,12 +16,14 @@
     "incremental": true,
     "plugins": [{"name": "next"}],
     "baseUrl": ".",
-    "paths": {"@/*": ["./src/*"]}
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
-    "next-env.d.ts", 
+    "next-env.d.ts",
     "**/*.ts", 
-    "**/*.tsx", 
+    "**/*.tsx",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
