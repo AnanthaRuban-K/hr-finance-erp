@@ -1,32 +1,58 @@
-import Link from 'next/link'
-
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            HR Finance ERP
-          </h1>
-          <p className="text-gray-600 mb-8">
-            Welcome to your ERP system
-          </p>
-          
-          <div className="space-y-4">
-            <Link 
-              href="/dashboard"
-              className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition-colors"
-            >
-              Go to Dashboard
-            </Link>
-            
-            <div className="text-sm text-gray-500">
-              <p>Version 1.0.0</p>
-              <p>Status: Running ✅</p>
-            </div>
-          </div>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#f9fafb'
+    }}>
+      <div style={{
+        maxWidth: '400px',
+        width: '100%',
+        backgroundColor: 'white',
+        padding: '2rem',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        textAlign: 'center'
+      }}>
+        <h1 style={{ 
+          fontSize: '2rem', 
+          fontWeight: 'bold', 
+          color: '#1f2937',
+          marginBottom: '0.5rem'
+        }}>
+          HR Finance ERP
+        </h1>
+        <p style={{ 
+          color: '#6b7280', 
+          marginBottom: '2rem' 
+        }}>
+          Welcome to your ERP system
+        </p>
+        
+        <a 
+          href="/dashboard"
+          style={{
+            display: 'block',
+            width: '100%',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            fontWeight: '500',
+            padding: '0.75rem 1rem',
+            borderRadius: '6px',
+            textDecoration: 'none',
+            marginBottom: '1rem'
+          }}
+        >
+          Go to Dashboard
+        </a>
+        
+        <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
+          <p>Version 1.0.0</p>
+          <p>Status: Running ✅</p>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

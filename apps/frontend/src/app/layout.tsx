@@ -1,19 +1,17 @@
-import type { Metadata } from 'next'
-import './globals.css'
+// src/app/layout.tsx (or /app/RootLayout.tsx)
+import { ReactNode } from 'react';
 
-export const metadata: Metadata = {
-  title: 'HR Finance ERP',
-  description: 'HR Finance ERP System',
-}
+export const metadata = {
+  title: 'Your App Title',
+  description: 'Your app description',
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body style={{ margin: 0, fontFamily: 'Arial, sans-serif' }}>
+        {children}
+      </body>
     </html>
-  )
+  );
 }

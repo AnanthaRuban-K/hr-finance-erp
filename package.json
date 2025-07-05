@@ -9,14 +9,13 @@
     "frontend:dev": "nx serve frontend",
     "backend:dev": "nx serve backend",
     "frontend:build": "nx build frontend",
-    "backend:build": "nx build backend",
-    "build:prod": "npm run backend:build && npm run frontend:build",
-    "start:prod": "npm run backend:start & npm run frontend:start"
+    "backend:build": "nx build backend"
   },
   "devDependencies": {
     "@nx/next": "^19.0.0",
     "@nx/node": "^19.0.0",
     "@nx/workspace": "^19.0.0",
+    "drizzle-kit": "^0.31.4",
     "nx": "^19.0.0",
     "typescript": "^5.5.2"
   }

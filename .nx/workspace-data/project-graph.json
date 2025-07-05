@@ -15,7 +15,7 @@
           "targetGroups": {
             "NPM Scripts": [
               "dev",
-              "lint"
+              "start"
             ]
           }
         },
@@ -32,25 +32,23 @@
             "configurations": {},
             "parallelism": true
           },
-          "lint": {
+          "start": {
             "executor": "nx:run-script",
             "options": {
-              "script": "lint"
+              "script": "start"
             },
             "metadata": {
-              "scriptContent": "next lint",
-              "runCommand": "npm run lint"
+              "scriptContent": "next start",
+              "runCommand": "npm run start"
             },
             "configurations": {},
             "parallelism": true
           },
           "build": {
-            "executor": "@nx/next:build",
-            "outputs": [
-              "{options.outputPath}"
-            ],
+            "executor": "nx:run-commands",
             "options": {
-              "outputPath": "dist/apps/frontend"
+              "command": "npm run build",
+              "cwd": "apps/frontend"
             },
             "configurations": {},
             "parallelism": true,
@@ -62,15 +60,6 @@
             "executor": "nx:run-commands",
             "options": {
               "command": "npm run dev",
-              "cwd": "apps/frontend"
-            },
-            "configurations": {},
-            "parallelism": true
-          },
-          "start": {
-            "executor": "nx:run-commands",
-            "options": {
-              "command": "npm run start",
               "cwd": "apps/frontend"
             },
             "configurations": {},
@@ -113,10 +102,14 @@
             "parallelism": true
           },
           "build": {
-            "executor": "nx:run-commands",
+            "executor": "@nx/js:tsc",
+            "outputs": [
+              "{options.outputPath}"
+            ],
             "options": {
-              "command": "npm run build",
-              "cwd": "apps/backend"
+              "outputPath": "dist/apps/backend",
+              "tsConfig": "apps/backend/tsconfig.json",
+              "main": "apps/backend/src/main.ts"
             },
             "configurations": {},
             "parallelism": true,
@@ -10442,21 +10435,6 @@
       {
         "source": "frontend",
         "target": "npm:@types/node",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
-        "target": "npm:autoprefixer",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
-        "target": "npm:eslint",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
-        "target": "npm:postcss",
         "type": "static"
       },
       {

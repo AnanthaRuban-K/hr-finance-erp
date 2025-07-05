@@ -5,23 +5,16 @@
   "sourceRoot": "apps/frontend/src",
   "targets": {
     "build": {
-      "executor": "@nx/next:build",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "dist/apps/frontend"
+        "command": "npm run build",
+        "cwd": "apps/frontend"
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
         "command": "npm run dev",
-        "cwd": "apps/frontend"
-      }
-    },
-    "start": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npm run start",
         "cwd": "apps/frontend"
       }
     }

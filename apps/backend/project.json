@@ -5,10 +5,12 @@
   "sourceRoot": "apps/backend/src",
   "targets": {
     "build": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "command": "npm run build",
-        "cwd": "apps/backend"
+        "outputPath": "dist/apps/backend",
+        "tsConfig": "apps/backend/tsconfig.json",
+        "main": "apps/backend/src/main.ts"
       }
     },
     "serve": {

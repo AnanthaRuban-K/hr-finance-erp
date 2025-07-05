@@ -5,6 +5,7 @@
     "@nx/next": "^19.0.0",
     "@nx/node": "^19.0.0",
     "@nx/workspace": "^19.0.0",
+    "drizzle-kit": "^0.31.4",
     "nx": "^19.0.0",
     "typescript": "^5.5.2"
   },
@@ -18,21 +19,22 @@
     "projectFileMap": {
       "frontend": [
         {
+          "file": "apps/frontend/next-env.d.ts",
+          "hash": "650381615855576712"
+        },
+        {
           "file": "apps/frontend/next.config.js",
-          "hash": "17160922126038876103"
+          "hash": "17304966989544248482"
         },
         {
           "file": "apps/frontend/package-lock.json",
-          "hash": "13140831488268100557"
+          "hash": "3045771356891317803"
         },
         {
           "file": "apps/frontend/package.json",
-          "hash": "2271341277831658538",
+          "hash": "3767952718410588012",
           "deps": [
             "npm:@types/node",
-            "npm:autoprefixer",
-            "npm:eslint",
-            "npm:postcss",
             "npm:typescript",
             "npm:next",
             "npm:react",
@@ -41,652 +43,26 @@
         },
         {
           "file": "apps/frontend/project.json",
-          "hash": "3244421341483603138"
+          "hash": "5255708470564058622"
         },
         {
-          "file": "apps/frontend/public/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/public/favicon.ico",
-          "hash": "9303420814833116677"
-        },
-        {
-          "file": "apps/frontend/src/app/(auth)/sign-in/[[...sign-in]]/page.tsx",
-          "hash": "4924948355931674306"
-        },
-        {
-          "file": "apps/frontend/src/app/(auth)/sign-up/[[...sign-up]]/page.tsx",
-          "hash": "17697728597946029583"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/bills/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/bills/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/bills/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/bills/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/create-estimate/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/customers/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/customers/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/customers/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/customers/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/data/data.json",
-          "hash": "12171152518444477549"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/data/expense-claims.json",
-          "hash": "17343074834965179865"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/data/jobs.json",
-          "hash": "10564145414855767528"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/data/performance.json",
-          "hash": "7281659536136499679"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/data/shift-attendance.json",
-          "hash": "11292212404243414379"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/data/timesheet.json",
-          "hash": "535671143948006705"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/expenses/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/expenses/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/expenses/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/expenses/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/attendance/[date]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/attendance/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/employees/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/employees/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/employees/layout.tsx",
-          "hash": "83404670276523366"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/employees/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/employees/page.tsx",
-          "hash": "411917899745930808",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/expense-claims/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/expense-claims/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/expense-claims/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/expense-claims/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/leaves/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/leaves/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/leaves/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/leaves/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/lifecycle/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/performance/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/performance/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/performance/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/hr/performance/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/invoices/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/invoices/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/invoices/[id]/print/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/invoices/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/invoices/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/job-center/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/job-center/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/job-center/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/job-center/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/layout.tsx",
-          "hash": "15622483172929026902"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/loading.tsx",
-          "hash": "10690276727289906702"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/page.tsx",
-          "hash": "13542347104503988539"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/payments/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/payments/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/payments/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/payments/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/products/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/products/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/products/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/products/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-bills/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-bills/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-bills/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-bills/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-orders/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-orders/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-orders/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/purchase-orders/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/time-tracking/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/time-tracking/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/vendor-credits/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/vendor-credits/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/vendor-credits/new/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/vendor-credits/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/vendors/[id]/edit/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/vendors/[id]/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/admin/vendors/page.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/employee/page.tsx",
-          "hash": "7198939352962304008"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/finance/page.tsx",
-          "hash": "13375564644878968438"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/hr/page.tsx",
-          "hash": "15425727919687720925"
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/layout.tsx",
-          "hash": "12556664434083525079",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/app/(dashboard)/supervisor/page.tsx",
-          "hash": "15689679261705000314"
-        },
-        {
-          "file": "apps/frontend/src/app/favicon.ico",
-          "hash": "9157999678830540297"
-        },
-        {
-          "file": "apps/frontend/src/app/globals.css",
-          "hash": "11154643268376388584"
+          "file": "apps/frontend/src/app/dashboard/page.tsx",
+          "hash": "3284766060339862669"
         },
         {
           "file": "apps/frontend/src/app/layout.tsx",
-          "hash": "11564848577123131169",
+          "hash": "7244368467128684246",
           "deps": [
-            "npm:next"
+            "npm:react"
           ]
         },
         {
           "file": "apps/frontend/src/app/page.tsx",
-          "hash": "14300085474633633478",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/admin/dashboard/chart-area-interactive.tsx",
-          "hash": "643555147002879426",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/admin/dashboard/data-table.tsx",
-          "hash": "2804453665563501875",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/admin/dashboard/expense-management.tsx",
-          "hash": "14245780835096441050",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/admin/dashboard/payroll-summary.tsx",
-          "hash": "3067920240087731181",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/admin/dashboard/project-tracking.tsx",
-          "hash": "8955855625881990933",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/admin/dashboard/recent-transactions.tsx",
-          "hash": "4936603470801969243",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/admin/dashboard/section-cards.tsx",
-          "hash": "15576043421110422007"
-        },
-        {
-          "file": "apps/frontend/src/components/auth/role-guard.tsx",
-          "hash": "17469877209494036279",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/layout/header.tsx",
-          "hash": "4735869743876299889",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/layout/layout-wrapper.tsx",
-          "hash": "13900600630959985304"
-        },
-        {
-          "file": "apps/frontend/src/components/layout/page-header.tsx",
-          "hash": "6882752285966976461"
-        },
-        {
-          "file": "apps/frontend/src/components/layout/sidebar.tsx",
-          "hash": "10874256054431530968",
-          "deps": [
-            "npm:react",
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/avatar.tsx",
-          "hash": "8660661188500548189",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/badge.tsx",
-          "hash": "9820710507085213727",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/breadcrumb.tsx",
-          "hash": "16363177524338459737",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/button.tsx",
-          "hash": "9267699881977892517",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/card.tsx",
-          "hash": "13425526557619092594",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/drawer.tsx",
-          "hash": "12662813428787543576",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/dropdown-menu.tsx",
-          "hash": "5292294336904181534",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/input.tsx",
-          "hash": "10270228290145902228",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/label.tsx",
-          "hash": "17461498100996495370",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/loading.tsx",
-          "hash": "9564081917686662664"
-        },
-        {
-          "file": "apps/frontend/src/components/ui/progress.tsx",
-          "hash": "5483064031844279887",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/select.tsx",
-          "hash": "8169151051754820774",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/separator.tsx",
-          "hash": "1978076718437868180",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/sheet.tsx",
-          "hash": "16939179561819926374",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/sidebar.tsx",
-          "hash": "4344516578039028436",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/skeleton.tsx",
-          "hash": "8682262600359381656"
-        },
-        {
-          "file": "apps/frontend/src/components/ui/table.tsx",
-          "hash": "10632063416869730844",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/tabs.tsx",
-          "hash": "15637375351129848662",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/theme-toggle.tsx",
-          "hash": "5157771208153498982",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/components/ui/tooltip.tsx",
-          "hash": "11425028276116169833",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/hooks/use-auth.ts",
-          "hash": "8250620218658535659",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/hooks/use-mobile.tsx",
-          "hash": "14900138732519213047",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/hooks/use-server-auth.ts",
-          "hash": "14727949944302438186"
-        },
-        {
-          "file": "apps/frontend/src/lib/auth/roles.ts",
-          "hash": "14998096668591416720"
-        },
-        {
-          "file": "apps/frontend/src/lib/auth/utils.ts",
-          "hash": "4447117811116153572",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/lib/clerk.ts",
-          "hash": "4849745984766853227"
-        },
-        {
-          "file": "apps/frontend/src/lib/store/layout-store.ts",
-          "hash": "8340147979244918524"
-        },
-        {
-          "file": "apps/frontend/src/lib/utils.ts",
-          "hash": "10929332441615840627"
-        },
-        {
-          "file": "apps/frontend/src/middleware.ts",
-          "hash": "14812798047397159295",
-          "deps": [
-            "npm:next"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/providers/theme-provider.tsx",
-          "hash": "16261873875989494627",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/types/auth.ts",
-          "hash": "16557540267765192708"
-        },
-        {
-          "file": "apps/frontend/tailwind.config.js",
-          "hash": "12646835911857445092"
+          "hash": "8089381271428728552"
         },
         {
           "file": "apps/frontend/tsconfig.json",
-          "hash": "16093624922437849833"
+          "hash": "6927122715641035626"
         }
       ],
       "backend": [
@@ -703,7 +79,7 @@
         },
         {
           "file": "apps/backend/package.json",
-          "hash": "5943752534035761930",
+          "hash": "13644644671505999341",
           "deps": [
             "npm:@types/node",
             "npm:ts-node",
@@ -712,7 +88,7 @@
         },
         {
           "file": "apps/backend/project.json",
-          "hash": "2559887497736125968"
+          "hash": "12741483931541068234"
         },
         {
           "file": "apps/backend/src/app.ts",
@@ -728,14 +104,14 @@
         },
         {
           "file": "apps/backend/tsconfig.json",
-          "hash": "10100438292781811558"
+          "hash": "14504360106262581373"
         }
       ]
     },
     "nonProjectFiles": [
       {
         "file": ".github/instructions/nx.instructions.md",
-        "hash": "13439560548846362941"
+        "hash": "1292068323293708006"
       },
       {
         "file": ".github/workflows/deploy.yml",
@@ -783,7 +159,7 @@
       },
       {
         "file": "package.json",
-        "hash": "1869445278316639312"
+        "hash": "12155577699765372520"
       },
       {
         "file": "tsconfig.base.json",
