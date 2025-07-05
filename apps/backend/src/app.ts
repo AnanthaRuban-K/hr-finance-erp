@@ -1,55 +1,44 @@
-// apps/backend/src/app.ts
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { logger } from 'hono/logger';
-import { secureHeaders } from 'hono/secure-headers';
-import { appRouter } from './trpc/app-router';
-import { createTRPCContext } from './trpc/context';
+import { Hono } from 'hono'
+import { cors } from 'hono/cors'
+import { logger } from 'hono/logger'
 
-const app = new Hono();
+const app = new Hono()
 
-// Global middleware
-app.use('*', logger());
-app.use('*', secureHeaders());
+// Middleware
+app.use('*', logger())
 app.use('*', cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
-}));
-
-// Simple tRPC handler without @hono/trpc-server (since it might not be available)
-app.all('/trpc/*', async (c) => {
-  try {
-    // Basic tRPC handling - you can expand this later
-    return c.json({ message: 'tRPC endpoint - implementation needed' });
-  } catch (error) {
-    console.error('tRPC error:', error);
-    return c.json({ error: 'Internal server error' }, 500);
-  }
-});
+}))
 
 // Health check
 app.get('/health', (c) => {
-  return c.json({ 
-    status: 'ok', 
+  return c.json({
+    status: 'ok',
     timestamp: new Date().toISOString(),
-    service: 'ERP Backend',
+    service: 'HR Finance ERP Backend',
     version: '1.0.0'
-  });
-});
+  })
+})
 
-// API info endpoint
+// API info
 app.get('/', (c) => {
   return c.json({
     message: 'HR Finance ERP Backend API',
     version: '1.0.0',
     endpoints: {
       health: '/health',
-      trpc: '/trpc',
     },
     status: 'running'
-  });
-});
+  })
+})
 
-export { app };
+// Basic API routes
+app.get('/api/test', (c) => {
+  return c.json({
+    message: 'API is working!',
+    timestamp: new Date().toISOString()
+  })
+})
+
+export { app }

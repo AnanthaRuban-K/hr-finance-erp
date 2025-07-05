@@ -1,14 +1,12 @@
-// apps/frontend/src/hooks/use-auth.ts
 'use client';
 
-import { useUser, useAuth as useClerkAuth } from '@clerk/clerk-react';
+import { useUser } from '@clerk/nextjs';
 import { UserRole, Permission, type AuthUser } from '@/types/auth';
 import { getRolePermissions, hasPermission } from '@/lib/auth/roles';
 import { useMemo } from 'react';
 
 export function useAuth() {
   const { user, isLoaded, isSignedIn } = useUser();
-  const { getToken } = useClerkAuth();
   
   const authUser: AuthUser | null = useMemo(() => {
     if (!user || !isSignedIn) return null;
@@ -45,12 +43,15 @@ export function useAuth() {
     user: authUser,
     isLoaded,
     isSignedIn,
-    getToken,
     checkPermission,
     checkRole,
     checkRoles,
     hasPermission: checkPermission,
     hasRole: checkRole,
     hasRoles: checkRoles
+    
+
   };
+
+
 }

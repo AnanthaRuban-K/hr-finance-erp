@@ -22,24 +22,14 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/types/*": ["./src/types/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/stores/*": ["./src/stores/*"],
-      "@/providers/*": ["./src/providers/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/auth/*": ["./src/lib/auth/*"]
-    },
-    "typeRoots": ["./src/types", "../../node_modules/@types"]
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/types/**/*.d.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

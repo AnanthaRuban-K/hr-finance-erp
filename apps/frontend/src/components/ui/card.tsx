@@ -2,6 +2,14 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+export function CardAction({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={className} {...props} data-slot="card-action">
+      {children}
+    </div>
+  );
+}
+
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>

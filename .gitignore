@@ -1,7 +1,27 @@
-node_modules/ 
-.env.local 
-.env 
-dist/ 
-.nx/cache 
-.next/ 
-*.log 
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production builds
+dist/
+.next/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.staging
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Nx
+.nx/

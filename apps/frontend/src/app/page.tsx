@@ -1,62 +1,30 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
-    <main style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(to bottom right, #dbeafe, #e0e7ff)',
-      padding: '20px'
-    }}>
-      <div style={{
-        maxWidth: '400px',
-        width: '100%',
-        background: 'white',
-        borderRadius: '8px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        padding: '32px'
-      }}>
-        <h1 style={{
-          fontSize: '2rem',
-          fontWeight: 'bold',
-          textAlign: 'center',
-          color: '#1f2937',
-          marginBottom: '16px'
-        }}>
-          HR & Finance ERP
-        </h1>
-        <p style={{
-          color: '#6b7280',
-          textAlign: 'center',
-          marginBottom: '32px'
-        }}>
-          Complete Human Resources and Finance Management System
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <button style={{
-            width: '100%',
-            backgroundColor: '#2563eb',
-            color: 'white',
-            padding: '8px 16px',
-            borderRadius: '6px',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}>
-            Sign In
-          </button>
-          <button style={{
-            width: '100%',
-            border: '1px solid #d1d5db',
-            color: '#374151',
-            padding: '8px 16px',
-            borderRadius: '6px',
-            backgroundColor: 'white',
-            cursor: 'pointer',
-            fontSize: '16px'
-          }}>
-            Learn More
-          </button>
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            HR Finance ERP
+          </h1>
+          <p className="text-gray-600 mb-8">
+            Welcome to your ERP system
+          </p>
+          
+          <div className="space-y-4">
+            <Link 
+              href="/dashboard"
+              className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition-colors"
+            >
+              Go to Dashboard
+            </Link>
+            
+            <div className="text-sm text-gray-500">
+              <p>Version 1.0.0</p>
+              <p>Status: Running ✅</p>
+            </div>
+          </div>
         </div>
       </div>
     </main>

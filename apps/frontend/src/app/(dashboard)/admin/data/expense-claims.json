@@ -1,0 +1,26 @@
+[
+  {
+    "employee": "John Doe",
+    "date": "2025-05-10",
+    "amount": 1200,
+    "category": "Travel",
+    "status": "Approved",
+    "description": "Client visit to Chennai"
+  },
+  {
+    "employee": "Jane Smith",
+    "date": "2025-05-08",
+    "amount": 450,
+    "category": "Meals",
+    "status": "Pending",
+    "description": "Lunch with client"
+  },
+  {
+    "employee": "Mike Johnson",
+    "date": "2025-05-06",
+    "amount": 800,
+    "category": "Accommodation",
+    "status": "Rejected",
+    "description": "Hotel stay"
+  }
+]

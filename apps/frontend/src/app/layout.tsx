@@ -1,9 +1,9 @@
-
 import type { Metadata } from 'next'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'HR & Finance ERP',
-  description: 'Complete HR and Finance Management System',
+  title: 'HR Finance ERP',
+  description: 'HR Finance ERP System',
 }
 
 export default function RootLayout({

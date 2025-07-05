@@ -1,4 +1,3 @@
-// apps/frontend/src/lib/auth/roles.ts
 import { UserRole, Permission } from '@/types/auth';
 
 export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {

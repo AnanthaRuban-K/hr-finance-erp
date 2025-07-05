@@ -1,4 +1,3 @@
-// apps/frontend/src/types/auth.ts
 export enum UserRole {
   ADMIN = 'admin',
   HR_MANAGER = 'hr_manager',
