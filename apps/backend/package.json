@@ -5,8 +5,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/main.ts",
-    "start": "node dist/main.js",
-    "serve": "npm run dev"
+    "start": "node dist/main.js"
   },
   "dependencies": {
     "hono": "^4.0.0",

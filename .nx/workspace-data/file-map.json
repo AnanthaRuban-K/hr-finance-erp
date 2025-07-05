@@ -17,54 +17,6 @@
   "nxJsonPlugins": [],
   "fileMap": {
     "projectFileMap": {
-      "frontend": [
-        {
-          "file": "apps/frontend/next-env.d.ts",
-          "hash": "650381615855576712"
-        },
-        {
-          "file": "apps/frontend/next.config.js",
-          "hash": "17304966989544248482"
-        },
-        {
-          "file": "apps/frontend/package-lock.json",
-          "hash": "3045771356891317803"
-        },
-        {
-          "file": "apps/frontend/package.json",
-          "hash": "3767952718410588012",
-          "deps": [
-            "npm:@types/node",
-            "npm:typescript",
-            "npm:next",
-            "npm:react",
-            "npm:react-dom"
-          ]
-        },
-        {
-          "file": "apps/frontend/project.json",
-          "hash": "5255708470564058622"
-        },
-        {
-          "file": "apps/frontend/src/app/dashboard/page.tsx",
-          "hash": "3284766060339862669"
-        },
-        {
-          "file": "apps/frontend/src/app/layout.tsx",
-          "hash": "7244368467128684246",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/frontend/src/app/page.tsx",
-          "hash": "8089381271428728552"
-        },
-        {
-          "file": "apps/frontend/tsconfig.json",
-          "hash": "6927122715641035626"
-        }
-      ],
       "backend": [
         {
           "file": "apps/backend/drizzle.config.ts",

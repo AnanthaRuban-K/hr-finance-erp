@@ -1,75 +1,5 @@
 {
   "nodes": {
-    "frontend": {
-      "name": "frontend",
-      "type": "app",
-      "data": {
-        "root": "apps/frontend",
-        "sourceRoot": "apps/frontend/src",
-        "name": "frontend",
-        "projectType": "application",
-        "tags": [
-          "npm:private"
-        ],
-        "metadata": {
-          "targetGroups": {
-            "NPM Scripts": [
-              "dev",
-              "start"
-            ]
-          }
-        },
-        "targets": {
-          "dev": {
-            "executor": "nx:run-script",
-            "options": {
-              "script": "dev"
-            },
-            "metadata": {
-              "scriptContent": "next dev",
-              "runCommand": "npm run dev"
-            },
-            "configurations": {},
-            "parallelism": true
-          },
-          "start": {
-            "executor": "nx:run-script",
-            "options": {
-              "script": "start"
-            },
-            "metadata": {
-              "scriptContent": "next start",
-              "runCommand": "npm run start"
-            },
-            "configurations": {},
-            "parallelism": true
-          },
-          "build": {
-            "executor": "nx:run-commands",
-            "options": {
-              "command": "npm run build",
-              "cwd": "apps/frontend"
-            },
-            "configurations": {},
-            "parallelism": true,
-            "dependsOn": [
-              "^build"
-            ]
-          },
-          "serve": {
-            "executor": "nx:run-commands",
-            "options": {
-              "command": "npm run dev",
-              "cwd": "apps/frontend"
-            },
-            "configurations": {},
-            "parallelism": true
-          }
-        },
-        "$schema": "../../node_modules/nx/schemas/project-schema.json",
-        "implicitDependencies": []
-      }
-    },
     "backend": {
       "name": "backend",
       "type": "app",
@@ -10431,33 +10361,6 @@
     }
   },
   "dependencies": {
-    "frontend": [
-      {
-        "source": "frontend",
-        "target": "npm:@types/node",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
-        "target": "npm:typescript",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
-        "target": "npm:next",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
-        "target": "npm:react",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
-        "target": "npm:react-dom",
-        "type": "static"
-      }
-    ],
     "backend": [
       {
         "source": "backend",
