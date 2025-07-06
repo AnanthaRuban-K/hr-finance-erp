@@ -12,16 +12,35 @@ export default function RootLayout({
 }) {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
+  // Debug logging (remove in production)
+  console.log('Environment Debug:', {
+    publishableKey: publishableKey ? `${publishableKey.substring(0, 10)}...` : 'MISSING',
+    nodeEnv: process.env.NODE_ENV,
+    allEnvKeys: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_'))
+  })
+
   if (!publishableKey) {
-    console.error('Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY')
-    // Return a fallback during build/development
     return (
       <html lang="en">
         <body className={inter.className}>
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
+          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="text-center p-8 bg-white rounded-lg shadow-lg max-w-md">
               <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
-              <p className="text-gray-600">Missing Clerk configuration. Please check environment variables.</p>
+              <p className="text-gray-600 mb-4">Missing Clerk configuration.</p>
+              <div className="text-left text-xs bg-gray-100 p-3 rounded">
+                <p><strong>Expected:</strong> NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</p>
+                <p><strong>Found:</strong> {publishableKey ? 'Present' : 'Missing'}</p>
+                <p><strong>Env:</strong> {process.env.NODE_ENV}</p>
+                <p><strong>Available NEXT_PUBLIC vars:</strong></p>
+                <ul className="list-disc list-inside">
+                  {Object.keys(process.env)
+                    .filter(key => key.startsWith('NEXT_PUBLIC_'))
+                    .map(key => (
+                      <li key={key}>{key}</li>
+                    ))
+                  }
+                </ul>
+              </div>
             </div>
           </div>
         </body>
@@ -36,15 +55,6 @@ export default function RootLayout({
         elements: {
           formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-white',
           card: 'shadow-lg border',
-          headerTitle: 'text-2xl font-bold text-gray-900',
-          headerSubtitle: 'text-gray-600',
-          socialButtonsBlockButton: 'border border-gray-300 hover:bg-gray-50',
-          formFieldInput: 'border border-gray-300 rounded-md',
-          footerActionLink: 'text-blue-600 hover:text-blue-700',
-        },
-        layout: {
-          logoImageUrl: '/logo.png',
-          socialButtonsVariant: 'iconButton',
         },
         variables: {
           colorPrimary: '#2563eb',
