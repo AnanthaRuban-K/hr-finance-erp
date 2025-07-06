@@ -18,7 +18,8 @@
           "file": "apps/backend/drizzle.config.ts",
           "hash": "7754568431728179099",
           "deps": [
-            "npm:drizzle-kit"
+            "npm:drizzle-kit",
+            "npm:dotenv"
           ]
         },
         {
@@ -30,8 +31,10 @@
           "hash": "13644644671505999341",
           "deps": [
             "npm:@types/node",
+            "npm:drizzle-kit",
             "npm:ts-node",
-            "npm:typescript"
+            "npm:typescript",
+            "npm:dotenv"
           ]
         },
         {

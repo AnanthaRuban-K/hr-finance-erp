@@ -14,7 +14,12 @@
         "metadata": {
           "targetGroups": {
             "NPM Scripts": [
-              "dev"
+              "dev",
+              "db:generate",
+              "db:migrate",
+              "db:studio",
+              "db:seed",
+              "db:test"
             ]
           }
         },
@@ -27,6 +32,66 @@
             "metadata": {
               "scriptContent": "ts-node src/main.ts",
               "runCommand": "npm run dev"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "db:generate": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "db:generate"
+            },
+            "metadata": {
+              "scriptContent": "drizzle-kit generate",
+              "runCommand": "npm run db:generate"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "db:migrate": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "db:migrate"
+            },
+            "metadata": {
+              "scriptContent": "drizzle-kit migrate",
+              "runCommand": "npm run db:migrate"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "db:studio": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "db:studio"
+            },
+            "metadata": {
+              "scriptContent": "drizzle-kit studio",
+              "runCommand": "npm run db:studio"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "db:seed": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "db:seed"
+            },
+            "metadata": {
+              "scriptContent": "ts-node src/db/seed.ts",
+              "runCommand": "npm run db:seed"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "db:test": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "db:test"
+            },
+            "metadata": {
+              "scriptContent": "ts-node src/db/test-connection.ts",
+              "runCommand": "npm run db:test"
             },
             "configurations": {},
             "parallelism": true
@@ -10365,6 +10430,11 @@
       {
         "source": "backend",
         "target": "npm:drizzle-kit",
+        "type": "static"
+      },
+      {
+        "source": "backend",
+        "target": "npm:dotenv",
         "type": "static"
       },
       {
