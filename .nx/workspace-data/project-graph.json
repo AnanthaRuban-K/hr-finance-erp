@@ -10531,11 +10531,6 @@
       },
       {
         "source": "backend",
-        "target": "npm:dotenv",
-        "type": "static"
-      },
-      {
-        "source": "backend",
         "target": "npm:@types/node",
         "type": "static"
       },
@@ -10547,6 +10542,11 @@
       {
         "source": "backend",
         "target": "npm:typescript",
+        "type": "static"
+      },
+      {
+        "source": "backend",
+        "target": "npm:dotenv",
         "type": "static"
       }
     ],

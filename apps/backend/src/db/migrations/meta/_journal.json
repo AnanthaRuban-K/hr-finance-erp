@@ -15,6 +15,13 @@
       "when": 1751778552817,
       "tag": "0001_empty_cyclops",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751826190764,
+      "tag": "0002_aberrant_deadpool",
+      "breakpoints": true
     }
   ]
 }

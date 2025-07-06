@@ -15,8 +15,12 @@
     "projectFileMap": {
       "frontend": [
         {
+          "file": "apps/frontend/middleware.ts",
+          "hash": "5475190782987578596"
+        },
+        {
           "file": "apps/frontend/next-env.d.ts",
-          "hash": "650381615855576712"
+          "hash": "10054213917412045845"
         },
         {
           "file": "apps/frontend/next.config.js",
@@ -24,11 +28,11 @@
         },
         {
           "file": "apps/frontend/package-lock.json",
-          "hash": "3045771356891317803"
+          "hash": "11466492450948760391"
         },
         {
           "file": "apps/frontend/package.json",
-          "hash": "3767952718410588012",
+          "hash": "14861702486457417996",
           "deps": [
             "npm:@types/node",
             "npm:typescript",
@@ -53,10 +57,14 @@
           ]
         },
         {
+          "file": "apps/frontend/src/app/globals.css",
+          "hash": "10178954362514634733"
+        },
+        {
           "file": "apps/frontend/src/app/layout.tsx",
-          "hash": "7244368467128684246",
+          "hash": "9358501726984758927",
           "deps": [
-            "npm:react"
+            "npm:next"
           ]
         },
         {
@@ -64,12 +72,58 @@
           "hash": "8089381271428728552"
         },
         {
+          "file": "apps/frontend/src/app/sign-in/[[...sign-in]]/page.tsx",
+          "hash": "11851380949728691509"
+        },
+        {
+          "file": "apps/frontend/src/app/sign-up/[[...sign-up]]/page.tsx",
+          "hash": "6676466763921090256"
+        },
+        {
+          "file": "apps/frontend/src/app/unauthorized/page.tsx",
+          "hash": "14652108105133754290",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/auth/ProtectedRoute.tsx",
+          "hash": "10234018947512101173",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/dashboard/DashboardLayout.tsx",
+          "hash": "2505151285053114540",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/hooks/useAuth.ts",
+          "hash": "2346772952678153517"
+        },
+        {
           "file": "apps/frontend/src/lib/api.ts",
           "hash": "18027219531103976910"
         },
         {
+          "file": "apps/frontend/src/lib/auth/server.ts",
+          "hash": "10986384014387053061"
+        },
+        {
           "file": "apps/frontend/src/types/api.ts",
           "hash": "15562801186412302678"
+        },
+        {
+          "file": "apps/frontend/src/types/auth.ts",
+          "hash": "17174345498298733472"
+        },
+        {
+          "file": "apps/frontend/src/types/index.ts",
+          "hash": "8153989436316853794"
         },
         {
           "file": "apps/frontend/tsconfig.json",
@@ -83,10 +137,9 @@
         },
         {
           "file": "apps/backend/drizzle.config.ts",
-          "hash": "11529456869206713156",
+          "hash": "12679440889476151688",
           "deps": [
-            "npm:drizzle-kit",
-            "npm:dotenv"
+            "npm:drizzle-kit"
           ]
         },
         {
@@ -118,10 +171,7 @@
         },
         {
           "file": "apps/backend/src/db/connection.ts",
-          "hash": "12236493984666686315",
-          "deps": [
-            "npm:dotenv"
-          ]
+          "hash": "17256712280017315931"
         },
         {
           "file": "apps/backend/src/db/migrations/0000_acoustic_rictor.sql",
@@ -132,6 +182,10 @@
           "hash": "14047505549509929458"
         },
         {
+          "file": "apps/backend/src/db/migrations/0002_aberrant_deadpool.sql",
+          "hash": "16803534193644571025"
+        },
+        {
           "file": "apps/backend/src/db/migrations/meta/0000_snapshot.json",
           "hash": "7606634407053691853"
         },
@@ -140,31 +194,36 @@
           "hash": "757198095327170853"
         },
         {
+          "file": "apps/backend/src/db/migrations/meta/0002_snapshot.json",
+          "hash": "10138046415828538898"
+        },
+        {
           "file": "apps/backend/src/db/migrations/meta/_journal.json",
-          "hash": "3400361527632206816"
+          "hash": "17827692037234547848"
         },
         {
           "file": "apps/backend/src/db/schema/departments.ts",
-          "hash": "10906972712566872948"
+          "hash": "14551139931416910110"
         },
         {
           "file": "apps/backend/src/db/schema/employees.ts",
-          "hash": "17671603830078165285"
+          "hash": "4093638558558654680"
         },
         {
           "file": "apps/backend/src/db/schema/index.ts",
-          "hash": "18004158052883960302"
+          "hash": "14914235276303874240"
+        },
+        {
+          "file": "apps/backend/src/db/schema/positions.ts",
+          "hash": "8088307081679215700"
+        },
+        {
+          "file": "apps/backend/src/db/schema/relations.ts",
+          "hash": "2979775905223165395"
         },
         {
           "file": "apps/backend/src/db/schema/users.ts",
           "hash": "9942811230138386386"
-        },
-        {
-          "file": "apps/backend/src/db/seed.ts",
-          "hash": "8780910672426547557",
-          "deps": [
-            "npm:dotenv"
-          ]
         },
         {
           "file": "apps/backend/src/db/test-connection.ts",
