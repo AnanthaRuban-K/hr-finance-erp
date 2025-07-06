@@ -1,79 +1,101 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { apiClient } from '../../lib/api'
-import { Employee } from '../../types/api'
 
-interface EmployeePageState {
-  employees: Employee[]
-  loading: boolean
-  error: string | null
-}
-
-export default function EmployeesPage(): JSX.Element {
-  const [state, setState] = useState<EmployeePageState>({
-    employees: [],
-    loading: true,
-    error: null
-  })
+export default function EmployeesPage() {
+  const [employees, setEmployees] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchEmployees()
+    // Test basic fetch first
+    console.log('Component mounted, testing API...')
+    testAPI()
   }, [])
 
-  const fetchEmployees = async (): Promise<void> => {
+  const testAPI = async () => {
     try {
-      setState(prev => ({ ...prev, loading: true, error: null }))
+      console.log('Fetching from API...')
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+      console.log('API URL:', API_URL)
       
-      const response = await apiClient.getEmployees()
+      const response = await fetch(`${API_URL}/api/employees`)
+      console.log('Response status:', response.status)
       
-      if (response.success && response.data) {
-        setState(prev => ({
-          ...prev,
-          employees: response.data || [],
-          loading: false
-        }))
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      console.log('API Response:', data)
+      
+      if (data.success && data.data) {
+        setEmployees(data.data)
+        setError(null)
       } else {
-        setState(prev => ({
-          ...prev,
-          error: response.error || 'Failed to fetch employees',
-          loading: false
-        }))
+        setError('API returned unsuccessful response')
       }
     } catch (error) {
-      setState(prev => ({
-        ...prev,
-        error: 'Error connecting to server',
-        loading: false
-      }))
-      console.error('Error fetching employees:', error)
+      console.error('API Error:', error)
+      setError(error instanceof Error ? error.message : 'Unknown error')
+    } finally {
+      setLoading(false)
     }
   }
 
-  const formatSalary = (salary: string | undefined): string => {
-    if (!salary) return 'N/A'
-    return `₹${parseFloat(salary).toLocaleString('en-IN')}`
-  }
-
-  const formatDate = (dateString: string | undefined): string => {
-    if (!dateString) return 'N/A'
-    return new Date(dateString).toLocaleDateString('en-IN')
-  }
-
-  if (state.loading) {
+  if (loading) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center' 
-      }}>
-        <div style={{ fontSize: '0.875rem', color: '#9ca3af', marginTop: '1.5rem' }}>
-          <p>Version 1.0.0</p>
-          <p>TypeScript + Neon PostgreSQL</p>
+      <div style={{ padding: '2rem' }}>
+        <h1>Employee Management</h1>
+        <p>Loading employees...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '2rem' }}>
+        <h1>Employee Management</h1>
+        <div style={{ 
+          backgroundColor: '#fee2e2', 
+          color: '#dc2626', 
+          padding: '1rem', 
+          borderRadius: '4px' 
+        }}>
+          <p><strong>Error:</strong> {error}</p>
+          <button onClick={testAPI} style={{ 
+            backgroundColor: '#3b82f6', 
+            color: 'white', 
+            padding: '0.5rem 1rem', 
+            border: 'none', 
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}>
+            Retry
+          </button>
         </div>
       </div>
-    
+    )
+  }
+
+  return (
+    <div style={{ padding: '2rem' }}>
+      <h1>Employee Management ({employees.length})</h1>
+      
+      {employees.length === 0 ? (
+        <p>No employees found in database</p>
+      ) : (
+        <div style={{ backgroundColor: 'white', padding: '1rem', borderRadius: '8px' }}>
+          <h2>Employees:</h2>
+          <ul>
+            {employees.map((emp: any) => (
+              <li key={emp.id || emp.employeeId}>
+                {emp.firstName} {emp.lastName} - {emp.department} ({emp.employeeId})
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   )
-}
 }
