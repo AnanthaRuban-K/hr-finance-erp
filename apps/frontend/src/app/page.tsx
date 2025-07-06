@@ -1,56 +1,31 @@
-export default function Home() {
+// apps/frontend/src/app/page.tsx
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
+
+export default function HomePage() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#f9fafb'
-    }}>
-      <div style={{
-        maxWidth: '400px',
-        width: '100%',
-        backgroundColor: 'white',
-        padding: '2rem',
-        borderRadius: '8px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center'
-      }}>
-        <h1 style={{ 
-          fontSize: '2rem', 
-          fontWeight: 'bold', 
-          color: '#1f2937',
-          marginBottom: '0.5rem'
-        }}>
-          HR Finance ERP
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          HR-Finance ERP
         </h1>
-        <p style={{ 
-          color: '#6b7280', 
-          marginBottom: '2rem' 
-        }}>
-          Welcome to your ERP system
+        <p className="text-gray-600 mb-8">
+          Welcome to your Employee Management System
         </p>
-        
-        <a 
-          href="/dashboard"
-          style={{
-            display: 'block',
-            width: '100%',
-            backgroundColor: '#3b82f6',
-            color: 'white',
-            fontWeight: '500',
-            padding: '0.75rem 1rem',
-            borderRadius: '6px',
-            textDecoration: 'none',
-            marginBottom: '1rem'
-          }}
-        >
-          Go to Dashboard
-        </a>
-        
-        <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
-          <p>Version 1.0.0</p>
-          <p>Status: Running ✅</p>
+        <div className="space-x-4">
+          
+            href="/sign-in"
+            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          <a>
+            Sign In
+          </a>
+          
+            href="/sign-up"
+            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+          <a>
+            Sign Up
+          </a>
         </div>
       </div>
     </div>
