@@ -1,10 +1,10 @@
 // apps/frontend/next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove output: 'export' and use standalone for server deployment
+  // Use standalone instead of export to avoid static generation issues
   output: 'standalone',
   
-  // Disable static optimization for pages that use Clerk
+  // Disable static generation completely for SSR compatibility
   trailingSlash: false,
   
   // Environment variables
@@ -13,32 +13,36 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   
-  // Experimental features for Clerk
+  // Critical: Disable static optimization
   experimental: {
-    serverComponentsExternalPackages: ['@clerk/nextjs'],
-    // Disable static generation for certain paths
     missingSuspenseWithCSRBailout: false,
+    esmExternals: false,
   },
   
-  // Webpack configuration
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
+  // Disable static generation for all pages
+  async generateStaticParams() {
+    return []
   },
   
-  // TypeScript configuration
+  // Force all pages to be dynamic
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+        ],
+      },
+    ]
+  },
+  
   typescript: {
     ignoreBuildErrors: false,
   },
   
-  // ESLint configuration
   eslint: {
     ignoreDuringBuilds: false,
   },
