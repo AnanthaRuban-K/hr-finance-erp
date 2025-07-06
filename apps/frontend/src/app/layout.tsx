@@ -1,3 +1,4 @@
+// apps/frontend/src/app/layout.tsx
 import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -9,8 +10,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+  if (!publishableKey) {
+    console.error('Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY')
+    // Return a fallback during build/development
+    return (
+      <html lang="en">
+        <body className={inter.className}>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+              <p className="text-gray-600">Missing Clerk configuration. Please check environment variables.</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    )
+  }
+
   return (
     <ClerkProvider
+      publishableKey={publishableKey}
       appearance={{
         elements: {
           formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-white',
@@ -22,7 +43,7 @@ export default function RootLayout({
           footerActionLink: 'text-blue-600 hover:text-blue-700',
         },
         layout: {
-          logoImageUrl: '/logo.png', // Add your logo
+          logoImageUrl: '/logo.png',
           socialButtonsVariant: 'iconButton',
         },
         variables: {
