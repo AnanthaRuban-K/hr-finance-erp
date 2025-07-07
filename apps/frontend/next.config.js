@@ -1,4 +1,3 @@
-// apps/frontend/next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Use standalone instead of export to avoid static generation issues
@@ -19,12 +18,13 @@ const nextConfig = {
     esmExternals: false,
   },
   
-  // Disable static generation for all pages
-  async generateStaticParams() {
+  // Force all pages to be dynamic - REMOVED generateStaticParams (invalid here)
+  // Use this instead to force dynamic rendering:
+  async rewrites() {
     return []
   },
   
-  // Force all pages to be dynamic
+  // Force all pages to be dynamic with headers
   async headers() {
     return [
       {
@@ -33,6 +33,10 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
           },
         ],
       },
