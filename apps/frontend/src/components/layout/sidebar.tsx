@@ -486,20 +486,7 @@ export function Sidebar() {
               scrollbarColor: 'rgba(0,0,0,0.2) transparent'
             }}
           >
-            {/* Quick Actions */}
-            {!sidebarCollapsed && (
-              <div className="mb-4 p-2 bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
-                <p className="text-xs font-bold text-primary mb-2 tracking-wide uppercase">Quick Actions</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <button className="p-1.5 text-xs font-medium bg-background/50 hover:bg-primary/10 rounded-md transition-all duration-200 hover:scale-105">
-                    Clock In
-                  </button>
-                  <button className="p-1.5 text-xs font-medium bg-background/50 hover:bg-primary/10 rounded-md transition-all duration-200 hover:scale-105">
-                    New Request
-                  </button>
-                </div>
-              </div>
-            )}
+           
 
             {/* Navigation Items */}
             <div className="space-y-2">
