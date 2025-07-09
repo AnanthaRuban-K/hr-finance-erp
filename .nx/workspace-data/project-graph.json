@@ -10541,6 +10541,11 @@
       },
       {
         "source": "backend",
+        "target": "npm:@types/express",
+        "type": "static"
+      },
+      {
+        "source": "backend",
         "target": "npm:@types/node",
         "type": "static"
       },
@@ -10557,6 +10562,11 @@
       {
         "source": "backend",
         "target": "npm:dotenv",
+        "type": "static"
+      },
+      {
+        "source": "backend",
+        "target": "npm:express",
         "type": "static"
       }
     ],

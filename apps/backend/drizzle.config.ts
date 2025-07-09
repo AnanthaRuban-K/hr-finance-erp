@@ -7,7 +7,7 @@ if (!databaseUrl) {
 }
 
 export default {
-  schema: './src/db/schema/index.ts',
+  schema: './src/db/schema/*',
   out: './src/db/migrations',
   dialect: 'postgresql',
   dbCredentials: {

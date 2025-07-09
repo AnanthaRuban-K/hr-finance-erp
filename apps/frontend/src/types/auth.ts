@@ -36,7 +36,11 @@ export enum Permission {
   VIEW_OWN_DATA = 'view_own_data',
   APPLY_LEAVE = 'apply_leave',
   VIEW_PAYSLIPS = 'view_payslips',
-  UPDATE_PROFILE = 'update_profile'
+  UPDATE_PROFILE = 'update_profile',
+  ADMIN_ACCESS = "ADMIN_ACCESS",
+  MANAGE_FINANCE = "MANAGE_FINANCE",
+  MANAGE_TEAM = "MANAGE_TEAM",
+  EMPLOYEE_READ = "EMPLOYEE_READ"
 }
 
 export interface RolePermissions {
