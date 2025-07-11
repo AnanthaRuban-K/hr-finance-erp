@@ -2,10 +2,14 @@
   "version": "6.0",
   "nxVersion": "19.8.14",
   "deps": {
+    "@paralleldrive/cuid2": "^2.2.2",
+    "drizzle-orm": "^0.30.10",
+    "pg": "^8.16.3",
     "@nx/next": "^19.0.0",
     "@nx/node": "^19.0.0",
     "@nx/workspace": "^19.0.0",
-    "drizzle-kit": "^0.31.4",
+    "@types/pg": "^8.15.4",
+    "drizzle-kit": "^0.20.8",
     "nx": "^19.0.0",
     "typescript": "^5.5.2"
   },
@@ -20,26 +24,29 @@
         },
         {
           "file": "apps/backend/drizzle.config.ts",
-          "hash": "5200404618322422050",
+          "hash": "2024377004870645435",
           "deps": [
-            "npm:drizzle-kit"
+            "npm:drizzle-kit",
+            "npm:dotenv"
           ]
         },
         {
           "file": "apps/backend/package-lock.json",
-          "hash": "17192055393444355781"
+          "hash": "6418848144677320547"
         },
         {
           "file": "apps/backend/package.json",
-          "hash": "6109095889933827474",
+          "hash": "10401342730264202007",
           "deps": [
-            "npm:@types/express",
             "npm:@types/node",
+            "npm:@types/pg",
             "npm:drizzle-kit",
-            "npm:ts-node",
             "npm:typescript",
-            "npm:dotenv",
-            "npm:express"
+            "npm:drizzle-orm",
+            "npm:pg",
+            "npm:zod",
+            "npm:@paralleldrive/cuid2",
+            "npm:dotenv"
           ]
         },
         {
@@ -47,21 +54,23 @@
           "hash": "12741483931541068234"
         },
         {
-          "file": "apps/backend/src/app.ts",
-          "hash": "7780465893438730124"
-        },
-        {
           "file": "apps/backend/src/assets/.gitkeep",
           "hash": "3244421341483603138"
         },
         {
-          "file": "apps/backend/src/db/connection.ts",
-          "hash": "17256712280017315931"
+          "file": "apps/backend/src/db/index.ts",
+          "hash": "7566022827242045047",
+          "deps": [
+            "npm:drizzle-orm",
+            "npm:pg"
+          ]
         },
         {
           "file": "apps/backend/src/db/migrate.ts",
-          "hash": "14797723664668530931",
+          "hash": "14399177723444691958",
           "deps": [
+            "npm:drizzle-orm",
+            "npm:pg",
             "npm:dotenv"
           ]
         },
@@ -94,50 +103,32 @@
           "hash": "17827692037234547848"
         },
         {
-          "file": "apps/backend/src/db/schema/departments.ts",
-          "hash": "14551139931416910110"
-        },
-        {
-          "file": "apps/backend/src/db/schema/employees.ts",
-          "hash": "4093638558558654680"
-        },
-        {
-          "file": "apps/backend/src/db/schema/index.ts",
-          "hash": "14914235276303874240"
-        },
-        {
-          "file": "apps/backend/src/db/schema/positions.ts",
-          "hash": "8088307081679215700"
-        },
-        {
-          "file": "apps/backend/src/db/schema/relations.ts",
-          "hash": "2979775905223165395"
-        },
-        {
-          "file": "apps/backend/src/db/schema/users.ts",
-          "hash": "9942811230138386386"
-        },
-        {
-          "file": "apps/backend/src/db/seed.ts",
-          "hash": "18111595544884173118"
-        },
-        {
-          "file": "apps/backend/src/db/test-connection.ts",
-          "hash": "5313832243369690739",
+          "file": "apps/backend/src/db/schema.ts",
+          "hash": "7296036957926232388",
           "deps": [
-            "npm:dotenv"
+            "npm:drizzle-orm",
+            "npm:@paralleldrive/cuid2"
           ]
         },
         {
+          "file": "apps/backend/src/index.ts",
+          "hash": "12222869749020796789"
+        },
+        {
           "file": "apps/backend/src/main.ts",
-          "hash": "15148067285138744326",
+          "hash": "12458151208457237739"
+        },
+        {
+          "file": "apps/backend/src/routes/employees.ts",
+          "hash": "11426800021926984272",
           "deps": [
-            "npm:express"
+            "npm:zod",
+            "npm:drizzle-orm"
           ]
         },
         {
           "file": "apps/backend/tsconfig.json",
-          "hash": "4783783301214989414"
+          "hash": "11502726314815140102"
         }
       ],
       "frontend": [
@@ -229,6 +220,13 @@
           "hash": "12198893091789091019"
         },
         {
+          "file": "apps/frontend/src/app/(dashboard)/hr/employees/page.tsx",
+          "hash": "5765815312728264257",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/app/(dashboard)/hr/layout.tsx",
           "hash": "11961446303902422109"
         },
@@ -266,6 +264,14 @@
         {
           "file": "apps/frontend/src/app/template.tsx",
           "hash": "2448193765458363350"
+        },
+        {
+          "file": "apps/frontend/src/components/EmployeeForm.tsx",
+          "hash": "8691361599552930635",
+          "deps": [
+            "npm:react",
+            "npm:zod"
+          ]
         },
         {
           "file": "apps/frontend/src/components/app-providers.tsx",
@@ -313,7 +319,7 @@
         },
         {
           "file": "apps/frontend/src/components/layout/sidebar.tsx",
-          "hash": "11989575011230183570",
+          "hash": "3010664920236139606",
           "deps": [
             "npm:react",
             "npm:next"
@@ -511,11 +517,11 @@
       },
       {
         "file": "package-lock.json",
-        "hash": "10120370754845777292"
+        "hash": "5738662562390548195"
       },
       {
         "file": "package.json",
-        "hash": "12155577699765372520"
+        "hash": "86304818871979211"
       },
       {
         "file": "tsconfig.base.json",

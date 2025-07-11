@@ -1,18 +1,11 @@
-import type { Config } from 'drizzle-kit'
-
-const databaseUrl = process.env.DATABASE_URL
-
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL environment variable is not set.')
-}
+import type { Config } from 'drizzle-kit';
+import 'dotenv/config';
 
 export default {
-  schema: './src/db/schema/*',
-  out: './src/db/migrations',
-  dialect: 'postgresql',
+  schema: './src/db/schema.ts',
+  out: './drizzle',
+  driver: 'pg',
   dbCredentials: {
-    url: databaseUrl,
+    connectionString: process.env.DATABASE_URL!,
   },
-  verbose: true,
-  strict: true,
-} satisfies Config
+} satisfies Config;

@@ -15,8 +15,14 @@
     "@nx/next": "^19.0.0",
     "@nx/node": "^19.0.0",
     "@nx/workspace": "^19.0.0",
-    "drizzle-kit": "^0.31.4",
+    "@types/pg": "^8.15.4",
+    "drizzle-kit": "^0.20.8",
     "nx": "^19.0.0",
     "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
+    "drizzle-orm": "^0.30.10",
+    "pg": "^8.16.3"
   }
 }

@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ChevronDown, Calendar, Loader2, Upload, X, ChevronLeft, ChevronRight, Save, RotateCcw } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ChevronDown, Calendar, Loader2, Upload, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 import { z } from "zod";
 
-// Enhanced Zod validation schema
+// Enhanced Zod validation schema with comprehensive validations
 const employeeSchema = z.object({
-  // Personal Information
+  // Personal Information - Enhanced validations
   fullName: z.string()
     .min(1, "Full name is required")
     .min(2, "Full name must be at least 2 characters")
@@ -23,7 +23,9 @@ const employeeSchema = z.object({
   nricFinPassport: z.string()
     .min(1, "NRIC/FIN/Passport is required")
     .refine((val) => {
+      // Singapore NRIC/FIN format: 1 letter + 7 digits + 1 letter (e.g., S1234567A)
       const sgNricPattern = /^[STFG]\d{7}[A-Z]$/i;
+      // Passport format: 6-9 alphanumeric characters
       const passportPattern = /^[A-Z0-9]{6,9}$/i;
       return sgNricPattern.test(val) || passportPattern.test(val);
     }, "Please enter a valid NRIC/FIN (e.g., S1234567A) or Passport number"),
@@ -43,9 +45,11 @@ const employeeSchema = z.object({
   maritalStatus: z.enum(["single", "married", "divorced", "widowed"], { required_error: "Marital status is required" }),
   residentialStatus: z.enum(["citizen", "pr", "workpass", "dependent"], { required_error: "Residential status is required" }),
   race: z.string().optional(),
-  religion: z.string().optional(),
+  religion: z.string()
+    .optional()
+    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), "Religion can only contain letters and spaces"),
   
-  // Contact Information
+  // Contact Information - Enhanced validations
   email: z.string()
     .min(1, "Email is required")
     .email("Please enter a valid email address")
@@ -54,8 +58,11 @@ const employeeSchema = z.object({
   phone: z.string()
     .min(1, "Phone number is required")
     .refine((val) => {
+      // Remove spaces and validate format with country code
       const cleanPhone = val.replace(/\s/g, '');
+      // Singapore: +65 followed by 8 digits starting with 8 or 9
       const sgPattern = /^\+65[89]\d{7}$/;
+      // India: +91 followed by 10 digits starting with 6-9
       const inPattern = /^\+91[6-9]\d{9}$/;
       return sgPattern.test(cleanPhone) || inPattern.test(cleanPhone);
     }, "Please enter a valid phone number with country code"),
@@ -65,20 +72,58 @@ const employeeSchema = z.object({
     .min(10, "Address must be at least 10 characters")
     .max(200, "Address cannot exceed 200 characters"),
     
-  city: z.string().optional(),
-  postalCode: z.string().optional(),
-  emergencyContact: z.string().min(1, "Emergency contact name is required"),
-  emergencyPhone: z.string().min(1, "Emergency contact number is required"),
+  city: z.string()
+    .optional()
+    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), "City can only contain letters and spaces"),
+    
+  postalCode: z.string()
+    .optional()
+    .refine((val) => !val || /^\d{6}$/.test(val), "Postal code must be 6 digits"),
+    
+  emergencyContact: z.string()
+    .min(1, "Emergency contact name is required")
+    .min(2, "Emergency contact name must be at least 2 characters")
+    .regex(/^[a-zA-Z\s]+$/, "Emergency contact name can only contain letters and spaces"),
+    
+  emergencyPhone: z.string()
+    .min(1, "Emergency contact number is required")
+    .refine((val) => {
+      const cleanPhone = val.replace(/\s/g, '');
+      const sgPattern = /^\+65[89]\d{7}$/;
+      const inPattern = /^\+91[6-9]\d{9}$/;
+      return sgPattern.test(cleanPhone) || inPattern.test(cleanPhone);
+    }, "Please enter a valid emergency contact number with country code"),
   
-  // Employment Information
-  employeeId: z.string().min(1, "Employee ID is required"),
+  // Employment Information - Enhanced validations
+  employeeId: z.string()
+    .min(1, "Employee ID is required")
+    .min(3, "Employee ID must be at least 3 characters")
+    .max(20, "Employee ID cannot exceed 20 characters")
+    .regex(/^[A-Z0-9]+$/i, "Employee ID can only contain letters and numbers"),
+    
   department: z.enum(["hr", "it", "finance", "marketing", "operations", "sales"], { required_error: "Department is required" }),
-  position: z.string().min(1, "Position is required"),
-  joinDate: z.string().min(1, "Join date is required"),
-  employmentType: z.enum(["fulltime", "parttime", "contract", "intern"], { required_error: "Employment type is required" }),
-  reportingManager: z.string().optional(),
   
-  // Salary Information
+  position: z.string()
+    .min(1, "Position is required")
+    .min(2, "Position must be at least 2 characters")
+    .max(100, "Position cannot exceed 100 characters")
+    .regex(/^[a-zA-Z\s]+$/, "Position can only contain letters and spaces"),
+    
+  joinDate: z.string()
+    .min(1, "Join date is required")
+    .refine((date) => {
+      const joinDate = new Date(date);
+      const today = new Date();
+      return joinDate <= today;
+    }, "Join date cannot be in the future"),
+    
+  employmentType: z.enum(["fulltime", "parttime", "contract", "intern"], { required_error: "Employment type is required" }),
+  
+  reportingManager: z.string()
+    .optional()
+    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), "Reporting manager name can only contain letters and spaces"),
+  
+  // Salary Information - Enhanced validations
   basicSalary: z.string()
     .min(1, "Basic salary is required")
     .refine((val) => {
@@ -87,10 +132,22 @@ const employeeSchema = z.object({
     }, "Basic salary must be a valid positive number up to 999,999"),
     
   paymentMode: z.enum(["bank", "cash", "cheque"], { required_error: "Payment mode is required" }),
-  bankName: z.string().optional(),
-  accountNumber: z.string().optional(),
-  cpfNumber: z.string().optional(),
-  taxNumber: z.string().optional(),
+  
+  bankName: z.string()
+    .optional()
+    .refine((val) => !val || /^[a-zA-Z\s]*$/.test(val), "Bank name can only contain letters and spaces"),
+    
+  accountNumber: z.string()
+    .optional()
+    .refine((val) => !val || /^\d{8,20}$/.test(val), "Account number must be 8-20 digits"),
+    
+  cpfNumber: z.string()
+    .optional()
+    .refine((val) => !val || /^\d{9}[A-Z]$/i.test(val), "CPF number must be 9 digits followed by a letter"),
+    
+  taxNumber: z.string()
+    .optional()
+    .refine((val) => !val || /^[A-Z0-9]*$/i.test(val), "Tax number can only contain letters and numbers"),
   
   // Additional Information
   skills: z.string().optional(),
@@ -106,13 +163,45 @@ interface ValidationErrors {
 
 interface EmployeeFormProps {
   onClose?: () => void;
-  onSuccess?: (employee: any) => void;
+  onSuccess?: (employee: EmployeeAPIResponse) => void;
   initialData?: Partial<EmployeeFormData & { id?: string }>;
   isEdit?: boolean;
 }
-
-// API Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+interface EmployeeAPIResponse {
+  id: string;
+  fullName?: string;
+  nricFinPassport?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  nationality?: string;
+  maritalStatus?: string;
+  residentialStatus?: string;
+  race?: string;
+  religion?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+  employeeId?: string;
+  department?: string;
+  position?: string;
+  joinDate?: string;
+  employmentType?: string;
+  reportingManager?: string;
+  basicSalary?: number | string;
+  paymentMode?: string;
+  bankName?: string;
+  accountNumber?: string;
+  cpfNumber?: string;
+  taxNumber?: string;
+  skills?: string;
+  certifications?: string;
+  notes?: string;
+  [key: string]: string | number | boolean | null | undefined;
+}
 
 // Define tab order
 const TAB_ORDER = ["personal", "contact", "employment", "salary", "documents", "additional"];
@@ -168,6 +257,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
     notes: initialData?.notes || "",
   });
   
+  // Check if we're in edit mode based on initialData having an ID
   const isEditMode = isEdit || Boolean(initialData?.id);
   const employeeId = initialData?.id;
 
@@ -185,14 +275,18 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
     let value = e.target.value;
     const countryCode = isEmergency ? emergencyPhoneCountryCode : phoneCountryCode;
     
+    // Remove any non-digit characters except spaces
     value = value.replace(/[^\d\s]/g, '');
     
+    // Format based on country code
     if (countryCode === "+65") {
+      // Singapore: 8 digits, format as XXXX XXXX
       value = value.replace(/\s/g, '').slice(0, 8);
       if (value.length > 4) {
         value = value.slice(0, 4) + ' ' + value.slice(4);
       }
     } else if (countryCode === "+91") {
+      // India: 10 digits, format as XXXXX XXXXX
       value = value.replace(/\s/g, '').slice(0, 10);
       if (value.length > 5) {
         value = value.slice(0, 5) + ' ' + value.slice(5);
@@ -237,6 +331,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
+    // Apply real-time formatting and restrictions based on field type
     let processedValue = value;
     
     switch (name) {
@@ -246,23 +341,32 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
       case 'reportingManager':
       case 'bankName':
       case 'city':
+        // Only allow letters and spaces, no consecutive spaces
         processedValue = value.replace(/[^a-zA-Z\s]/g, '').replace(/\s{2,}/g, ' ');
         break;
       case 'religion':
+        // Only allow letters and spaces for religion
         processedValue = value.replace(/[^a-zA-Z\s]/g, '');
         break;
       case 'nricFinPassport':
+        // Allow letters and numbers only, convert to uppercase
+        processedValue = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+        break;
       case 'employeeId':
+        // Allow letters and numbers only, convert to uppercase
         processedValue = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
         break;
       case 'postalCode':
       case 'basicSalary':
+        // Only allow numbers
         processedValue = value.replace(/[^0-9.]/g, '');
         break;
       case 'accountNumber':
+        // Only allow numbers for account number
         processedValue = value.replace(/[^0-9]/g, '');
         break;
       case 'cpfNumber':
+        // Format CPF: 9 digits + 1 letter
         const cpfValue = value.replace(/[^0-9A-Za-z]/g, '');
         if (cpfValue.length <= 9) {
           processedValue = cpfValue.replace(/[^0-9]/g, '');
@@ -271,6 +375,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
         }
         break;
       case 'taxNumber':
+        // Allow letters and numbers only
         processedValue = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
         break;
       default:
@@ -350,7 +455,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setMessage("");
 
@@ -371,8 +476,8 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
 
       // Choose endpoint and method based on edit mode
       const url = isEditMode 
-        ? `${API_BASE_URL}/employees/${employeeId}`
-        : `${API_BASE_URL}/employees`;
+        ? `http://46.202.167.8:3001/employees/${employeeId}`
+        : 'http://46.202.167.8:3001/employees';
       
       const method = isEditMode ? 'PUT' : 'POST';
 
@@ -392,12 +497,31 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
         
         // Call onSuccess callback if provided
         if (onSuccess) {
-          onSuccess(result.data);
+          onSuccess(result.employee);
         }
         
         // Only reset form if creating new employee
         if (!isEditMode) {
-          handleReset();
+          setFormData({
+            fullName: "", nricFinPassport: "", dateOfBirth: "", gender: "" as "male" | "female" | "other",
+            nationality: "" as "singapore" | "malaysia" | "china" | "india" | "others", 
+            maritalStatus: "" as "single" | "married" | "divorced" | "widowed", 
+            residentialStatus: "" as "citizen" | "pr" | "workpass" | "dependent", race: "",
+            religion: "", email: "", phone: "", address: "", city: "",
+            postalCode: "", emergencyContact: "", emergencyPhone: "",
+            employeeId: "", department: "" as "hr" | "it" | "finance" | "marketing" | "operations" | "sales", 
+            position: "", joinDate: "",
+            employmentType: "" as "fulltime" | "parttime" | "contract" | "intern", 
+            reportingManager: "", basicSalary: "",
+            paymentMode: "" as "bank" | "cash" | "cheque", 
+            bankName: "", accountNumber: "", cpfNumber: "",
+            taxNumber: "", skills: "", certifications: "", notes: "",
+          });
+          setValidationErrors({});
+          setUploadedFiles({});
+          setActiveTab("personal");
+          setPhoneCountryCode("+65");
+          setEmergencyPhoneCountryCode("+65");
         }
         
         // Auto-close after successful submission if onClose is provided
@@ -494,25 +618,6 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
     }
   };
 
-  // Initialize phone country codes from existing data
-  useEffect(() => {
-    if (initialData?.phone) {
-      if (initialData.phone.startsWith('+65')) {
-        setPhoneCountryCode('+65');
-      } else if (initialData.phone.startsWith('+91')) {
-        setPhoneCountryCode('+91');
-      }
-    }
-    
-    if (initialData?.emergencyPhone) {
-      if (initialData.emergencyPhone.startsWith('+65')) {
-        setEmergencyPhoneCountryCode('+65');
-      } else if (initialData.emergencyPhone.startsWith('+91')) {
-        setEmergencyPhoneCountryCode('+91');
-      }
-    }
-  }, [initialData]);
-
   // Helper component for displaying validation errors
   const ValidationError = ({ fieldName }: { fieldName: string }) => {
     if (!validationErrors[fieldName]) return null;
@@ -547,11 +652,32 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
   );
   
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="bg-white rounded-lg">
-        {/* Success/Error Messages */}
+    <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white rounded-lg shadow-sm border">
+        <div className="p-6 border-b flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-800">
+              {isEditMode ? "Edit Employee Form" : "Create Employee Form"}
+            </h1>
+            <p className="text-gray-600 mt-1">
+              {isEditMode ? "Update employee information" : "Fill in all required information to register a new employee"}
+            </p>
+          </div>
+          {onClose && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleClose}
+              className="p-2"
+              title="Close form"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+        
         {message && (
-          <div className="mb-4">
+          <div className="m-6">
             <div className={`p-4 rounded-md ${
               message.includes('Error') || message.includes('error') || message.includes('validation') 
                 ? 'bg-red-50 text-red-700 border border-red-200' 
@@ -564,7 +690,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
         
         <form onSubmit={handleSubmit}>
           <Tabs value={activeTab} className="w-full" onValueChange={setActiveTab}>
-            <div className="mb-6">
+            <div className="px-6 pt-6">
               <TabsList className="grid grid-cols-6 w-full bg-gray-100 rounded-md p-1">
                 <TabsTrigger value="personal" className={activeTab === "personal" ? "bg-white shadow-sm" : ""}>
                   Personal
@@ -587,7 +713,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
               </TabsList>
             </div>
             
-            <div className="space-y-6">
+            <div className="p-6">
               <TabsContent value="personal" className="space-y-6">
                 <h2 className="text-lg font-medium text-gray-800 mb-4">Personal Information</h2>
                 
@@ -601,7 +727,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleInputChange}
-                      placeholder="Enter full name" 
+                      placeholder="Enter full name (letters and spaces only)" 
                       className={`w-full ${validationErrors.fullName ? 'border-red-500' : ''}`}
                       required
                     />
@@ -773,7 +899,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                     name="religion"
                     value={formData.religion}
                     onChange={handleInputChange}
-                    placeholder="Enter religion" 
+                    placeholder="Enter religion (letters only)" 
                     className={`w-full ${validationErrors.religion ? 'border-red-500' : ''}`}
                   />
                   <ValidationError fieldName="religion" />
@@ -824,6 +950,12 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       />
                     </div>
                     <ValidationError fieldName="phone" />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {phoneCountryCode === "+65" 
+                        ? "Singapore mobile numbers start with 8 or 9" 
+                        : "India mobile numbers start with 6, 7, 8, or 9"
+                      }
+                    </p>
                   </div>
                   
                   <div className="md:col-span-2">
@@ -846,7 +978,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
-                          placeholder="City" 
+                          placeholder="City (letters only)" 
                           className={validationErrors.city ? 'border-red-500' : ''}
                         />
                         <ValidationError fieldName="city" />
@@ -905,10 +1037,17 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       />
                     </div>
                     <ValidationError fieldName="emergencyPhone" />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {emergencyPhoneCountryCode === "+65" 
+                        ? "Singapore mobile numbers start with 8 or 9" 
+                        : "India mobile numbers start with 6, 7, 8, or 9"
+                      }
+                    </p>
                   </div>
                 </div>
               </TabsContent>
 
+              
               <TabsContent value="employment">
                 <h2 className="text-lg font-medium text-gray-800 mb-4">Employment Information</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -921,7 +1060,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       name="employeeId"
                       value={formData.employeeId}
                       onChange={handleInputChange}
-                      placeholder="Enter employee ID" 
+                      placeholder="Enter employee ID (letters and numbers)" 
                       className={`w-full ${validationErrors.employeeId ? 'border-red-500' : ''}`}
                       required
                       disabled={isEditMode}
@@ -967,7 +1106,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       name="position"
                       value={formData.position}
                       onChange={handleInputChange}
-                      placeholder="Enter position" 
+                      placeholder="Enter position (letters only)" 
                       className={`w-full ${validationErrors.position ? 'border-red-500' : ''}`}
                       required
                     />
@@ -1090,7 +1229,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       name="bankName"
                       value={formData.bankName}
                       onChange={handleInputChange}
-                      placeholder="Enter bank name" 
+                      placeholder="Enter bank name (letters only)" 
                       className={`w-full ${validationErrors.bankName ? 'border-red-500' : ''}`}
                     />
                     <ValidationError fieldName="bankName" />
@@ -1239,7 +1378,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
             </div>
           </Tabs>
           
-          <div className="mt-6 flex gap-4 justify-end">
+          <div className="mt-6 flex gap-4 justify-end px-6 pb-6">
             {onClose && (
               <Button
                 type="button"
@@ -1254,26 +1393,22 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
               type="button"
               variant="outline"
               onClick={handleReset}
-              className="px-6 flex items-center gap-2"
+              className="px-6"
             >
-              <RotateCcw className="w-4 h-4" />
               Reset
             </Button>
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+              className="px-6"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   {isEditMode ? 'Updating...' : 'Creating...'}
                 </>
               ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  {isEditMode ? 'Update Employee' : 'Create Employee'}
-                </>
+                isEditMode ? 'Update Employee' : 'Create Employee'
               )}
             </Button>
           </div>
