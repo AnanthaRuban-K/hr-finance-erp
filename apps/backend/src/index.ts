@@ -6,9 +6,12 @@ import employeesRouter from './routes/employees.js';
 
 const app = new Hono();
 
-// CORS middleware - configured for your frontend on port 3000
+// CORS middleware - configured for both development and production
 app.use('/*', cors({
-  origin: ['http://localhost:3000'], // Your frontend URL
+  origin: [
+    'http://localhost:3000', // Development frontend
+    'https://erp.sbrosenterpriseerp.com', // Production frontend
+  ],
   credentials: true,
 }));
 
@@ -26,11 +29,12 @@ app.get('/', (c) => {
   return c.json({ 
     message: 'HR Backend API is running!',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
-// Employee routes - matching your frontend URLs exactly
+// Employee routes
 app.route('/employees', employeesRouter);
 
 // Global error handler
@@ -57,7 +61,8 @@ const port = parseInt(process.env.PORT || '3001');
 console.log(`🚀 Server starting on port ${port}`);
 console.log(`📍 Health check: http://localhost:${port}`);
 console.log(`👥 Employees API: http://localhost:${port}/employees`);
-console.log(`🌐 CORS enabled for: http://localhost:3000`);
+console.log(`🌐 CORS enabled for: http://localhost:3000, https://erp.sbrosenterpriseerp.com`);
+console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 
 serve({
   fetch: app.fetch,
