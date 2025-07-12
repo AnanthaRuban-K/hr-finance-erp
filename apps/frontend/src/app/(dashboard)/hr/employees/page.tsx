@@ -97,7 +97,7 @@ const getApiUrl = () => {
   console.log('NODE_ENV:', process.env.NODE_ENV);
   
   // Return the environment variable or fallback to the production URL
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://46.202.167.8:3001';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sbrosenterpriseerp.com/';
   console.log('Dashboard using API URL:', apiUrl);
   return apiUrl;
 };

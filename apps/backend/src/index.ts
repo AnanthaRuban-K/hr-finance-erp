@@ -10,7 +10,7 @@ const app = new Hono();
 const allowedOrigins = [
   'http://localhost:3000', // Development frontend
   'https://erp.sbrosenterpriseerp.com', // ✅ FIXED: Correct production frontend URL
-  'http://46.202.167.8:3001', // Allow direct IP access for testing
+  'https://api.sbrosenterpriseerp.com', // Allow direct IP access for testing
 ];
 
 // ✅ FIX: Correct CORS configuration with proper property names
