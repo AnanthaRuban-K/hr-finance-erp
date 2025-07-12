@@ -203,6 +203,20 @@ interface EmployeeAPIResponse {
   [key: string]: string | number | boolean | null | undefined;
 }
 
+// ✅ FIXED: API Configuration
+const getApiUrl = () => {
+  // Debug logging
+  console.log('Environment check:');
+  console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+  
+  // Return the environment variable or fallback to the production URL
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://46.202.167.8:3001';
+  console.log('Using API URL:', apiUrl);
+  return apiUrl;
+};
+
+
 // Define tab order
 const TAB_ORDER = ["personal", "contact", "employment", "salary", "documents", "additional"];
 
@@ -474,27 +488,32 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
       uploadedFiles: Object.keys(uploadedFiles)
     };
 
-    // ✅ FIX: Use environment variable instead of hardcoded URL
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-    
-    const url = isEditMode 
-      ? `${API_BASE_URL}/employees/${employeeId}`
-      : `${API_BASE_URL}/employees`;
-    
-    const method = isEditMode ? 'PUT' : 'POST';
+    // ✅ FIXED: Use proper API URL configuration
+      const API_BASE_URL = getApiUrl();
+      const url = isEditMode 
+        ? `${API_BASE_URL}/employees/${employeeId}`
+        : `${API_BASE_URL}/employees`;
+      
+      const method = isEditMode ? 'PUT' : 'POST';
 
-    console.log('Making API call to:', url); // Debug log
+      console.log(`Making API call to: ${url}`);
+      console.log(`Method: ${method}`);
+      console.log('Data:', submitData);
 
-    // API call to backend
-    const response = await fetch(url, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(submitData),
-    });
+      // API call to backend
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submitData),
+      });
 
-    const result = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
 
     if (result.success) {
       setMessage(isEditMode ? "Employee updated successfully!" : "Employee created successfully!");
