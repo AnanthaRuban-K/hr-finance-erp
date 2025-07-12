@@ -417,10 +417,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Debug Info */}
-      <div className="mb-4 p-3 bg-gray-100 rounded text-xs font-mono">
-        <strong>Debug Info:</strong> API URL: {API_BASE_URL}
-      </div>
+     
 
       {/* Filters Section */}
       {showFilters && (
