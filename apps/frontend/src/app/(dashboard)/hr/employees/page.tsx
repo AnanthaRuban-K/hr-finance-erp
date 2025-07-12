@@ -89,6 +89,19 @@ interface FilterOptions {
   sortOrder: 'asc' | 'desc';
 }
 
+// ✅ FIXED: API Configuration function
+const getApiUrl = () => {
+  // Debug logging
+  console.log('Dashboard Environment check:');
+  console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+  
+  // Return the environment variable or fallback to the production URL
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://46.202.167.8:3001';
+  console.log('Dashboard using API URL:', apiUrl);
+  return apiUrl;
+};
+
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = React.useState("active");
   const [showForm, setShowForm] = useState(false);
@@ -118,12 +131,9 @@ export default function DashboardPage() {
     sortOrder: 'desc',
   });
 
-  // API Configuration - FIXED
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  // ✅ FIXED: API Configuration - Remove hardcoded localhost
+  const API_BASE_URL = getApiUrl();
   
-  // Debug logging
-  console.log('API_BASE_URL:', API_BASE_URL);
-
   // Transform API response to form data format
   const transformToFormData = (apiData: EmployeeAPIResponse | null) => {
     if (!apiData) return undefined;
@@ -181,14 +191,18 @@ export default function DashboardPage() {
     return params.toString();
   }, [filters, pagination.page, pagination.limit]);
 
-  // Fetch employees from API
+  // ✅ FIXED: Fetch employees from API
   const fetchEmployees = useCallback(async (customFilters?: Partial<FilterOptions>, customPage?: number) => {
     try {
       setLoading(true);
       setError("");
       
       const queryParams = buildQueryParams(customFilters, customPage);
-      const response = await fetch(`${API_BASE_URL}/employees?${queryParams}`, {
+      const url = `${API_BASE_URL}/employees?${queryParams}`;
+      
+      console.log('Fetching employees from:', url);
+
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -223,24 +237,29 @@ export default function DashboardPage() {
         if (result.pagination) {
           setPagination(result.pagination);
         }
+
+        console.log('✅ Successfully fetched employees:', transformedData.length);
       } else {
         setError(result.error || 'Failed to fetch employees');
       }
     } catch (error) {
-      console.error('Error fetching employees:', error);
-      setError('Failed to load employees. Please try again.');
+      console.error('❌ Error fetching employees:', error);
+      setError('Failed to load employees. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
   }, [API_BASE_URL, buildQueryParams]);
 
-  // Delete employee
+  // ✅ FIXED: Delete employee
   const handleDelete = async (employeeId: string) => {
     try {
       setDeleting(true);
       setError("");
 
-      const response = await fetch(`${API_BASE_URL}/employees/${employeeId}`, {
+      const url = `${API_BASE_URL}/employees/${employeeId}`;
+      console.log('Deleting employee at:', url);
+
+      const response = await fetch(url, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -258,11 +277,12 @@ export default function DashboardPage() {
         setSelectedEmployee(null);
         // Refresh the current page
         fetchEmployees();
+        console.log('✅ Successfully deleted employee');
       } else {
         setError(result.error || 'Failed to delete employee');
       }
     } catch (error) {
-      console.error('Error deleting employee:', error);
+      console.error('❌ Error deleting employee:', error);
       setError('Failed to delete employee. Please try again.');
     } finally {
       setDeleting(false);
@@ -395,6 +415,11 @@ export default function DashboardPage() {
             </Button>
           </div>
         </div>
+      </div>
+
+      {/* Debug Info */}
+      <div className="mb-4 p-3 bg-gray-100 rounded text-xs font-mono">
+        <strong>Debug Info:</strong> API URL: {API_BASE_URL}
       </div>
 
       {/* Filters Section */}
