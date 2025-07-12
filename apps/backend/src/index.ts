@@ -7,22 +7,26 @@ import employeesRouter from './routes/employees.js';
 const app = new Hono();
 
 // CORS middleware - configured for both development and production
+const allowedOrigins = [
+  'http://localhost:3000', // Development frontend
+  'https://erp.sbrosenterpriseerp.com', // Production frontend
+];
+
 app.use('/*', cors({
-  origin: [
-    'http://localhost:3000', // Development frontend
-    'https://erp.sbrosenterpriseerp.com', // Production frontend
-  ],
+  origin: allowedOrigins,
   credentials: true,
 }));
 
-// Debug middleware - logs all requests
-app.use('*', async (c, next) => {
-  console.log(`${c.req.method} ${c.req.path}`);
-  if (c.req.method === 'POST' || c.req.method === 'PUT') {
-    console.log('Content-Type:', c.req.header('content-type'));
-  }
-  await next();
-});
+// Debug middleware - logs all requests (only in development)
+if (process.env.NODE_ENV !== 'production') {
+  app.use('*', async (c, next) => {
+    console.log(`${c.req.method} ${c.req.path}`);
+    if (c.req.method === 'POST' || c.req.method === 'PUT') {
+      console.log('Content-Type:', c.req.header('content-type'));
+    }
+    await next();
+  });
+}
 
 // Health check
 app.get('/', (c) => {
@@ -43,7 +47,7 @@ app.onError((err, c) => {
   return c.json({
     success: false,
     error: 'Internal server error',
-    message: err.message,
+    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message,
   }, 500);
 });
 
@@ -59,9 +63,7 @@ app.notFound((c) => {
 const port = parseInt(process.env.PORT || '3001');
 
 console.log(`🚀 Server starting on port ${port}`);
-console.log(`📍 Health check: http://localhost:${port}`);
-console.log(`👥 Employees API: http://localhost:${port}/employees`);
-console.log(`🌐 CORS enabled for: http://localhost:3000, https://erp.sbrosenterpriseerp.com`);
+console.log(`🌐 CORS enabled for: ${allowedOrigins.join(', ')}`);
 console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 
 serve({
