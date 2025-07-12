@@ -477,7 +477,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
       // Choose endpoint and method based on edit mode
       const url = isEditMode 
         ? `http://k4gw0s0k4sk8c84co808w40k.46.202.167.8.sslip.io/employees/${employeeId}`
-        : 'http://http://k4gw0s0k4sk8c84co808w40k.46.202.167.8.sslip.io/employees';
+        : 'http://k4gw0s0k4sk8c84co808w40k.46.202.167.8.sslip.io/employees';
       
       const method = isEditMode ? 'PUT' : 'POST';
 
