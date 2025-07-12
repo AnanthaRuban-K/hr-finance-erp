@@ -118,8 +118,11 @@ export default function DashboardPage() {
     sortOrder: 'desc',
   });
 
-  // API Configuration
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3004/api';
+  // API Configuration - FIXED
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  
+  // Debug logging
+  console.log('API_BASE_URL:', API_BASE_URL);
 
   // Transform API response to form data format
   const transformToFormData = (apiData: EmployeeAPIResponse | null) => {
