@@ -455,50 +455,54 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
     }
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    setMessage("");
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setMessage("");
 
-    // Validate form before submission
-    if (!validateForm()) {
-      setMessage("Please fix the validation errors before submitting.");
-      return;
-    }
+  // Validate form before submission
+  if (!validateForm()) {
+    setMessage("Please fix the validation errors before submitting.");
+    return;
+  }
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    try {
-      const submitData = {
-        ...formData,
-        basicSalary: parseFloat(formData.basicSalary) || 0,
-        uploadedFiles: Object.keys(uploadedFiles)
-      };
+  try {
+    const submitData = {
+      ...formData,
+      basicSalary: parseFloat(formData.basicSalary) || 0,
+      uploadedFiles: Object.keys(uploadedFiles)
+    };
 
-      // Choose endpoint and method based on edit mode
-      const url = isEditMode 
-        ? `http://k4gw0s0k4sk8c84co808w40k.46.202.167.8.sslip.io/employees/${employeeId}`
-        : 'http://k4gw0s0k4sk8c84co808w40k.46.202.167.8.sslip.io/employees';
+    // ✅ FIX: Use environment variable instead of hardcoded URL
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    
+    const url = isEditMode 
+      ? `${API_BASE_URL}/employees/${employeeId}`
+      : `${API_BASE_URL}/employees`;
+    
+    const method = isEditMode ? 'PUT' : 'POST';
+
+    console.log('Making API call to:', url); // Debug log
+
+    // API call to backend
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(submitData),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      setMessage(isEditMode ? "Employee updated successfully!" : "Employee created successfully!");
       
-      const method = isEditMode ? 'PUT' : 'POST';
-
-      // API call to backend
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submitData),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setMessage(isEditMode ? "Employee updated successfully!" : "Employee created successfully!");
-        
-        // Call onSuccess callback if provided
-        if (onSuccess) {
-          onSuccess(result.employee);
-        }
+      // Call onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess(result.employee);
+      }
         
         // Only reset form if creating new employee
         if (!isEditMode) {
