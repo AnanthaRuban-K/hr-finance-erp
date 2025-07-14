@@ -1,274 +1,357 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/components/clerk-wrapper';
-import { PageHeader } from '@/components/layout/page-header';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { ClientOnly } from '@/components/client-only';
-import { 
-  Users, 
-  Calendar, 
-  Clock, 
-  UserCheck,
-  UserX,
-  FileText,
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import {
+  Users,
+  UserPlus,
+  Clock,
+  Calendar,
   Award,
   TrendingUp,
   AlertCircle,
-  Plus,
-  Filter,
-  Download
-} from 'lucide-react';
-import { RoleGuard } from '@/components/auth/role-guard';
-import { Permission } from '@/types/auth';
+  CheckCircle2,
+  XCircle,
+  MoreHorizontal,
+  Eye,
+  Edit,
+  Plus
+} from "lucide-react";
+import Link from 'next/link';
 
-function HRDashboardContent() {
-  const { user } = useAuth();
+interface DashboardStats {
+  totalEmployees: number;
+  activeEmployees: number;
+  onboardingInProgress: number;
+  pendingLeaveRequests: number;
+  upcomingReviews: number;
+  attendanceToday: {
+    present: number;
+    absent: number;
+    late: number;
+  };
+}
 
-  const hrStats = [
-    { label: 'Total Employees', value: '247', icon: Users, trend: '+12 this month' },
-    { label: 'Present Today', value: '231', icon: UserCheck, trend: '93.5% attendance' },
-    { label: 'On Leave', value: '16', icon: Calendar, trend: '6.5% on leave' },
-    { label: 'Pending Approvals', value: '8', icon: AlertCircle, trend: 'Requires action' },
-  ];
+interface OnboardingProcess {
+  id: string;
+  employeeName: string;
+  department: string;
+  position: string;
+  status: string;
+  completionPercentage: number;
+  startDate: string;
+}
 
-  const recentActivities = [
-    { id: 1, type: 'Leave Request', employee: 'John Smith', description: 'Annual leave for 5 days', date: '2024-01-15', status: 'pending', priority: 'medium' },
-    { id: 2, type: 'New Hire', employee: 'Sarah Johnson', description: 'Software Engineer joining', date: '2024-01-14', status: 'approved', priority: 'high' },
-    { id: 3, type: 'Performance Review', employee: 'Mike Davis', description: 'Q4 review completed', date: '2024-01-12', status: 'completed', priority: 'low' },
-    { id: 4, type: 'Training Request', employee: 'Lisa Anderson', description: 'React certification course', date: '2024-01-10', status: 'approved', priority: 'medium' },
-  ];
+interface LeaveRequest {
+  id: string;
+  employeeName: string;
+  department: string;
+  leaveType: string;
+  startDate: string;
+  endDate: string;
+  totalDays: number;
+  status: string;
+}
 
-  const departmentMetrics = [
-    { department: 'Engineering', total: 85, present: 82, absent: 3, onLeave: 0, performance: 92 },
-    { department: 'Sales', total: 45, present: 43, absent: 1, onLeave: 1, performance: 88 },
-    { department: 'Marketing', total: 28, present: 26, absent: 2, onLeave: 0, performance: 85 },
-    { department: 'Finance', total: 22, present: 22, absent: 0, onLeave: 0, performance: 95 },
-    { department: 'HR', total: 12, present: 11, absent: 0, onLeave: 1, performance: 90 },
-  ];
+export default function HRDashboard() {
+  const [stats, setStats] = useState<DashboardStats>({
+    totalEmployees: 0,
+    activeEmployees: 0,
+    onboardingInProgress: 0,
+    pendingLeaveRequests: 0,
+    upcomingReviews: 0,
+    attendanceToday: { present: 0, absent: 0, late: 0 }
+  });
+  const [onboardingProcesses, setOnboardingProcesses] = useState<OnboardingProcess[]>([]);
+  const [pendingLeaves, setPendingLeaves] = useState<LeaveRequest[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const upcomingEvents = [
-    { id: 1, title: 'All Hands Meeting', date: '2024-01-18', time: '10:00 AM', attendees: 247 },
-    { id: 2, title: 'New Employee Orientation', date: '2024-01-20', time: '9:00 AM', attendees: 5 },
-    { id: 3, title: 'Performance Review Cycle', date: '2024-01-25', time: 'All Day', attendees: 50 },
-  ];
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-green-500';
-      default: return 'bg-gray-500';
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      
+      // Simulate API calls - replace with actual API endpoints
+      const mockStats: DashboardStats = {
+        totalEmployees: 156,
+        activeEmployees: 148,
+        onboardingInProgress: 3,
+        pendingLeaveRequests: 7,
+        upcomingReviews: 12,
+        attendanceToday: { present: 142, absent: 6, late: 4 }
+      };
+
+      const mockOnboarding: OnboardingProcess[] = [
+        {
+          id: '1',
+          employeeName: 'Priya Sharma',
+          department: 'IT',
+          position: 'Software Engineer',
+          status: 'in_progress',
+          completionPercentage: 65,
+          startDate: '2024-01-15'
+        },
+        {
+          id: '2',
+          employeeName: 'Rajesh Kumar',
+          department: 'Marketing',
+          position: 'Digital Marketing Specialist',
+          status: 'in_progress',
+          completionPercentage: 30,
+          startDate: '2024-01-18'
+        }
+      ];
+
+      const mockLeaves: LeaveRequest[] = [
+        {
+          id: '1',
+          employeeName: 'Sarah Johnson',
+          department: 'Finance',
+          leaveType: 'Annual Leave',
+          startDate: '2024-02-01',
+          endDate: '2024-02-05',
+          totalDays: 5,
+          status: 'pending'
+        },
+        {
+          id: '2',
+          employeeName: 'Michael Chen',
+          department: 'HR',
+          leaveType: 'Sick Leave',
+          startDate: '2024-01-25',
+          endDate: '2024-01-26',
+          totalDays: 2,
+          status: 'pending'
+        }
+      ];
+
+      setStats(mockStats);
+      setOnboardingProcesses(mockOnboarding);
+      setPendingLeaves(mockLeaves);
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
-      case 'completed': return <Badge className="bg-blue-100 text-blue-800">Completed</Badge>;
-      case 'pending': return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>;
-      default: return <Badge variant="outline">{status}</Badge>;
+      case 'completed': return 'bg-green-100 text-green-800';
+      case 'in_progress': return 'bg-blue-100 text-blue-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'approved': return 'bg-green-100 text-green-800';
+      case 'rejected': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
-    <RoleGuard requiredPermission={Permission.MANAGE_EMPLOYEES}>
-      <div className="space-y-6">
-        <PageHeader
-          title={`Welcome, ${user?.firstName || 'HR Manager'}!`}
-          description="Manage employees, track attendance, and oversee HR operations"
-        >
-          <div className="flex space-x-2">
-            <Button variant="outline">
-              <Filter className="mr-2 h-4 w-4" />
-              Filter
-            </Button>
-            <Button>
+    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">HR Dashboard</h2>
+        <div className="flex items-center space-x-2">
+          <Button asChild>
+            <Link href="/hr/employees/create">
               <Plus className="mr-2 h-4 w-4" />
-              New Employee
-            </Button>
-          </div>
-        </PageHeader>
-
-        {/* HR Stats */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {hrStats.map((stat) => (
-            <Card key={stat.label}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
-                <stat.icon className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <p className="text-xs text-muted-foreground mt-1">{stat.trend}</p>
-              </CardContent>
-            </Card>
-          ))}
+              Add Employee
+            </Link>
+          </Button>
         </div>
+      </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Recent Activities */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Activities</CardTitle>
-              <CardDescription>Latest HR activities requiring attention</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivities.map((activity) => (
-                  <div key={activity.id} className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center space-x-2">
-                        <p className="text-sm font-medium">{activity.employee}</p>
-                        <div className={`h-2 w-2 rounded-full ${getPriorityColor(activity.priority)}`} />
-                      </div>
-                      <p className="text-xs text-muted-foreground">{activity.description}</p>
-                      <p className="text-xs text-muted-foreground">{activity.type} • {activity.date}</p>
-                    </div>
-                    {getStatusBadge(activity.status)}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Upcoming Events */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Upcoming Events</CardTitle>
-              <CardDescription>HR events and meetings scheduled</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {upcomingEvents.map((event) => (
-                  <div key={event.id} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium">{event.title}</p>
-                      <Badge variant="outline">{event.attendees} attendees</Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{event.date} at {event.time}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Department Metrics */}
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalEmployees}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.activeEmployees} active employees
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Onboarding</CardTitle>
+            <UserPlus className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.onboardingInProgress}</div>
+            <p className="text-xs text-muted-foreground">
+              In progress
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Leave Requests</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.pendingLeaveRequests}</div>
+            <p className="text-xs text-muted-foreground">
+              Pending approval
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Attendance Today</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.attendanceToday.present}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.attendanceToday.absent} absent, {stats.attendanceToday.late} late
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* Onboarding Progress */}
+        <Card className="lg:col-span-4">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <TrendingUp className="mr-2 h-5 w-5" />
-              Department Overview
-            </CardTitle>
-            <CardDescription>Attendance and performance metrics by department</CardDescription>
+            <CardTitle>Active Onboarding Processes</CardTitle>
+            <CardDescription>
+              Track new employee onboarding progress
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {departmentMetrics.map((dept) => (
-                <div key={dept.department} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
-                  <div className="md:col-span-2">
-                    <h4 className="font-medium">{dept.department}</h4>
-                    <p className="text-sm text-muted-foreground">{dept.total} employees</p>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">Present</span>
-                    <span className="text-green-600 font-bold">{dept.present}</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">Absent</span>
-                    <span className="text-red-600 font-bold">{dept.absent}</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">On Leave</span>
-                    <span className="text-yellow-600 font-bold">{dept.onLeave}</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">Performance</span>
-                    <div className="flex items-center space-x-2">
-                      <Progress value={dept.performance} className="h-2 flex-1" />
-                      <span className="text-sm font-bold">{dept.performance}%</span>
+              {onboardingProcesses.map((process) => (
+                <div key={process.id} className="flex items-center space-x-4 rounded-lg border p-4">
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium leading-none">
+                        {process.employeeName}
+                      </p>
+                      <Badge variant="outline" className={getStatusColor(process.status)}>
+                        {process.status}
+                      </Badge>
                     </div>
+                    <p className="text-sm text-muted-foreground">
+                      {process.position} • {process.department}
+                    </p>
+                    <div className="flex items-center space-x-2">
+                      <Progress value={process.completionPercentage} className="flex-1" />
+                      <span className="text-sm text-muted-foreground">
+                        {process.completionPercentage}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={`/hr/onboarding/${process.id}`}>
+                        <Eye className="h-4 w-4" />
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               ))}
+              {onboardingProcesses.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  No active onboarding processes
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Quick Actions */}
-        <div className="grid gap-4 md:grid-cols-4">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <Users className="h-8 w-8 text-blue-500" />
-                <div>
-                  <p className="font-medium">Employee Directory</p>
-                  <p className="text-xs text-muted-foreground">Manage employee records</p>
+        {/* Pending Leave Requests */}
+        <Card className="lg:col-span-3">
+          <CardHeader>
+            <CardTitle>Pending Leave Requests</CardTitle>
+            <CardDescription>
+              Requests awaiting approval
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {pendingLeaves.map((leave) => (
+                <div key={leave.id} className="flex items-center space-x-4 rounded-lg border p-3">
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {leave.employeeName}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {leave.leaveType} • {leave.totalDays} days
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {leave.startDate} to {leave.endDate}
+                    </p>
+                  </div>
+                  <div className="flex space-x-1">
+                    <Button variant="ghost" size="sm">
+                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    </Button>
+                    <Button variant="ghost" size="sm">
+                      <XCircle className="h-4 w-4 text-red-600" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <Calendar className="h-8 w-8 text-green-500" />
-                <div>
-                  <p className="font-medium">Leave Management</p>
-                  <p className="text-xs text-muted-foreground">Approve leave requests</p>
+              ))}
+              {pendingLeaves.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  No pending leave requests
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <Award className="h-8 w-8 text-orange-500" />
-                <div>
-                  <p className="font-medium">Performance Reviews</p>
-                  <p className="text-xs text-muted-foreground">Track evaluations</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <FileText className="h-8 w-8 text-purple-500" />
-                <div>
-                  <p className="font-medium">Reports</p>
-                  <p className="text-xs text-muted-foreground">Generate HR reports</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </RoleGuard>
-  );
-}
 
-export default function HRDashboard() {
-  return (
-    <ClientOnly fallback={
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <div className="h-8 w-64 bg-muted rounded animate-pulse" />
-          <div className="h-4 w-96 bg-muted rounded animate-pulse" />
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-24 bg-muted rounded animate-pulse" />
-          ))}
-        </div>
-      </div>
-    }>
-      <HRDashboardContent />
-    </ClientOnly>
+      {/* Quick Actions */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Actions</CardTitle>
+          <CardDescription>
+            Common HR tasks and shortcuts
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Button variant="outline" className="h-20 flex-col" asChild>
+              <Link href="/hr/employees">
+                <Users className="h-6 w-6 mb-2" />
+                Employee Directory
+              </Link>
+            </Button>
+            <Button variant="outline" className="h-20 flex-col" asChild>
+              <Link href="/hr/onboarding">
+                <UserPlus className="h-6 w-6 mb-2" />
+                Start Onboarding
+              </Link>
+            </Button>
+            <Button variant="outline" className="h-20 flex-col" asChild>
+              <Link href="/hr/leave">
+                <Calendar className="h-6 w-6 mb-2" />
+                Leave Management
+              </Link>
+            </Button>
+            <Button variant="outline" className="h-20 flex-col" asChild>
+              <Link href="/hr/performance">
+                <Award className="h-6 w-6 mb-2" />
+                Performance Reviews
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
