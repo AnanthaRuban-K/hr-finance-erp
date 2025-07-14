@@ -38,8 +38,6 @@ import {
   Download,
   Copy
 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface LineItem {
   id: string;
@@ -50,7 +48,6 @@ interface LineItem {
 }
 
 const CreateInvoice = () => {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Form state
@@ -168,10 +165,8 @@ const CreateInvoice = () => {
     setIsSubmitting(false);
     
     if (action === 'send') {
-      // Redirect to invoice detail page
-      router.push(`/finance/accounts-receivable/invoices/1`);
+      alert('Invoice created and sent successfully!');
     } else {
-      // Show success message and stay on page
       alert('Invoice saved as draft!');
     }
   };
@@ -181,12 +176,10 @@ const CreateInvoice = () => {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Link href="/finance/accounts-receivable/invoices">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Invoices
-            </Button>
-          </Link>
+          <Button variant="outline" size="sm">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Invoices
+          </Button>
           <div className="space-y-1">
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Create New Invoice</h1>
             <p className="text-gray-600">Generate a new invoice for your customer</p>
@@ -428,8 +421,8 @@ const CreateInvoice = () => {
 
         {/* Invoice Summary Sidebar */}
         <div className="space-y-6">
-          {/* Totals Card */}
-          <Card className="border-0 shadow-lg sticky top-6">
+          {/* Totals Card - Removed sticky positioning */}
+          <Card className="border-0 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <DollarSign className="h-5 w-5 text-green-600" />

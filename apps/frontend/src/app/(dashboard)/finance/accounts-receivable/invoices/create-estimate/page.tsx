@@ -14,14 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { 
   Save, 
   Send, 
@@ -40,8 +32,6 @@ import {
   Clock,
   RefreshCw
 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface LineItem {
   id: string;
@@ -52,7 +42,6 @@ interface LineItem {
 }
 
 const CreateEstimate = () => {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Form state
@@ -195,13 +184,10 @@ const CreateEstimate = () => {
     setIsSubmitting(false);
     
     if (action === 'convert') {
-      // Redirect to create invoice with estimate data
-      router.push('/finance/accounts-receivable/invoices/create?from=estimate');
+      alert('Converting estimate to invoice...');
     } else if (action === 'send') {
-      // Redirect to estimates list
-      router.push('/finance/accounts-receivable/estimates');
+      alert('Estimate created and sent successfully!');
     } else {
-      // Show success message and stay on page
       alert('Estimate saved as draft!');
     }
   };
@@ -211,12 +197,10 @@ const CreateEstimate = () => {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Link href="/finance/accounts-receivable/invoices">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Invoices
-            </Button>
-          </Link>
+          <Button variant="outline" size="sm">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Invoices
+          </Button>
           <div className="space-y-1">
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Create New Estimate</h1>
             <p className="text-gray-600">Create a professional estimate for your potential customer</p>
@@ -389,28 +373,28 @@ const CreateEstimate = () => {
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[40%]">Description</TableHead>
-                      <TableHead className="w-[15%]">Quantity</TableHead>
-                      <TableHead className="w-[20%]">Rate</TableHead>
-                      <TableHead className="w-[20%]">Amount</TableHead>
-                      <TableHead className="w-[5%]"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left p-2 font-medium text-gray-700 w-[40%]">Description</th>
+                      <th className="text-left p-2 font-medium text-gray-700 w-[15%]">Quantity</th>
+                      <th className="text-left p-2 font-medium text-gray-700 w-[20%]">Rate</th>
+                      <th className="text-left p-2 font-medium text-gray-700 w-[20%]">Amount</th>
+                      <th className="text-left p-2 font-medium text-gray-700 w-[5%]"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {lineItems.map((item, index) => (
-                      <TableRow key={item.id}>
-                        <TableCell>
+                      <tr key={item.id} className="border-b">
+                        <td className="p-2">
                           <Textarea
                             value={item.description}
                             onChange={(e) => updateLineItem(item.id, 'description', e.target.value)}
                             placeholder="Enter description..."
                             className="min-h-[60px] resize-none"
                           />
-                        </TableCell>
-                        <TableCell>
+                        </td>
+                        <td className="p-2">
                           <Input
                             type="number"
                             value={item.quantity}
@@ -418,8 +402,8 @@ const CreateEstimate = () => {
                             min="0"
                             step="0.01"
                           />
-                        </TableCell>
-                        <TableCell>
+                        </td>
+                        <td className="p-2">
                           <Input
                             type="number"
                             value={item.rate}
@@ -427,13 +411,13 @@ const CreateEstimate = () => {
                             min="0"
                             step="0.01"
                           />
-                        </TableCell>
-                        <TableCell>
+                        </td>
+                        <td className="p-2">
                           <div className="font-medium text-right">
                             {formatCurrency(item.amount)}
                           </div>
-                        </TableCell>
-                        <TableCell>
+                        </td>
+                        <td className="p-2">
                           {lineItems.length > 1 && (
                             <Button
                               variant="ghost"
@@ -444,11 +428,11 @@ const CreateEstimate = () => {
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           )}
-                        </TableCell>
-                      </TableRow>
+                        </td>
+                      </tr>
                     ))}
-                  </TableBody>
-                </Table>
+                  </tbody>
+                </table>
               </div>
             </CardContent>
           </Card>
@@ -485,10 +469,10 @@ const CreateEstimate = () => {
           </Card>
         </div>
 
-        {/* Estimate Summary Sidebar */}
+        {/* Estimate Summary Sidebar - Removed sticky positioning */}
         <div className="space-y-6">
           {/* Totals Card */}
-          <Card className="border-0 shadow-lg sticky top-6">
+          <Card className="border-0 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <DollarSign className="h-5 w-5 text-green-600" />
