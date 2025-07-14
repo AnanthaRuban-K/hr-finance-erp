@@ -4,58 +4,36 @@ import { UserButton } from '@clerk/nextjs';
 import { 
   Menu, 
   Bell, 
-  Search, 
   Settings, 
   HelpCircle, 
-  Command,
   Sun,
   Moon,
   Monitor,
   ChevronDown,
-  Zap,
   Globe,
-  MessageSquare,
   Activity,
-  Filter,
-  SortDesc,
-  Plus,
-  Bookmark,
-  History,
-  Star,
-  TrendingUp,
-  Clock,
-  Calendar,
-  Users,
-  FileText,
-  Mail,
-  Phone,
-  Video,
-  Mic,
-  MicOff,
-  Volume2,
-  VolumeX,
-  Wifi,
-  WifiOff,
-  Battery,
-  Signal,
-  Smartphone,
-  Laptop,
   Shield,
   Eye,
-  EyeOff,
-  Maximize2,
-  Minimize2,
   RefreshCw,
   Download,
   Upload,
   Share2,
   MoreHorizontal,
-  X
+  X,
+  Calendar,
+  Clock,
+  Users,
+  FileText,
+  MessageSquare,
+  User,
+  LogOut,
+  Bookmark,
+  History,
+  Home
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLayoutStore } from '@/lib/store/layout-store';
 import { useAuth } from '@/components/clerk-wrapper';
-import { Input } from '@/components/ui/input';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -89,22 +67,14 @@ export function Header() {
   const { toggleSidebar } = useLayoutStore();
   const { user } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
   const [theme, setTheme] = useState('system');
   const [notifications, setNotifications] = useState([
     { id: 1, type: 'info', title: 'New employee added', message: 'John Doe has been added to the system', time: '2 min ago', read: false },
     { id: 2, type: 'warning', title: 'Payroll reminder', message: 'Monthly payroll processing due tomorrow', time: '1 hour ago', read: false },
     { id: 3, type: 'success', title: 'Report generated', message: 'Q3 financial report is ready for review', time: '3 hours ago', read: true },
-    { id: 4, type: 'urgent', title: 'System maintenance', message: 'Scheduled maintenance tonight at 11 PM', time: '5 hours ago', read: false },
+    { id: 4, type: 'urgent', title: 'Leave approval pending', message: 'Employee leave request requires approval', time: '5 hours ago', read: false },
   ]);
   const [isOnline, setIsOnline] = useState(true);
-  const [quickActions, setQuickActions] = useState([
-    { id: 1, label: 'Add Employee', icon: Users, shortcut: 'Ctrl+N' },
-    { id: 2, label: 'Generate Report', icon: FileText, shortcut: 'Ctrl+R' },
-    { id: 3, label: 'Process Payroll', icon: TrendingUp, shortcut: 'Ctrl+P' },
-    { id: 4, label: 'Schedule Meeting', icon: Calendar, shortcut: 'Ctrl+M' },
-  ]);
 
   // Add scroll effect for enhanced sticky behavior
   useEffect(() => {
@@ -113,10 +83,10 @@ export function Header() {
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Global search shortcut
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      // Global shortcuts
+      if ((e.metaKey || e.ctrlKey) && e.key === 'h') {
         e.preventDefault();
-        document.getElementById('global-search')?.focus();
+        // Navigate to home
       }
     };
 
@@ -173,59 +143,15 @@ export function Header() {
             <TooltipContent>Toggle Navigation</TooltipContent>
           </Tooltip>
 
-          {/* Enhanced Global Search */}
-          <div className="flex-1 flex justify-center px-2 max-w-2xl mx-auto">
-            <div className="w-full max-w-lg relative">
-              <div className={`relative transition-all duration-300 ${searchFocused ? 'transform scale-105' : ''}`}>
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors" />
-                <Input
-                  id="global-search"
-                  type="search"
-                  placeholder="Search anything... (⌘K)"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                  className={`pl-10 pr-12 h-9 w-full rounded-xl border-border/50 transition-all duration-300
-                    ${searchFocused 
-                      ? 'bg-background/90 border-primary/50 shadow-lg ring-2 ring-primary/20' 
-                      : 'bg-background/60 hover:bg-background/80 hover:border-border/80'
-                    }`}
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                  {searchValue && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-5 w-5 p-0 hover:bg-accent/50"
-                      onClick={() => setSearchValue('')}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  )}
-                  <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-                    <span className="text-xs">⌘</span>K
-                  </kbd>
-                </div>
-              </div>
-
-              {/* Search suggestions dropdown */}
-              {searchFocused && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-popover/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-xl z-50 p-2">
-                  <div className="text-xs text-muted-foreground px-2 py-1 mb-2">Quick Actions</div>
-                  {quickActions.map((action) => (
-                    <div key={action.id} className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-accent/50 cursor-pointer">
-                      <action.icon className="h-4 w-4 text-primary" />
-                      <span className="text-sm">{action.label}</span>
-                      <kbd className="ml-auto text-xs text-muted-foreground">{action.shortcut}</kbd>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+          {/* Empty space for future branding */}
+          <div className="flex items-center gap-2">
+            {/* Reserved space for company logo/branding */}
           </div>
 
-          {/* Right side actions */}
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Common Features for All Roles */}
           <div className="flex items-center space-x-1">
             {/* Status indicators */}
             <div className="hidden md:flex items-center space-x-3 mr-4 px-3 py-1.5 rounded-xl bg-accent/30 border border-border/30">
@@ -244,31 +170,74 @@ export function Header() {
               </div>
             </div>
 
-            {/* Quick actions */}
+            {/* Quick Navigation - Common for all roles */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-xl hover:bg-accent/60 transition-all duration-200 hover:scale-105">
-                      <Zap className="h-4 w-4" />
+                      <Home className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Quick Actions</TooltipContent>
+                  <TooltipContent>Quick Navigation</TooltipContent>
                 </Tooltip>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 rounded-xl border-border/50">
                 <DropdownMenuLabel className="flex items-center gap-2">
-                  <Zap className="h-4 w-4" />
-                  Quick Actions
+                  <Home className="h-4 w-4" />
+                  Quick Navigation
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {quickActions.map((action) => (
-                  <DropdownMenuItem key={action.id} className="rounded-lg">
-                    <action.icon className="h-4 w-4 mr-2" />
-                    {action.label}
-                    <kbd className="ml-auto text-xs text-muted-foreground">{action.shortcut}</kbd>
-                  </DropdownMenuItem>
-                ))}
+                <DropdownMenuItem className="rounded-lg">
+                  <Home className="h-4 w-4 mr-2" />
+                  Dashboard
+                  <kbd className="ml-auto text-xs text-muted-foreground">Ctrl+H</kbd>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <User className="h-4 w-4 mr-2" />
+                  My Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  My Calendar
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <FileText className="h-4 w-4 mr-2" />
+                  My Documents
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* My Tasks/Activities */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-xl hover:bg-accent/60 transition-all duration-200 hover:scale-105">
+                      <Activity className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>My Activities</TooltipContent>
+                </Tooltip>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 rounded-xl border-border/50">
+                <DropdownMenuLabel className="flex items-center gap-2">
+                  <Activity className="h-4 w-4" />
+                  My Activities
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="rounded-lg">
+                  <Clock className="h-4 w-4 mr-2" />
+                  Recent Activities
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <Bookmark className="h-4 w-4 mr-2" />
+                  Bookmarks
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <History className="h-4 w-4 mr-2" />
+                  History
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -305,14 +274,41 @@ export function Header() {
             </DropdownMenu>
 
             {/* Help Center */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-xl hover:bg-accent/60 transition-all duration-200 hover:scale-105">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-xl hover:bg-accent/60 transition-all duration-200 hover:scale-105">
+                      <HelpCircle className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Help & Support</TooltipContent>
+                </Tooltip>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 rounded-xl border-border/50">
+                <DropdownMenuLabel className="flex items-center gap-2">
                   <HelpCircle className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Help & Support</TooltipContent>
-            </Tooltip>
+                  Help & Support
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="rounded-lg">
+                  <FileText className="h-4 w-4 mr-2" />
+                  Documentation
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Contact Support
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <Download className="h-4 w-4 mr-2" />
+                  Download User Guide
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg">
+                  <Globe className="h-4 w-4 mr-2" />
+                  Knowledge Base
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Enhanced Notifications */}
             <Popover>
@@ -400,6 +396,10 @@ export function Header() {
                   Settings
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem className="rounded-lg">
+                  <User className="h-4 w-4 mr-2" />
+                  Profile Settings
+                </DropdownMenuItem>
                 <DropdownMenuItem className="rounded-lg">
                   <Shield className="h-4 w-4 mr-2" />
                   Privacy & Security
