@@ -17,6 +17,128 @@
   "nxJsonPlugins": [],
   "fileMap": {
     "projectFileMap": {
+      "backend": [
+        {
+          "file": "apps/backend/.dockerignore",
+          "hash": "11149514358203578948"
+        },
+        {
+          "file": "apps/backend/drizzle.config.ts",
+          "hash": "2024377004870645435",
+          "deps": [
+            "npm:drizzle-kit",
+            "npm:dotenv"
+          ]
+        },
+        {
+          "file": "apps/backend/package-lock.json",
+          "hash": "1475347021676956564"
+        },
+        {
+          "file": "apps/backend/package.json",
+          "hash": "16461402575068630344",
+          "deps": [
+            "npm:@types/node",
+            "npm:@types/pg",
+            "npm:drizzle-kit",
+            "npm:typescript",
+            "npm:@paralleldrive/cuid2",
+            "npm:dotenv",
+            "npm:drizzle-orm",
+            "npm:pg",
+            "npm:zod"
+          ]
+        },
+        {
+          "file": "apps/backend/project.json",
+          "hash": "12741483931541068234"
+        },
+        {
+          "file": "apps/backend/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/backend/src/db/index.ts",
+          "hash": "7566022827242045047",
+          "deps": [
+            "npm:drizzle-orm",
+            "npm:pg"
+          ]
+        },
+        {
+          "file": "apps/backend/src/db/migrate.ts",
+          "hash": "14399177723444691958",
+          "deps": [
+            "npm:drizzle-orm",
+            "npm:pg",
+            "npm:dotenv"
+          ]
+        },
+        {
+          "file": "apps/backend/src/db/migrations/0000_acoustic_rictor.sql",
+          "hash": "715802082369385382"
+        },
+        {
+          "file": "apps/backend/src/db/migrations/0001_empty_cyclops.sql",
+          "hash": "14047505549509929458"
+        },
+        {
+          "file": "apps/backend/src/db/migrations/0002_aberrant_deadpool.sql",
+          "hash": "16803534193644571025"
+        },
+        {
+          "file": "apps/backend/src/db/migrations/meta/0000_snapshot.json",
+          "hash": "7606634407053691853"
+        },
+        {
+          "file": "apps/backend/src/db/migrations/meta/0001_snapshot.json",
+          "hash": "757198095327170853"
+        },
+        {
+          "file": "apps/backend/src/db/migrations/meta/0002_snapshot.json",
+          "hash": "10138046415828538898"
+        },
+        {
+          "file": "apps/backend/src/db/migrations/meta/_journal.json",
+          "hash": "17827692037234547848"
+        },
+        {
+          "file": "apps/backend/src/db/schema.ts",
+          "hash": "7296036957926232388",
+          "deps": [
+            "npm:drizzle-orm",
+            "npm:@paralleldrive/cuid2"
+          ]
+        },
+        {
+          "file": "apps/backend/src/index.ts",
+          "hash": "12175255977115530256"
+        },
+        {
+          "file": "apps/backend/src/lib/minio.ts",
+          "hash": "12126788076002420539"
+        },
+        {
+          "file": "apps/backend/src/main.ts",
+          "hash": "12458151208457237739"
+        },
+        {
+          "file": "apps/backend/src/routes/employees.ts",
+          "hash": "11426800021926984272",
+          "deps": [
+            "npm:zod",
+            "npm:drizzle-orm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/routes/upload.ts",
+          "hash": "4835430976134239114"
+        },
+        {
+          "file": "apps/backend/tsconfig.json",
+          "hash": "11502726314815140102"
+        }
+      ],
       "frontend": [
         {
           "file": "apps/frontend/components.json",
@@ -39,11 +161,11 @@
         },
         {
           "file": "apps/frontend/package-lock.json",
-          "hash": "9003539349024628634"
+          "hash": "4441808526323435560"
         },
         {
           "file": "apps/frontend/package.json",
-          "hash": "4874405031999043170",
+          "hash": "1764171340961158696",
           "deps": [
             "npm:@types/node",
             "npm:autoprefixer",
@@ -363,7 +485,7 @@
         },
         {
           "file": "apps/frontend/src/app/layout.tsx",
-          "hash": "11193626934672320881",
+          "hash": "5802904089257643861",
           "deps": [
             "npm:next"
           ]
@@ -377,16 +499,12 @@
           ]
         },
         {
-          "file": "apps/frontend/src/app/pending-approval/page.tsx",
-          "hash": "12533616183484107504"
-        },
-        {
           "file": "apps/frontend/src/app/template.tsx",
           "hash": "2448193765458363350"
         },
         {
           "file": "apps/frontend/src/components/EmployeeForm.tsx",
-          "hash": "10304221740359988515",
+          "hash": "18072788529511718659",
           "deps": [
             "npm:react",
             "npm:zod"
@@ -564,6 +682,13 @@
           ]
         },
         {
+          "file": "apps/frontend/src/components/ui/simple-file-upload.tsx",
+          "hash": "7667044710679112431",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/components/ui/sonner.tsx",
           "hash": "997587589519513927"
         },
@@ -640,120 +765,6 @@
           "file": "apps/frontend/tsconfig.json",
           "hash": "9297334314844324245"
         }
-      ],
-      "backend": [
-        {
-          "file": "apps/backend/.dockerignore",
-          "hash": "11149514358203578948"
-        },
-        {
-          "file": "apps/backend/drizzle.config.ts",
-          "hash": "2024377004870645435",
-          "deps": [
-            "npm:drizzle-kit",
-            "npm:dotenv"
-          ]
-        },
-        {
-          "file": "apps/backend/package-lock.json",
-          "hash": "6418848144677320547"
-        },
-        {
-          "file": "apps/backend/package.json",
-          "hash": "5183661024404693174",
-          "deps": [
-            "npm:@types/node",
-            "npm:@types/pg",
-            "npm:drizzle-kit",
-            "npm:typescript",
-            "npm:@paralleldrive/cuid2",
-            "npm:dotenv",
-            "npm:drizzle-orm",
-            "npm:pg",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/backend/project.json",
-          "hash": "12741483931541068234"
-        },
-        {
-          "file": "apps/backend/src/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/backend/src/db/index.ts",
-          "hash": "7566022827242045047",
-          "deps": [
-            "npm:drizzle-orm",
-            "npm:pg"
-          ]
-        },
-        {
-          "file": "apps/backend/src/db/migrate.ts",
-          "hash": "14399177723444691958",
-          "deps": [
-            "npm:drizzle-orm",
-            "npm:pg",
-            "npm:dotenv"
-          ]
-        },
-        {
-          "file": "apps/backend/src/db/migrations/0000_acoustic_rictor.sql",
-          "hash": "715802082369385382"
-        },
-        {
-          "file": "apps/backend/src/db/migrations/0001_empty_cyclops.sql",
-          "hash": "14047505549509929458"
-        },
-        {
-          "file": "apps/backend/src/db/migrations/0002_aberrant_deadpool.sql",
-          "hash": "16803534193644571025"
-        },
-        {
-          "file": "apps/backend/src/db/migrations/meta/0000_snapshot.json",
-          "hash": "7606634407053691853"
-        },
-        {
-          "file": "apps/backend/src/db/migrations/meta/0001_snapshot.json",
-          "hash": "757198095327170853"
-        },
-        {
-          "file": "apps/backend/src/db/migrations/meta/0002_snapshot.json",
-          "hash": "10138046415828538898"
-        },
-        {
-          "file": "apps/backend/src/db/migrations/meta/_journal.json",
-          "hash": "17827692037234547848"
-        },
-        {
-          "file": "apps/backend/src/db/schema.ts",
-          "hash": "7296036957926232388",
-          "deps": [
-            "npm:drizzle-orm",
-            "npm:@paralleldrive/cuid2"
-          ]
-        },
-        {
-          "file": "apps/backend/src/index.ts",
-          "hash": "15087953967664803093"
-        },
-        {
-          "file": "apps/backend/src/main.ts",
-          "hash": "12458151208457237739"
-        },
-        {
-          "file": "apps/backend/src/routes/employees.ts",
-          "hash": "11426800021926984272",
-          "deps": [
-            "npm:zod",
-            "npm:drizzle-orm"
-          ]
-        },
-        {
-          "file": "apps/backend/tsconfig.json",
-          "hash": "11502726314815140102"
-        }
       ]
     },
     "nonProjectFiles": [
@@ -786,12 +797,16 @@
         "hash": "14882492489334347327"
       },
       {
+        "file": "libs/Shared-types/package-lock.json",
+        "hash": "17232009720396005438"
+      },
+      {
         "file": "libs/Shared-types/package.json",
-        "hash": "12519599087650493308"
+        "hash": "13886458449373129154"
       },
       {
         "file": "libs/Shared-types/src/index.ts",
-        "hash": "5372751953717576184"
+        "hash": "5722371385496730938"
       },
       {
         "file": "libs/Shared-types/tsconfig.json",
