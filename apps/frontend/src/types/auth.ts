@@ -57,4 +57,11 @@ export interface AuthUser {
   role: UserRole;
   permissions: Permission[];
   organizationId?: string;
+
+
+// 👇 Add this line to support publicMetadata access
+  publicMetadata?: {
+    isApproved?: boolean
+    [key: string]: any  // for flexibility
+  }
 }

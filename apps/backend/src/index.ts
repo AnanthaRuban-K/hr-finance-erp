@@ -3,6 +3,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
 import employeesRouter from './routes/employees.js';
+import uploadRouter from './routes/upload.js'; // ✅ NEW: Import upload routes
+import { trpcServer } from '@hono/trpc-server';
 
 const app = new Hono();
 
@@ -40,7 +42,17 @@ app.get('/', (c) => {
     timestamp: new Date().toISOString(),
     version: '1.0.0',
     environment: process.env.NODE_ENV || 'development',
-    port: process.env.PORT || '3001'
+    port: process.env.PORT || '3001',
+    // ✅ NEW: Show available routes
+    routes: [
+      'GET /',
+      'GET /health',
+      'POST /api/upload',
+      'DELETE /api/delete/:employeeId/:documentType/:fileName',
+      'GET /api/download/:employeeId/:documentType/:fileName',
+      'GET /api/test',
+      '/employees/* (existing employee routes)'
+    ]
   });
 });
 
@@ -52,7 +64,10 @@ app.get('/health', (c) => {
   });
 });
 
-// Employee routes
+// ✅ NEW: MinIO Upload routes
+app.route('/api', uploadRouter);
+
+// Employee routes (existing)
 app.route('/employees', employeesRouter);
 
 // Global error handler
@@ -67,10 +82,18 @@ app.onError((err, c) => {
 
 // 404 handler
 app.notFound((c) => {
+  console.log(`❌ 404 Not Found: ${c.req.method} ${c.req.path}`); // ✅ NEW: Better logging
   return c.json({
     success: false,
     error: 'Not found',
     message: `Route ${c.req.method} ${c.req.path} not found`,
+    availableRoutes: [
+      'GET /',
+      'GET /health', 
+      'POST /api/upload',
+      'GET /api/test',
+      '/employees/*'
+    ]
   }, 404);
 });
 
@@ -80,6 +103,17 @@ console.log(`🚀 Server starting on port ${port}`);
 console.log(`🌐 CORS enabled for: ${allowedOrigins.join(', ')}`);
 console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 console.log(`📊 Database URL configured: ${process.env.DATABASE_URL ? 'Yes' : 'No'}`);
+console.log(`📁 MinIO configured: ${process.env.MINIO_ACCESS_KEY ? 'Yes' : 'No'}`); // ✅ NEW: MinIO check
+
+// ✅ NEW: Log available routes
+console.log(`📋 Available routes:`);
+console.log(`   GET  /`);
+console.log(`   GET  /health`);
+console.log(`   POST /api/upload`);
+console.log(`   GET  /api/test`);
+console.log(`   DELETE /api/delete/:employeeId/:documentType/:fileName`);
+console.log(`   GET  /api/download/:employeeId/:documentType/:fileName`);
+console.log(`   *    /employees/* (existing routes)`);
 
 serve({
   fetch: app.fetch,

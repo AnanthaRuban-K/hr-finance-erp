@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ChevronDown, Calendar, Loader2, Upload, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, Calendar, Loader2, Upload, X, ChevronLeft, ChevronRight, FileText, Download, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -161,12 +161,23 @@ interface ValidationErrors {
   [key: string]: string;
 }
 
+interface FileInfo {
+  originalName: string;
+  fileName: string;
+  folder: string;
+  url: string;
+  size: number;
+  type: string;
+  uploadDate: string;
+}
+
 interface EmployeeFormProps {
   onClose?: () => void;
   onSuccess?: (employee: EmployeeAPIResponse) => void;
   initialData?: Partial<EmployeeFormData & { id?: string }>;
   isEdit?: boolean;
 }
+
 interface EmployeeAPIResponse {
   id: string;
   fullName?: string;
@@ -203,6 +214,214 @@ interface EmployeeAPIResponse {
   [key: string]: string | number | boolean | null | undefined;
 }
 
+// Simple File Upload Component with MinIO
+interface SimpleFileUploadProps {
+  label: string;
+  documentType: string;
+  employeeId: string;
+  required?: boolean;
+  onUploadSuccess?: (file: FileInfo) => void;
+  onError?: (error: string) => void;
+}
+
+const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
+  label,
+  documentType,
+  employeeId,
+  required = false,
+  onUploadSuccess,
+  onError
+}) => {
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<FileInfo[]>([]);
+  const [dragOver, setDragOver] = useState(false);
+
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
+  const handleFileUpload = async (file: File) => {
+    if (!file || !employeeId) {
+      onError?.('Employee ID is required for file upload');
+      return;
+    }
+
+    // Validate file size and type
+    if (file.size > 5 * 1024 * 1024) {
+      onError?.('File size must be less than 5MB');
+      return;
+    }
+
+    const allowedTypes = [
+      'application/pdf', 
+      'image/jpeg', 
+      'image/png', 
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+    
+    if (!allowedTypes.includes(file.type)) {
+      onError?.('Invalid file type. Only PDF, JPG, PNG, DOC, DOCX allowed');
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('employeeId', employeeId);
+      formData.append('documentType', documentType);
+
+      console.log('📤 Uploading file:', { fileName: file.name, employeeId, documentType });
+
+      const response = await fetch(`${API_BASE_URL}/api/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('✅ Upload successful:', result.file);
+        setUploadedFiles(prev => [...prev, result.file]);
+        onUploadSuccess?.(result.file);
+      } else {
+        throw new Error(result.error || 'Upload failed');
+      }
+
+    } catch (error) {
+      console.error('❌ Upload error:', error);
+      onError?.(error instanceof Error ? error.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFileUpload(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileUpload(file);
+  };
+
+  const handleDelete = async (fileInfo: FileInfo) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/delete/${employeeId}/${documentType}/${fileInfo.fileName}`,
+        { method: 'DELETE' }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        setUploadedFiles(prev => prev.filter(f => f.fileName !== fileInfo.fileName));
+      } else {
+        onError?.(result.error || 'Delete failed');
+      }
+    } catch (error) {
+      onError?.('Delete failed');
+    }
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  return (
+    <div className="space-y-4">
+      <label className="block text-sm font-medium text-gray-700">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+
+      {/* Upload Area */}
+      <div
+        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
+          dragOver ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+        } ${!employeeId ? 'opacity-50 cursor-not-allowed' : ''}`}
+        onDrop={handleDrop}
+        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+        onDragLeave={(e) => { e.preventDefault(); setDragOver(false); }}
+        onClick={() => employeeId && document.getElementById(`file-${documentType}`)?.click()}
+      >
+        <input
+          id={`file-${documentType}`}
+          type="file"
+          className="hidden"
+          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+          onChange={handleFileSelect}
+          disabled={uploading || !employeeId}
+        />
+
+        {!employeeId ? (
+          <div className="text-gray-500">
+            <Upload className="mx-auto h-8 w-8 text-gray-300 mb-2" />
+            <p className="text-sm">Please enter Employee ID first</p>
+          </div>
+        ) : uploading ? (
+          <div className="flex items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+            <span className="ml-2 text-gray-600">Uploading...</span>
+          </div>
+        ) : (
+          <>
+            <Upload className="mx-auto h-12 w-12 text-gray-400" />
+            <p className="mt-2 text-sm text-gray-600">Click to upload or drag and drop</p>
+            <p className="text-xs text-gray-500">PDF, DOC, DOCX, JPG, PNG (max 5MB)</p>
+          </>
+        )}
+      </div>
+
+      {/* Uploaded Files */}
+      {uploadedFiles.length > 0 && (
+        <div className="space-y-2">
+          {uploadedFiles.map((file, index) => (
+            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
+              <div className="flex items-center space-x-3">
+                <FileText className="h-5 w-5 text-gray-500" />
+                <div>
+                  <p className="text-sm font-medium">{file.originalName}</p>
+                  <p className="text-xs text-gray-500">
+                    {formatFileSize(file.size)} • {new Date(file.uploadDate).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open(file.url, '_blank')}
+                  title="View file"
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(file)}
+                  className="text-red-600 hover:text-red-700"
+                  title="Delete file"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ✅ FIXED: API Configuration
 const getApiUrl = () => {
   // Debug logging
@@ -211,11 +430,10 @@ const getApiUrl = () => {
   console.log('NODE_ENV:', process.env.NODE_ENV);
   
   // Return the environment variable or fallback to the production URL
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sbrosenterpriseerp.com/';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sbrosenterpriseerp.com';
   console.log('Using API URL:', apiUrl);
   return apiUrl;
 };
-
 
 // Define tab order
 const TAB_ORDER = ["personal", "contact", "employment", "salary", "documents", "additional"];
@@ -424,16 +642,6 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, fileType: string) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setUploadedFiles(prev => ({
-        ...prev,
-        [fileType]: file
-      }));
-    }
-  };
-
   const validateForm = (): boolean => {
     try {
       employeeSchema.parse(formData);
@@ -469,26 +677,26 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
     }
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  setMessage("");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage("");
 
-  // Validate form before submission
-  if (!validateForm()) {
-    setMessage("Please fix the validation errors before submitting.");
-    return;
-  }
+    // Validate form before submission
+    if (!validateForm()) {
+      setMessage("Please fix the validation errors before submitting.");
+      return;
+    }
 
-  setIsSubmitting(true);
+    setIsSubmitting(true);
 
-  try {
-    const submitData = {
-      ...formData,
-      basicSalary: parseFloat(formData.basicSalary) || 0,
-      uploadedFiles: Object.keys(uploadedFiles)
-    };
+    try {
+      const submitData = {
+        ...formData,
+        basicSalary: parseFloat(formData.basicSalary) || 0,
+        uploadedFiles: Object.keys(uploadedFiles)
+      };
 
-    // ✅ FIXED: Use proper API URL configuration
+      // ✅ FIXED: Use proper API URL configuration
       const API_BASE_URL = getApiUrl();
       const url = isEditMode 
         ? `${API_BASE_URL}/employees/${employeeId}`
@@ -515,14 +723,14 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
 
       const result = await response.json();
 
-    if (result.success) {
-      setMessage(isEditMode ? "Employee updated successfully!" : "Employee created successfully!");
-      
-      // Call onSuccess callback if provided
-      if (onSuccess) {
-        onSuccess(result.employee);
-      }
+      if (result.success) {
+        setMessage(isEditMode ? "Employee updated successfully!" : "Employee created successfully!");
         
+        // Call onSuccess callback if provided
+        if (onSuccess) {
+          onSuccess(result.employee);
+        }
+          
         // Only reset form if creating new employee
         if (!isEditMode) {
           setFormData({
@@ -648,31 +856,6 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
       <p className="text-red-500 text-sm mt-1">{validationErrors[fieldName]}</p>
     );
   };
-
-  // File upload component
-  const FileUpload = ({ label, fileType, required = false }: { label: string; fileType: string; required?: boolean }) => (
-    <div>
-      <Label className="block mb-2">
-        {label} {required && <span className="text-red-500">*</span>}
-      </Label>
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors">
-        <input
-          type="file"
-          id={fileType}
-          onChange={(e) => handleFileUpload(e, fileType)}
-          className="hidden"
-          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-        />
-        <label htmlFor={fileType} className="cursor-pointer">
-          <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-          <p className="text-sm text-gray-600">
-            {uploadedFiles[fileType] ? uploadedFiles[fileType].name : 'Click to upload or drag and drop'}
-          </p>
-          <p className="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, JPG, PNG (max 5MB)</p>
-        </label>
-      </div>
-    </div>
-  );
   
   return (
     <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
@@ -1070,7 +1253,6 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                 </div>
               </TabsContent>
 
-              
               <TabsContent value="employment">
                 <h2 className="text-lg font-medium text-gray-800 mb-4">Employment Information</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1153,9 +1335,6 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       />
                       <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
                     </div>
-                    <ValidationError fieldName="joinDate" />
-                  </div>
-
                   <div>
                     <Label htmlFor="employmentType" className="block mb-1">
                       Employment Type <span className="text-red-500">*</span>
@@ -1194,6 +1373,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                     />
                     <ValidationError fieldName="reportingManager" />
                   </div>
+                </div>
                 </div>
               </TabsContent>
 
@@ -1310,13 +1490,58 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
 
               <TabsContent value="documents">
                 <h2 className="text-lg font-medium text-gray-800 mb-4">Documents</h2>
+                {!formData.employeeId && (
+                  <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-sm text-yellow-800">
+                      💡 <strong>Note:</strong> Please fill in the Employee ID in the Employment tab first before uploading documents.
+                    </p>
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FileUpload label="NRIC/FIN/Passport" fileType="nric" required />
-                  <FileUpload label="Photo" fileType="photo" required />
-                  <FileUpload label="Educational Certificates" fileType="education" />
-                  <FileUpload label="Work Pass/Visa" fileType="workpass" />
-                  <FileUpload label="Resume/CV" fileType="resume" />
-                  <FileUpload label="Other Documents" fileType="others" />
+                  <SimpleFileUpload
+                    label="NRIC/FIN/Passport"
+                    documentType="nric"
+                    employeeId={formData.employeeId}
+                    required
+                    onUploadSuccess={(file) => console.log('NRIC uploaded:', file)}
+                    onError={(error) => setMessage(`File Error: ${error}`)}
+                  />
+                  <SimpleFileUpload
+                    label="Employee Photo"
+                    documentType="photo"
+                    employeeId={formData.employeeId}
+                    required
+                    onUploadSuccess={(file) => console.log('Photo uploaded:', file)}
+                    onError={(error) => setMessage(`File Error: ${error}`)}
+                  />
+                  <SimpleFileUpload
+                    label="Resume/CV"
+                    documentType="resume"
+                    employeeId={formData.employeeId}
+                    onUploadSuccess={(file) => console.log('Resume uploaded:', file)}
+                    onError={(error) => setMessage(`File Error: ${error}`)}
+                  />
+                  <SimpleFileUpload
+                    label="Educational Certificates"
+                    documentType="education"
+                    employeeId={formData.employeeId}
+                    onUploadSuccess={(file) => console.log('Education uploaded:', file)}
+                    onError={(error) => setMessage(`File Error: ${error}`)}
+                  />
+                  <SimpleFileUpload
+                    label="Work Pass/Visa Documents"
+                    documentType="workpass"
+                    employeeId={formData.employeeId}
+                    onUploadSuccess={(file) => console.log('Work pass uploaded:', file)}
+                    onError={(error) => setMessage(`File Error: ${error}`)}
+                  />
+                  <SimpleFileUpload
+                    label="Bank Account Details"
+                    documentType="bank"
+                    employeeId={formData.employeeId}
+                    onUploadSuccess={(file) => console.log('Bank details uploaded:', file)}
+                    onError={(error) => setMessage(`File Error: ${error}`)}
+                  />
                 </div>
               </TabsContent>
 

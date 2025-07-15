@@ -27,7 +27,8 @@ export function useAuth() {
       imageUrl: user.imageUrl, // Add this line - Clerk provides imageUrl
       role,
       permissions,
-      organizationId: user.publicMetadata?.organizationId as string || undefined
+      organizationId: user.publicMetadata?.organizationId as string || undefined,
+      publicMetadata: user.publicMetadata as Record<string, any>,
     }
   }, [user, isSignedIn, isMounted])
 

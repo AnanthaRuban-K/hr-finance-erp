@@ -1,4 +1,3 @@
-// apps/frontend/src/app/dashboard/page.tsx
 'use client'
 
 import { useEffect } from 'react'
@@ -19,7 +18,16 @@ function DashboardRedirect() {
       return
     }
 
-    // Redirect based on user role
+    // 🚨 HR Approval required before EMPLOYEE dashboard access
+    if (
+      user.role === UserRole.EMPLOYEE &&
+      user.publicMetadata?.isApproved !== true
+    ) {
+      router.push('/pending-approval') // Or show a friendly message
+      return
+    }
+
+    // ✅ Role-based redirection
     switch (user.role) {
       case UserRole.ADMIN:
         router.push('/admin')
@@ -34,13 +42,15 @@ function DashboardRedirect() {
         router.push('/supervisor')
         break
       case UserRole.EMPLOYEE:
-      default:
         router.push('/employee')
+        break
+      default:
+        router.push('/sign-in')
         break
     }
   }, [user, isLoaded, router])
 
-  // Show loading state while redirecting
+  // ⏳ Show loading state while checking
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">

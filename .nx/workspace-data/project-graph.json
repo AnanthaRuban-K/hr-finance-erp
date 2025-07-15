@@ -11690,17 +11690,17 @@
       },
       {
         "source": "frontend",
-        "target": "npm:typescript",
-        "type": "static"
-      },
-      {
-        "source": "frontend",
         "target": "npm:react",
         "type": "static"
       },
       {
         "source": "frontend",
         "target": "npm:react-dom",
+        "type": "static"
+      },
+      {
+        "source": "frontend",
+        "target": "npm:superjson",
         "type": "static"
       },
       {
@@ -11737,6 +11737,11 @@
       },
       {
         "source": "backend",
+        "target": "npm:@paralleldrive/cuid2",
+        "type": "static"
+      },
+      {
+        "source": "backend",
         "target": "npm:drizzle-orm",
         "type": "static"
       },
@@ -11748,11 +11753,6 @@
       {
         "source": "backend",
         "target": "npm:zod",
-        "type": "static"
-      },
-      {
-        "source": "backend",
-        "target": "npm:@paralleldrive/cuid2",
         "type": "static"
       }
     ],

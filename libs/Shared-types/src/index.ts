@@ -1,3 +1,5 @@
+
+
 // Common types for the ERP system
 export interface User {
   id: string
