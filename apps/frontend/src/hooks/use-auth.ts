@@ -24,6 +24,7 @@ export function useAuth() {
       email: user.emailAddresses[0]?.emailAddress || '',
       firstName: user.firstName || undefined,
       lastName: user.lastName || undefined,
+      imageUrl: user.imageUrl, // Add this line - Clerk provides imageUrl
       role,
       permissions,
       organizationId: user.publicMetadata?.organizationId as string || undefined

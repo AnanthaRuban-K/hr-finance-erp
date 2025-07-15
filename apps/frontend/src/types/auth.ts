@@ -49,6 +49,7 @@ export interface RolePermissions {
 }
 
 export interface AuthUser {
+  imageUrl: string;
   id: string;
   email: string;
   firstName?: string;

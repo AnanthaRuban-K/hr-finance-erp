@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/components/clerk-wrapper'
+import { useAuth } from '@/hooks/use-auth'
 import { UserRole } from '@/types/auth'
 import { ClientOnly } from '@/components/client-only'
 

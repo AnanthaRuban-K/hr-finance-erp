@@ -33,7 +33,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLayoutStore } from '@/lib/store/layout-store';
-import { useAuth } from '@/components/clerk-wrapper';
+import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import {

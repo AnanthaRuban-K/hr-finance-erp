@@ -28,7 +28,7 @@ import {
   UserPlus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/components/clerk-wrapper';
+import { useAuth } from '@/hooks/use-auth';
 import { UserRole } from '@/types/auth';
 import { useLayoutStore } from '@/lib/store/layout-store';
 import { Button } from '@/components/ui/button';

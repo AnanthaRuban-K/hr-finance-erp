@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/components/clerk-wrapper';
+import { useAuth } from '@/hooks/use-auth';
 import { PageHeader } from '@/components/layout/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

@@ -39,11 +39,11 @@
         },
         {
           "file": "apps/frontend/package-lock.json",
-          "hash": "8647003256392594174"
+          "hash": "9003539349024628634"
         },
         {
           "file": "apps/frontend/package.json",
-          "hash": "14688069522028261317",
+          "hash": "4874405031999043170",
           "deps": [
             "npm:@types/node",
             "npm:autoprefixer",
@@ -77,14 +77,14 @@
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/admin/page.tsx",
-          "hash": "708509598788453888",
+          "hash": "9552363446299978514",
           "deps": [
             "npm:react"
           ]
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/dashboard/page.tsx",
-          "hash": "8769222585712907017",
+          "hash": "10795529519556060290",
           "deps": [
             "npm:react",
             "npm:next"
@@ -96,7 +96,10 @@
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/employee/page.tsx",
-          "hash": "15278733055261584212"
+          "hash": "15463309213964317827",
+          "deps": [
+            "npm:react"
+          ]
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/finance/accounts-payable/page.tsx",
@@ -188,18 +191,16 @@
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/finance/accounts-receivable/invoices/create-estimate/page.tsx",
-          "hash": "8315332502881555417",
+          "hash": "5744353230811242911",
           "deps": [
-            "npm:react",
-            "npm:next"
+            "npm:react"
           ]
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/finance/accounts-receivable/invoices/create/page.tsx",
-          "hash": "16251168561684079168",
+          "hash": "16461761325184492953",
           "deps": [
-            "npm:react",
-            "npm:next"
+            "npm:react"
           ]
         },
         {
@@ -224,7 +225,7 @@
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/finance/page.tsx",
-          "hash": "12198893091789091019"
+          "hash": "2088479701504943313"
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/hr/employees/[id]/page.tsx",
@@ -309,12 +310,52 @@
           ]
         },
         {
+          "file": "apps/frontend/src/app/(dashboard)/reports/attendance/page.tsx",
+          "hash": "10819323215415866663",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/reports/financial/page.tsx",
+          "hash": "4002510593742489131",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/reports/hr/page.tsx",
+          "hash": "12840273341466061284",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/reports/layout.tsx",
+          "hash": "7772659335143477767"
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/reports/page.tsx",
+          "hash": "4447914982376723860",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/reports/payroll/page.tsx",
+          "hash": "10697161435359654280",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/app/(dashboard)/supervisor/layout.tsx",
           "hash": "17960374033510399902"
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/supervisor/page.tsx",
-          "hash": "17617172637847549668"
+          "hash": "6666504169796971037"
         },
         {
           "file": "apps/frontend/src/app/globals.css",
@@ -322,7 +363,7 @@
         },
         {
           "file": "apps/frontend/src/app/layout.tsx",
-          "hash": "5148536729241017604",
+          "hash": "10784850650656185526",
           "deps": [
             "npm:next"
           ]
@@ -363,13 +404,6 @@
           ]
         },
         {
-          "file": "apps/frontend/src/components/clerk-wrapper.tsx",
-          "hash": "11214421681808061390",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
           "file": "apps/frontend/src/components/client-only.tsx",
           "hash": "17958618273799453505",
           "deps": [
@@ -378,7 +412,7 @@
         },
         {
           "file": "apps/frontend/src/components/layout/header.tsx",
-          "hash": "17406852740575174468",
+          "hash": "5816288293987563466",
           "deps": [
             "npm:react"
           ]
@@ -393,7 +427,7 @@
         },
         {
           "file": "apps/frontend/src/components/layout/sidebar.tsx",
-          "hash": "11578179517592180153",
+          "hash": "11995050860473473001",
           "deps": [
             "npm:react",
             "npm:next"
@@ -430,6 +464,13 @@
         {
           "file": "apps/frontend/src/components/ui/button.tsx",
           "hash": "9267699881977892517",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/calendar.tsx",
+          "hash": "13578474545646439516",
           "deps": [
             "npm:react"
           ]
@@ -558,6 +599,13 @@
           ]
         },
         {
+          "file": "apps/frontend/src/hooks/use-auth.ts",
+          "hash": "79992300767357031",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/lib/auth/roles.ts",
           "hash": "14998096668591416720"
         },
@@ -578,7 +626,7 @@
         },
         {
           "file": "apps/frontend/src/types/auth.ts",
-          "hash": "10417666299270774754"
+          "hash": "11143120424043545428"
         },
         {
           "file": "apps/frontend/tailwind.config.js",
