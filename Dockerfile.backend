@@ -1,8 +1,8 @@
 # Dockerfile.backend
 FROM node:18-alpine
 
-# Install curl for health checks
-RUN apk add --no-cache curl
+# Install curl and other utilities for debugging
+RUN apk add --no-cache curl bash
 
 # Set working directory
 WORKDIR /app
@@ -10,14 +10,14 @@ WORKDIR /app
 # Copy package files from backend directory
 COPY apps/backend/package*.json ./
 
-# Install dependencies with clean cache
-RUN npm ci --only=production && npm cache clean --force
+# Install dependencies with verbose logging
+RUN npm ci --only=production --verbose
 
 # Copy source code from backend directory
 COPY apps/backend ./
 
-# Build the application
-RUN npm run build
+# Build the application with error checking
+RUN npm run build && ls -la dist/
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
@@ -32,12 +32,20 @@ USER nodejs
 # Expose port 3001
 EXPOSE 3001
 
-# Add health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-  CMD curl -f http://localhost:3001/health || exit 1
-
 # Set environment to production
 ENV NODE_ENV=production
 
-# Start the application with proper error handling
-CMD ["node", "dist/index.js"]
+# Add a simple health check script
+RUN echo '#!/bin/sh\ncurl -f http://localhost:3001/health || exit 1' > /app/healthcheck.sh && \
+    chmod +x /app/healthcheck.sh
+
+# Health check with longer intervals for startup
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
+  CMD /app/healthcheck.sh
+
+# Create startup script to handle errors gracefully
+RUN echo '#!/bin/sh\necho "Starting HR Finance ERP Backend..."\necho "Node version: $(node --version)"\necho "NPM version: $(npm --version)"\necho "Current directory: $(pwd)"\necho "Directory contents:"\nls -la\necho "Dist directory contents:"\nls -la dist/ || echo "No dist directory found"\necho "Environment variables:"\necho "PORT: $PORT"\necho "NODE_ENV: $NODE_ENV"\necho "Starting application..."\nexec node dist/index.js' > /app/start.sh && \
+    chmod +x /app/start.sh
+
+# Start the application with the startup script
+CMD ["/app/start.sh"]
