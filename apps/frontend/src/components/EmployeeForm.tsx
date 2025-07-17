@@ -164,11 +164,14 @@ interface ValidationErrors {
 interface FileInfo {
   originalName: string;
   fileName: string;
-  folder: string;
+  fullPath: string;
+  folderPath: string;
   url: string;
   size: number;
   type: string;
   uploadDate: string;
+  employeeId: string;
+  documentType: string;
 }
 
 interface EmployeeFormProps {
@@ -214,7 +217,7 @@ interface EmployeeAPIResponse {
   [key: string]: string | number | boolean | null | undefined;
 }
 
-// Simple File Upload Component with MinIO
+// Enhanced Simple File Upload Component with MinIO
 interface SimpleFileUploadProps {
   label: string;
   documentType: string;
@@ -236,7 +239,8 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
   const [uploadedFiles, setUploadedFiles] = useState<FileInfo[]>([]);
   const [dragOver, setDragOver] = useState(false);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  // ✅ UPDATED: Use production API URL
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.sbrosenterpriseerp.com';
 
   const handleFileUpload = async (file: File) => {
     if (!file || !employeeId) {
@@ -253,6 +257,7 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
     const allowedTypes = [
       'application/pdf', 
       'image/jpeg', 
+      'image/jpg',
       'image/png', 
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -271,12 +276,24 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
       formData.append('employeeId', employeeId);
       formData.append('documentType', documentType);
 
-      console.log('📤 Uploading file:', { fileName: file.name, employeeId, documentType });
+      console.log('📤 Uploading file:', { 
+        fileName: file.name, 
+        employeeId, 
+        documentType, 
+        size: file.size,
+        type: file.type,
+        apiUrl: `${API_BASE_URL}/api/upload`
+      });
 
       const response = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         body: formData,
+        credentials: 'include',
       });
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+      }
 
       const result = await response.json();
 
@@ -284,13 +301,33 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
         console.log('✅ Upload successful:', result.file);
         setUploadedFiles(prev => [...prev, result.file]);
         onUploadSuccess?.(result.file);
+        
+        // Show success message
+        onError?.(`✅ ${file.name} uploaded successfully!`);
+        setTimeout(() => {
+          onError?.(''); // Clear message after 3 seconds
+        }, 3000);
       } else {
         throw new Error(result.error || 'Upload failed');
       }
 
     } catch (error) {
       console.error('❌ Upload error:', error);
-      onError?.(error instanceof Error ? error.message : 'Upload failed');
+      let errorMessage = 'Upload failed';
+      
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Unable to connect to server. Please check your internet connection.';
+        } else if (error.message.includes('500')) {
+          errorMessage = 'Server error. Please try again later.';
+        } else if (error.message.includes('413')) {
+          errorMessage = 'File too large. Please select a file under 5MB.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      onError?.(errorMessage);
     } finally {
       setUploading(false);
     }
@@ -310,21 +347,37 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
 
   const handleDelete = async (fileInfo: FileInfo) => {
     try {
+      console.log('🗑️ Deleting file:', fileInfo.fullPath);
+      
       const response = await fetch(
         `${API_BASE_URL}/api/delete/${employeeId}/${documentType}/${fileInfo.fileName}`,
-        { method: 'DELETE' }
+        { 
+          method: 'DELETE',
+          credentials: 'include',
+        }
       );
+
+      if (!response.ok) {
+        throw new Error(`Delete failed: ${response.status} ${response.statusText}`);
+      }
 
       const result = await response.json();
 
       if (result.success) {
         setUploadedFiles(prev => prev.filter(f => f.fileName !== fileInfo.fileName));
+        console.log('✅ File deleted successfully');
       } else {
-        onError?.(result.error || 'Delete failed');
+        throw new Error(result.error || 'Delete failed');
       }
     } catch (error) {
-      onError?.('Delete failed');
+      console.error('❌ Delete error:', error);
+      onError?.(error instanceof Error ? error.message : 'Delete failed');
     }
+  };
+
+  const handleView = (fileInfo: FileInfo) => {
+    console.log('👁️ Opening file:', fileInfo.url);
+    window.open(fileInfo.url, '_blank');
   };
 
   const formatFileSize = (bytes: number) => {
@@ -367,14 +420,19 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
           </div>
         ) : uploading ? (
           <div className="flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-            <span className="ml-2 text-gray-600">Uploading...</span>
+            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            <span className="ml-2 text-gray-600">Uploading to MinIO...</span>
           </div>
         ) : (
           <>
             <Upload className="mx-auto h-12 w-12 text-gray-400" />
             <p className="mt-2 text-sm text-gray-600">Click to upload or drag and drop</p>
             <p className="text-xs text-gray-500">PDF, DOC, DOCX, JPG, PNG (max 5MB)</p>
+            {employeeId && (
+              <p className="text-xs text-blue-500 mt-1">
+                Files will be stored in: {employeeId}/{documentType}/
+              </p>
+            )}
           </>
         )}
       </div>
@@ -382,14 +440,18 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
       {/* Uploaded Files */}
       {uploadedFiles.length > 0 && (
         <div className="space-y-2">
+          <h4 className="text-sm font-medium text-gray-700">Uploaded Files:</h4>
           {uploadedFiles.map((file, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
+            <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
               <div className="flex items-center space-x-3">
-                <FileText className="h-5 w-5 text-gray-500" />
+                <FileText className="h-5 w-5 text-green-600" />
                 <div>
-                  <p className="text-sm font-medium">{file.originalName}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm font-medium text-green-800">{file.originalName}</p>
+                  <p className="text-xs text-green-600">
                     {formatFileSize(file.size)} • {new Date(file.uploadDate).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    📁 Path: {file.folderPath}/{file.fileName}
                   </p>
                 </div>
               </div>
@@ -398,8 +460,9 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(file.url, '_blank')}
+                  onClick={() => handleView(file)}
                   title="View file"
+                  className="text-blue-600 hover:text-blue-700 border-blue-200"
                 >
                   <Download className="h-4 w-4" />
                 </Button>
@@ -408,7 +471,7 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
                   variant="outline"
                   size="sm"
                   onClick={() => handleDelete(file)}
-                  className="text-red-600 hover:text-red-700"
+                  className="text-red-600 hover:text-red-700 border-red-200"
                   title="Delete file"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -422,16 +485,22 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
   );
 };
 
-// ✅ FIXED: API Configuration
+// ✅ API Configuration with better error handling
 const getApiUrl = () => {
-  // Debug logging
-  console.log('Environment check:');
-  console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
-  console.log('NODE_ENV:', process.env.NODE_ENV);
+  // Debug logging for development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Environment check:');
+    console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+  }
   
   // Return the environment variable or fallback to the production URL
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.sbrosenterpriseerp.com';
-  console.log('Using API URL:', apiUrl);
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Using API URL:', apiUrl);
+  }
+  
   return apiUrl;
 };
 
@@ -446,6 +515,8 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
   const [uploadedFiles, setUploadedFiles] = useState<{[key: string]: File}>({});
   const [phoneCountryCode, setPhoneCountryCode] = useState("+65");
   const [emergencyPhoneCountryCode, setEmergencyPhoneCountryCode] = useState("+65");
+  
+  // Initialize form data with proper type casting
   const [formData, setFormData] = useState<EmployeeFormData>({
     // Personal Information
     fullName: initialData?.fullName || "",
@@ -696,7 +767,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
         uploadedFiles: Object.keys(uploadedFiles)
       };
 
-      // ✅ FIXED: Use proper API URL configuration
+      // ✅ UPDATED: Use proper API URL configuration with better error handling
       const API_BASE_URL = getApiUrl();
       const url = isEditMode 
         ? `${API_BASE_URL}/employees/${employeeId}`
@@ -708,23 +779,33 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
       console.log(`Method: ${method}`);
       console.log('Data:', submitData);
 
-      // API call to backend
+      // API call to backend with improved error handling
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // ✅ ADDED: Include credentials for CORS
         body: JSON.stringify(submitData),
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.error) {
+            errorMessage = errorData.error;
+          }
+        } catch (e) {
+          // If can't parse JSON, use the status text
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
 
       if (result.success) {
-        setMessage(isEditMode ? "Employee updated successfully!" : "Employee created successfully!");
+        setMessage(`✅ ${isEditMode ? "Employee updated successfully!" : "Employee created successfully!"}`);
         
         // Call onSuccess callback if provided
         if (onSuccess) {
@@ -762,21 +843,26 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
           }, 2000); // Close after 2 seconds to show success message
         }
       } else {
-        setMessage(`Error: ${result.error}`);
+        setMessage(`❌ Error: ${result.error || 'Submission failed'}`);
       }
       
     } catch (error) {
       let errorMessage = 'An unknown error occurred';
       
       if (error instanceof Error) {
-        errorMessage = error.message;
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Unable to connect to server. Please check your internet connection.';
+        } else if (error.message.includes('CORS')) {
+          errorMessage = 'Cross-origin request blocked. Please check CORS configuration.';
+        } else {
+          errorMessage = error.message;
+        }
       } else if (typeof error === 'string') {
         errorMessage = error;
-      } else {
-        errorMessage = JSON.stringify(error);
       }
       
-      setMessage(`Error: ${errorMessage}`);
+      setMessage(`❌ Error: ${errorMessage}`);
+      console.error('Submit error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -885,9 +971,11 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
         {message && (
           <div className="m-6">
             <div className={`p-4 rounded-md ${
-              message.includes('Error') || message.includes('error') || message.includes('validation') 
+              message.includes('❌') || message.includes('Error') || message.includes('error') || message.includes('validation') 
                 ? 'bg-red-50 text-red-700 border border-red-200' 
-                : 'bg-green-50 text-green-700 border border-green-200'
+                : message.includes('✅')
+                ? 'bg-green-50 text-green-700 border border-green-200'
+                : 'bg-blue-50 text-blue-700 border border-blue-200'
             }`}>
               {message}
             </div>
@@ -1335,6 +1423,9 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                       />
                       <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
                     </div>
+                    <ValidationError fieldName="joinDate" />
+                  </div>
+                  
                   <div>
                     <Label htmlFor="employmentType" className="block mb-1">
                       Employment Type <span className="text-red-500">*</span>
@@ -1373,7 +1464,6 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                     />
                     <ValidationError fieldName="reportingManager" />
                   </div>
-                </div>
                 </div>
               </TabsContent>
 
@@ -1504,7 +1594,7 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                     employeeId={formData.employeeId}
                     required
                     onUploadSuccess={(file) => console.log('NRIC uploaded:', file)}
-                    onError={(error) => setMessage(`File Error: ${error}`)}
+                    onError={(error) => setMessage(error)}
                   />
                   <SimpleFileUpload
                     label="Employee Photo"
@@ -1512,35 +1602,35 @@ export default function EmployeeForm({ onClose, onSuccess, initialData, isEdit =
                     employeeId={formData.employeeId}
                     required
                     onUploadSuccess={(file) => console.log('Photo uploaded:', file)}
-                    onError={(error) => setMessage(`File Error: ${error}`)}
+                    onError={(error) => setMessage(error)}
                   />
                   <SimpleFileUpload
                     label="Resume/CV"
                     documentType="resume"
                     employeeId={formData.employeeId}
                     onUploadSuccess={(file) => console.log('Resume uploaded:', file)}
-                    onError={(error) => setMessage(`File Error: ${error}`)}
+                    onError={(error) => setMessage(error)}
                   />
                   <SimpleFileUpload
                     label="Educational Certificates"
                     documentType="education"
                     employeeId={formData.employeeId}
                     onUploadSuccess={(file) => console.log('Education uploaded:', file)}
-                    onError={(error) => setMessage(`File Error: ${error}`)}
+                    onError={(error) => setMessage(error)}
                   />
                   <SimpleFileUpload
                     label="Work Pass/Visa Documents"
                     documentType="workpass"
                     employeeId={formData.employeeId}
                     onUploadSuccess={(file) => console.log('Work pass uploaded:', file)}
-                    onError={(error) => setMessage(`File Error: ${error}`)}
+                    onError={(error) => setMessage(error)}
                   />
                   <SimpleFileUpload
                     label="Bank Account Details"
                     documentType="bank"
                     employeeId={formData.employeeId}
                     onUploadSuccess={(file) => console.log('Bank details uploaded:', file)}
-                    onError={(error) => setMessage(`File Error: ${error}`)}
+                    onError={(error) => setMessage(error)}
                   />
                 </div>
               </TabsContent>

@@ -1,17 +1,21 @@
+// components/ui/SimpleFileUpload.tsx
 "use client";
 
 import React, { useState } from 'react';
-import { Upload, FileText, Download, Trash2, Loader2 } from 'lucide-react';
-import { Button } from './button';
+import { Upload, FileText, Download, Trash2, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface FileInfo {
   originalName: string;
   fileName: string;
-  folder: string;
+  fullPath: string;
+  folderPath: string;
   url: string;
   size: number;
   type: string;
   uploadDate: string;
+  employeeId: string;
+  documentType: string;
 }
 
 interface SimpleFileUploadProps {
@@ -21,68 +25,75 @@ interface SimpleFileUploadProps {
   required?: boolean;
   onUploadSuccess?: (file: FileInfo) => void;
   onError?: (error: string) => void;
+  accept?: string;
+  maxSize?: number; // in bytes
+  className?: string;
+  multiple?: boolean;
 }
 
-const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
+export const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
   label,
   documentType,
   employeeId,
   required = false,
   onUploadSuccess,
-  onError
+  onError,
+  accept = ".pdf,.jpg,.jpeg,.png,.doc,.docx",
+  maxSize = 5 * 1024 * 1024, // 5MB default
+  className = "",
+  multiple = false
 }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<FileInfo[]>([]);
   const [dragOver, setDragOver] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  // ✅ Use production API URL
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.sbrosenterpriseerp.com';
 
-  // ✅ DEBUG: Log API URL on component mount
-  React.useEffect(() => {
-    console.log('🌐 SimpleFileUpload mounted with API_BASE_URL:', API_BASE_URL);
-    console.log('📋 Document type:', documentType);
-    console.log('👤 Employee ID:', employeeId);
-  }, [API_BASE_URL, documentType, employeeId]);
+  const validateFile = (file: File): string | null => {
+    // File size validation
+    if (file.size > maxSize) {
+      return `File size must be less than ${Math.round(maxSize / (1024 * 1024))}MB`;
+    }
+
+    // File type validation
+    const allowedTypes = [
+      'application/pdf',
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      return 'Invalid file type. Only PDF, JPG, PNG, DOC, DOCX allowed';
+    }
+
+    // File name validation
+    const invalidChars = /[<>:"/\\|?*]/g;
+    if (invalidChars.test(file.name)) {
+      return 'File name contains invalid characters';
+    }
+
+    return null;
+  };
 
   const handleFileUpload = async (file: File) => {
-    console.log('🚀 handleFileUpload called');
-    console.log('📁 File details:', {
-      name: file.name,
-      size: file.size,
-      type: file.type
-    });
-    console.log('👤 Employee ID:', employeeId);
-    console.log('📋 Document type:', documentType);
-
     if (!file || !employeeId) {
-      console.log('❌ Missing file or employeeId');
       onError?.('Employee ID is required for file upload');
       return;
     }
 
-    // Validate file size and type
-    if (file.size > 5 * 1024 * 1024) {
-      console.log('❌ File too large:', file.size);
-      onError?.('File size must be less than 5MB');
+    const validationError = validateFile(file);
+    if (validationError) {
+      onError?.(validationError);
       return;
     }
 
-    const allowedTypes = [
-      'application/pdf', 
-      'image/jpeg', 
-      'image/png', 
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    ];
-    
-    if (!allowedTypes.includes(file.type)) {
-      console.log('❌ Invalid file type:', file.type);
-      onError?.('Invalid file type. Only PDF, JPG, PNG, DOC, DOCX allowed');
-      return;
-    }
-
-    console.log('✅ File validation passed');
     setUploading(true);
+    setUploadProgress(0);
 
     try {
       const formData = new FormData();
@@ -90,166 +101,240 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
       formData.append('employeeId', employeeId);
       formData.append('documentType', documentType);
 
-      console.log('📦 FormData created');
-      console.log('🎯 Making request to:', `${API_BASE_URL}/api/upload`);
-
-      // ✅ Add timeout to prevent infinite loading
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => {
-        console.log('⏰ Request timeout after 30 seconds');
-        controller.abort();
-      }, 30000); // 30 second timeout
-
-      const response = await fetch(`${API_BASE_URL}/api/upload`, {
-        method: 'POST',
-        body: formData,
-        signal: controller.signal,
-        // ✅ Don't set Content-Type header, let browser set it for FormData
+      console.log('📤 Uploading file:', { 
+        fileName: file.name, 
+        employeeId, 
+        documentType, 
+        size: file.size,
+        type: file.type,
+        apiUrl: `${API_BASE_URL}/api/upload`
       });
 
-      clearTimeout(timeoutId);
+      // Create XMLHttpRequest for progress tracking
+      const xhr = new XMLHttpRequest();
+      
+      return new Promise<void>((resolve, reject) => {
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) {
+            const progress = Math.round((e.loaded / e.total) * 100);
+            setUploadProgress(progress);
+          }
+        });
 
-      console.log('📨 Response received');
-      console.log('📊 Status:', response.status);
-      console.log('📊 Status text:', response.statusText);
-      console.log('📊 OK:', response.ok);
+        xhr.addEventListener('load', async () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              const result = JSON.parse(xhr.responseText);
+              
+              if (result.success) {
+                console.log('✅ Upload successful:', result.file);
+                setUploadedFiles(prev => [...prev, result.file]);
+                onUploadSuccess?.(result.file);
+                
+                // Show success message
+                onError?.(`✅ ${file.name} uploaded successfully!`);
+                setTimeout(() => onError?.(''), 3000);
+                resolve();
+              } else {
+                reject(new Error(result.error || 'Upload failed'));
+              }
+            } catch (e) {
+              reject(new Error('Invalid server response'));
+            }
+          } else {
+            reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`));
+          }
+        });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log('❌ Error response body:', errorText);
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+        xhr.addEventListener('error', () => {
+          reject(new Error('Network error during upload'));
+        });
 
-      const result = await response.json();
-      console.log('📨 Response data:', result);
+        xhr.addEventListener('timeout', () => {
+          reject(new Error('Upload timeout'));
+        });
 
-      if (result.success) {
-        console.log('✅ Upload successful');
-        setUploadedFiles(prev => [...prev, result.file]);
-        onUploadSuccess?.(result.file);
-      } else {
-        console.log('❌ Upload failed:', result.error);
-        throw new Error(result.error || 'Upload failed');
-      }
+        xhr.open('POST', `${API_BASE_URL}/api/upload`);
+        xhr.timeout = 60000; // 60 second timeout
+        xhr.send(formData);
+      });
 
     } catch (error) {
       console.error('❌ Upload error:', error);
+      let errorMessage = 'Upload failed';
       
-      if (error.name === 'AbortError') {
-        onError?.('Upload timeout - please try again');
-      } else {
-        onError?.(error instanceof Error ? error.message : 'Upload failed');
+      if (error instanceof Error) {
+        if (error.message.includes('Network error')) {
+          errorMessage = 'Network error. Please check your internet connection.';
+        } else if (error.message.includes('timeout')) {
+          errorMessage = 'Upload timeout. Please try again with a smaller file.';
+        } else if (error.message.includes('500')) {
+          errorMessage = 'Server error. Please try again later.';
+        } else if (error.message.includes('413')) {
+          errorMessage = 'File too large. Please select a smaller file.';
+        } else {
+          errorMessage = error.message;
+        }
       }
+      
+      onError?.(errorMessage);
     } finally {
       setUploading(false);
-      console.log('🏁 Upload process finished');
+      setUploadProgress(0);
     }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('📂 File selected from input');
-    const file = e.target.files?.[0];
-    if (file) {
-      console.log('📁 Selected file:', file.name);
-      handleFileUpload(file);
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      if (multiple) {
+        Array.from(files).forEach(file => handleFileUpload(file));
+      } else {
+        handleFileUpload(files[0]);
+      }
     }
+    // Reset input value to allow re-uploading the same file
+    e.target.value = '';
   };
 
   const handleDrop = (e: React.DragEvent) => {
-    console.log('📂 File dropped');
     e.preventDefault();
     setDragOver(false);
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      console.log('📁 Dropped file:', file.name);
-      handleFileUpload(file);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      if (multiple) {
+        Array.from(files).forEach(file => handleFileUpload(file));
+      } else {
+        handleFileUpload(files[0]);
+      }
     }
   };
 
   const handleDelete = async (fileInfo: FileInfo) => {
-    console.log('🗑️ Delete file:', fileInfo.fileName);
+    if (!confirm(`Are you sure you want to delete ${fileInfo.originalName}?`)) {
+      return;
+    }
+
     try {
+      console.log('🗑️ Deleting file:', fileInfo.fullPath);
+      
       const response = await fetch(
         `${API_BASE_URL}/api/delete/${employeeId}/${documentType}/${fileInfo.fileName}`,
-        { method: 'DELETE' }
+        {
+          method: 'DELETE',
+          credentials: 'include',
+        }
       );
+
+      if (!response.ok) {
+        throw new Error(`Delete failed: ${response.status} ${response.statusText}`);
+      }
 
       const result = await response.json();
 
       if (result.success) {
         setUploadedFiles(prev => prev.filter(f => f.fileName !== fileInfo.fileName));
         console.log('✅ File deleted successfully');
+        onError?.(`🗑️ ${fileInfo.originalName} deleted successfully`);
+        setTimeout(() => onError?.(''), 3000);
       } else {
-        onError?.(result.error || 'Delete failed');
+        throw new Error(result.error || 'Delete failed');
       }
     } catch (error) {
       console.error('❌ Delete error:', error);
-      onError?.('Delete failed');
+      onError?.(error instanceof Error ? error.message : 'Delete failed');
     }
   };
 
-  const formatFileSize = (bytes: number) => {
+  const handleView = (fileInfo: FileInfo) => {
+    console.log('👁️ Opening file:', fileInfo.url);
+    window.open(fileInfo.url, '_blank', 'noopener,noreferrer');
+  };
+
+  const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB'];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  const getFileIcon = (fileType: string) => {
+    if (fileType.startsWith('image/')) {
+      return '🖼️';
+    } else if (fileType === 'application/pdf') {
+      return '📄';
+    } else if (fileType.includes('word')) {
+      return '📝';
+    }
+    return '📎';
+  };
+
   return (
-    <div className="space-y-4">
+    <div className={`space-y-4 ${className}`}>
+      {/* Label */}
       <label className="block text-sm font-medium text-gray-700">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
 
-      {/* ✅ DEBUG: Show current state */}
-      <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
-        <strong>Debug Info:</strong><br/>
-        API URL: {API_BASE_URL}<br/>
-        Employee ID: {employeeId || 'Not set'}<br/>
-        Document Type: {documentType}<br/>
-        Uploading: {uploading ? 'Yes' : 'No'}
-      </div>
-
       {/* Upload Area */}
       <div
-        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
-          dragOver ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+        className={`border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200 cursor-pointer ${
+          dragOver 
+            ? 'border-blue-400 bg-blue-50 scale-105' 
+            : uploading 
+            ? 'border-yellow-400 bg-yellow-50' 
+            : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
         } ${!employeeId ? 'opacity-50 cursor-not-allowed' : ''}`}
         onDrop={handleDrop}
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={(e) => { e.preventDefault(); setDragOver(false); }}
-        onClick={() => {
-          console.log('📂 Upload area clicked');
-          if (employeeId) {
-            document.getElementById(`file-${documentType}`)?.click();
-          }
-        }}
+        onClick={() => employeeId && !uploading && document.getElementById(`file-${documentType}`)?.click()}
       >
         <input
           id={`file-${documentType}`}
           type="file"
           className="hidden"
-          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+          accept={accept}
           onChange={handleFileSelect}
           disabled={uploading || !employeeId}
+          multiple={multiple}
         />
 
         {!employeeId ? (
           <div className="text-gray-500">
-            <Upload className="mx-auto h-8 w-8 text-gray-300 mb-2" />
+            <AlertCircle className="mx-auto h-8 w-8 text-gray-300 mb-2" />
             <p className="text-sm">Please enter Employee ID first</p>
           </div>
         ) : uploading ? (
-          <div className="flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-            <span className="ml-2 text-gray-600">Uploading...</span>
+          <div className="space-y-3">
+            <div className="flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+              <span className="ml-2 text-gray-600">Uploading...</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
+            </div>
+            <p className="text-sm text-gray-600">{uploadProgress}% complete</p>
           </div>
         ) : (
           <>
-            <Upload className="mx-auto h-12 w-12 text-gray-400" />
-            <p className="mt-2 text-sm text-gray-600">Click to upload or drag and drop</p>
-            <p className="text-xs text-gray-500">PDF, DOC, DOCX, JPG, PNG (max 5MB)</p>
+            <Upload className={`mx-auto h-12 w-12 transition-colors ${dragOver ? 'text-blue-500' : 'text-gray-400'}`} />
+            <p className="mt-2 text-sm text-gray-600">
+              {dragOver ? 'Drop files here' : 'Click to upload or drag and drop'}
+            </p>
+            <p className="text-xs text-gray-500">
+              PDF, DOC, DOCX, JPG, PNG (max {Math.round(maxSize / (1024 * 1024))}MB)
+            </p>
+            {employeeId && (
+              <p className="text-xs text-blue-500 mt-1">
+                📁 Files will be stored in: {employeeId}/{documentType}/
+              </p>
+            )}
           </>
         )}
       </div>
@@ -257,24 +342,32 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
       {/* Uploaded Files */}
       {uploadedFiles.length > 0 && (
         <div className="space-y-2">
+          <h4 className="text-sm font-medium text-gray-700 flex items-center">
+            <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+            Uploaded Files ({uploadedFiles.length})
+          </h4>
           {uploadedFiles.map((file, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
+            <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200 hover:bg-green-100 transition-colors">
               <div className="flex items-center space-x-3">
-                <FileText className="h-5 w-5 text-gray-500" />
-                <div>
-                  <p className="text-sm font-medium">{file.originalName}</p>
-                  <p className="text-xs text-gray-500">
+                <div className="text-2xl">{getFileIcon(file.type)}</div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-green-800 truncate">{file.originalName}</p>
+                  <p className="text-xs text-green-600">
                     {formatFileSize(file.size)} • {new Date(file.uploadDate).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    📁 {file.folderPath}/{file.fileName}
                   </p>
                 </div>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 ml-2">
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(file.url, '_blank')}
+                  onClick={() => handleView(file)}
                   title="View file"
+                  className="text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300"
                 >
                   <Download className="h-4 w-4" />
                 </Button>
@@ -283,7 +376,7 @@ const SimpleFileUpload: React.FC<SimpleFileUploadProps> = ({
                   variant="outline"
                   size="sm"
                   onClick={() => handleDelete(file)}
-                  className="text-red-600 hover:text-red-700"
+                  className="text-red-600 hover:text-red-700 border-red-200 hover:border-red-300"
                   title="Delete file"
                 >
                   <Trash2 className="h-4 w-4" />
