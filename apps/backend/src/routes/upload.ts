@@ -1,12 +1,13 @@
 // apps/backend/src/routes/upload.ts
 import { Hono } from 'hono';
+// ✅ FIXED: Add .js extension for ES modules
 import { 
   uploadFile, 
   deleteFile, 
   getDownloadUrl, 
   generateEmployeeFilePath,
   createBucketIfNotExists 
-} from '../lib/minio';
+} from '../lib/minio.js';
 
 const uploadRoute = new Hono();
 
