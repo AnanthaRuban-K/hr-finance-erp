@@ -29,14 +29,14 @@ RUN chown -R nodejs:nodejs /app
 # Switch to non-root user
 USER nodejs
 
-# Expose port 3001
-EXPOSE 3001
+# Expose port 3201
+EXPOSE 3201
 
 # Set environment to production
 ENV NODE_ENV=production
 
 # Add a simple health check script
-RUN echo '#!/bin/sh\ncurl -f http://localhost:3001/health || exit 1' > /app/healthcheck.sh && \
+RUN echo '#!/bin/sh\ncurl -f http://localhost:3201/health || exit 1' > /app/healthcheck.sh && \
     chmod +x /app/healthcheck.sh
 
 # Health check with longer intervals for startup

@@ -16,7 +16,7 @@ const app = new Hono();
 
 // ✅ Updated CORS configuration with correct frontend URL
 const allowedOrigins = [
-  'http://localhost:3000', // Development frontend
+  'http://localhost:3200', // Development frontend
   'https://erp.sbrosenterpriseerp.com', // Production frontend
   'https://api.sbrosenterpriseerp.com', // Backend API
   'https://minio-console.sbrosenterpriseerp.com', // MinIO Console
@@ -90,7 +90,7 @@ app.get('/', async (c) => {
       timestamp: new Date().toISOString(),
       version: '1.0.0',
       environment: process.env.NODE_ENV || 'development',
-      port: process.env.PORT || '3001',
+      port: process.env.PORT || '3201',
       services: {
         api: 'running',
         minio: minioStatus.connected ? 'connected' : 'disconnected',
@@ -237,7 +237,7 @@ app.notFound((c) => {
   }, 404);
 });
 
-const port = parseInt(process.env.PORT || '3001');
+const port = parseInt(process.env.PORT || '3201');
 
 // ✅ Enhanced startup logging
 console.log('🚀 Starting HR-Finance ERP Backend Server...');

@@ -2,7 +2,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { db } from '../db/index.js';
-import { employees } from '../db/schema.js';
+import { employees } from '../db/schema/03-employees.js'; // Adjust import path as needed
 import { eq, ilike, or, and, desc, asc, sql } from 'drizzle-orm';
 
 const employeesRouter = new Hono();

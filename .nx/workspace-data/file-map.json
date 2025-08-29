@@ -24,7 +24,7 @@
         },
         {
           "file": "apps/frontend/middleware.ts",
-          "hash": "5068129969549644213",
+          "hash": "14044882722398157451",
           "deps": [
             "npm:next"
           ]
@@ -43,7 +43,7 @@
         },
         {
           "file": "apps/frontend/package.json",
-          "hash": "1764171340961158696",
+          "hash": "11326023276811106438",
           "deps": [
             "npm:@types/node",
             "npm:autoprefixer",
@@ -251,7 +251,10 @@
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/hr/layout.tsx",
-          "hash": "11961446303902422109"
+          "hash": "12508053901127598951",
+          "deps": [
+            "npm:next"
+          ]
         },
         {
           "file": "apps/frontend/src/app/(dashboard)/hr/leave/apply/page.tsx",
@@ -310,6 +313,70 @@
           ]
         },
         {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/applications/[id]/page.tsx",
+          "hash": "17056872033251345912",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/applications/page.tsx",
+          "hash": "4081854512116105087",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/interviews/[id]/page.tsx",
+          "hash": "16364376637719722323",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/interviews/page.tsx",
+          "hash": "16218825822810016470",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/jobs/[id]/edit/page.tsx",
+          "hash": "483324195471955855",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/jobs/[id]/page.tsx",
+          "hash": "750919705427583517",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/jobs/create/page.tsx",
+          "hash": "7951819762581449782",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/jobs/page.tsx",
+          "hash": "15600471584012770996",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/hr/recruitment/page.tsx",
+          "hash": "14081325991401578497",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
           "file": "apps/frontend/src/app/(dashboard)/reports/attendance/page.tsx",
           "hash": "10819323215415866663",
           "deps": [
@@ -358,6 +425,14 @@
           "hash": "6666504169796971037"
         },
         {
+          "file": "apps/frontend/src/app/debug-user/page.tsx",
+          "hash": "12587680634788939910",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/app/globals.css",
           "hash": "7267771745373918978"
         },
@@ -377,12 +452,36 @@
           ]
         },
         {
+          "file": "apps/frontend/src/app/pending-approval/page.tsx",
+          "hash": "6199266523929861441",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/setup-profile/page.tsx",
+          "hash": "16539725801916713197",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/app/template.tsx",
           "hash": "2448193765458363350"
         },
         {
+          "file": "apps/frontend/src/app/unauthorized/page.tsx",
+          "hash": "14276798416587185306",
+          "deps": [
+            "npm:next",
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/components/EmployeeForm.tsx",
-          "hash": "18072788529511718659",
+          "hash": "8857639327190853331",
           "deps": [
             "npm:react",
             "npm:zod"
@@ -398,7 +497,7 @@
         },
         {
           "file": "apps/frontend/src/components/auth/role-guard.tsx",
-          "hash": "17469877209494036279",
+          "hash": "6591306018238994377",
           "deps": [
             "npm:react"
           ]
@@ -431,6 +530,131 @@
           "deps": [
             "npm:react",
             "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/ApplicationCard.tsx",
+          "hash": "7207408278033619534",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/ApplicationDetails.tsx",
+          "hash": "10110753528128626011",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/ApplicationTimeline.tsx",
+          "hash": "7603616987804472172",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/ApplicationsList.tsx",
+          "hash": "4824839962136377285",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/InterviewDetails.tsx",
+          "hash": "8850126709653508464",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/InterviewScheduler.tsx",
+          "hash": "5624862722994443133",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/InterviewsList.tsx",
+          "hash": "5825631141308560749",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/JobPostingCard.tsx",
+          "hash": "4660430492333507027",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/JobPostingDetails.tsx",
+          "hash": "4667805329293368708",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/JobPostingForm.tsx",
+          "hash": "8395340720331404363",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/JobPostingsList.tsx",
+          "hash": "12981116912070015313",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/RecruitmentDashboard.tsx",
+          "hash": "6641585108838382192",
+          "deps": [
+            "npm:react",
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/RecruitmentStats.tsx",
+          "hash": "13934604201288266245",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/recruitment/index.ts",
+          "hash": "5132627510543702074"
+        },
+        {
+          "file": "apps/frontend/src/components/ui/EmptyState.tsx",
+          "hash": "13555580353964154002",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/LoadingSpinner.tsx",
+          "hash": "8246642059633043783",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/components/ui/StatusBadge.tsx",
+          "hash": "13046812749047065831",
+          "deps": [
+            "npm:react"
           ]
         },
         {
@@ -561,7 +785,7 @@
         },
         {
           "file": "apps/frontend/src/components/ui/simple-file-upload.tsx",
-          "hash": "7667044710679112431",
+          "hash": "11252569043603205366",
           "deps": [
             "npm:react"
           ]
@@ -607,14 +831,25 @@
         },
         {
           "file": "apps/frontend/src/hooks/use-auth.ts",
-          "hash": "7714516968345360821",
+          "hash": "9167241773087012992",
           "deps": [
             "npm:react"
           ]
         },
         {
+          "file": "apps/frontend/src/hooks/useRecruitment.ts",
+          "hash": "9240322024007089735",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/lib/api/recruitment.ts",
+          "hash": "9447432373199395540"
+        },
+        {
           "file": "apps/frontend/src/lib/auth/roles.ts",
-          "hash": "14998096668591416720"
+          "hash": "7226841614539748722"
         },
         {
           "file": "apps/frontend/src/lib/store/layout-store.tsx",
@@ -633,7 +868,11 @@
         },
         {
           "file": "apps/frontend/src/types/auth.ts",
-          "hash": "11865271509913937623"
+          "hash": "15680875329930669567"
+        },
+        {
+          "file": "apps/frontend/src/types/employee.ts",
+          "hash": "15308861116297252540"
         },
         {
           "file": "apps/frontend/tailwind.config.js",
@@ -647,23 +886,35 @@
       "backend": [
         {
           "file": "apps/backend/.dockerignore",
-          "hash": "11149514358203578948"
+          "hash": "4608769011316585362"
         },
         {
           "file": "apps/backend/drizzle.config.ts",
-          "hash": "2024377004870645435",
+          "hash": "16353705934067194712",
           "deps": [
             "npm:drizzle-kit",
             "npm:dotenv"
           ]
         },
         {
+          "file": "apps/backend/drizzle/0000_first_outlaw_kid.sql",
+          "hash": "2800908757196708112"
+        },
+        {
+          "file": "apps/backend/drizzle/meta/0000_snapshot.json",
+          "hash": "9368331568466214588"
+        },
+        {
+          "file": "apps/backend/drizzle/meta/_journal.json",
+          "hash": "12929977951539576633"
+        },
+        {
           "file": "apps/backend/package-lock.json",
-          "hash": "1475347021676956564"
+          "hash": "8048030587796710352"
         },
         {
           "file": "apps/backend/package.json",
-          "hash": "16461402575068630344",
+          "hash": "6354039140128037818",
           "deps": [
             "npm:@types/node",
             "npm:@types/pg",
@@ -681,24 +932,39 @@
           "hash": "12741483931541068234"
         },
         {
+          "file": "apps/backend/src/api/applications/ai-screen/route.ts",
+          "hash": "15850687417620816905",
+          "deps": [
+            "npm:next",
+            "npm:drizzle-orm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/api/careers/jobs/route.ts",
+          "hash": "17904019791599439848",
+          "deps": [
+            "npm:next",
+            "npm:drizzle-orm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/api/jobs/publish/route.ts",
+          "hash": "6267570655285583834",
+          "deps": [
+            "npm:next",
+            "npm:drizzle-orm"
+          ]
+        },
+        {
           "file": "apps/backend/src/assets/.gitkeep",
           "hash": "3244421341483603138"
         },
         {
           "file": "apps/backend/src/db/index.ts",
-          "hash": "7566022827242045047",
+          "hash": "1289725018218814826",
           "deps": [
             "npm:drizzle-orm",
             "npm:pg"
-          ]
-        },
-        {
-          "file": "apps/backend/src/db/migrate.ts",
-          "hash": "14399177723444691958",
-          "deps": [
-            "npm:drizzle-orm",
-            "npm:pg",
-            "npm:dotenv"
           ]
         },
         {
@@ -730,40 +996,98 @@
           "hash": "17827692037234547848"
         },
         {
-          "file": "apps/backend/src/db/schema.ts",
-          "hash": "7296036957926232388",
+          "file": "apps/backend/src/db/schema/00-master.ts",
+          "hash": "14698848405151864266",
+          "deps": [
+            "npm:drizzle-orm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/db/schema/01-organization.ts",
+          "hash": "4848305206474293972",
+          "deps": [
+            "npm:drizzle-orm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/db/schema/02-users.ts",
+          "hash": "11009509425258769168",
+          "deps": [
+            "npm:drizzle-orm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/db/schema/03-employees.ts",
+          "hash": "8490416218418919296",
           "deps": [
             "npm:drizzle-orm",
             "npm:@paralleldrive/cuid2"
           ]
         },
         {
+          "file": "apps/backend/src/db/schema/14-recruitment.ts",
+          "hash": "10958087413064956410",
+          "deps": [
+            "npm:drizzle-orm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/db/schema/index.ts",
+          "hash": "17557319689310027377"
+        },
+        {
           "file": "apps/backend/src/index.ts",
-          "hash": "12175255977115530256"
+          "hash": "17475206869206567529"
         },
         {
           "file": "apps/backend/src/lib/minio.ts",
-          "hash": "12126788076002420539"
+          "hash": "10633405030535177393"
         },
         {
           "file": "apps/backend/src/main.ts",
           "hash": "12458151208457237739"
         },
         {
+          "file": "apps/backend/src/routes/careers.ts",
+          "hash": "3443914066688872913",
+          "deps": [
+            "npm:express"
+          ]
+        },
+        {
           "file": "apps/backend/src/routes/employees.ts",
-          "hash": "11426800021926984272",
+          "hash": "10598490578064442020",
           "deps": [
             "npm:zod",
             "npm:drizzle-orm"
           ]
         },
         {
+          "file": "apps/backend/src/routes/index.ts",
+          "hash": "17299104533461964805"
+        },
+        {
+          "file": "apps/backend/src/routes/recruitment.ts",
+          "hash": "1090896111014196289",
+          "deps": [
+            "npm:express",
+            "npm:zod"
+          ]
+        },
+        {
           "file": "apps/backend/src/routes/upload.ts",
-          "hash": "4835430976134239114"
+          "hash": "12865151988242395402"
+        },
+        {
+          "file": "apps/backend/src/services/recruitment.service.ts",
+          "hash": "14953634478777376779",
+          "deps": [
+            "npm:@paralleldrive/cuid2"
+          ]
         },
         {
           "file": "apps/backend/tsconfig.json",
-          "hash": "11502726314815140102"
+          "hash": "14107533698825689596"
         }
       ]
     },
@@ -782,11 +1106,11 @@
       },
       {
         "file": "Dockerfile.backend",
-        "hash": "10658625696099468355"
+        "hash": "6055609805984964928"
       },
       {
         "file": "Dockerfile.frontend",
-        "hash": "4512231976362247890"
+        "hash": "15425028484547352238"
       },
       {
         "file": "README.md",
