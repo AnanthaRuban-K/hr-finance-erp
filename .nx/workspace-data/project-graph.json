@@ -11757,11 +11757,6 @@
       },
       {
         "source": "backend",
-        "target": "npm:next",
-        "type": "static"
-      },
-      {
-        "source": "backend",
         "target": "npm:express",
         "type": "static"
       }
