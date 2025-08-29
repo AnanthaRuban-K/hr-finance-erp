@@ -1,7 +1,8 @@
-import { Router, Request, Response } from 'express';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
 import { RecruitmentService } from '../services/recruitment.service';
 
-const router = Router();
+const app = new Hono();
 const recruitmentService = new RecruitmentService();
 
 // Helper function to safely extract error message
@@ -20,19 +21,19 @@ function getErrorMessage(error: unknown): string {
 // ========================================================================
 
 /**
- * GET /api/careers/jobs
+ * GET /jobs
  * Get all published job postings for public careers page
  */
-router.get('/jobs', async (req: Request, res: Response) => {
+app.get('/jobs', async (c) => {
   try {
-    const { tenantId, search, department, employmentType, workArrangement } = req.query;
+    const { tenantId, search, department, employmentType, workArrangement } = c.req.query();
 
     // Get published job postings
-    let jobPostings = await recruitmentService.getPublishedJobPostings(tenantId as string);
+    let jobPostings = await recruitmentService.getPublishedJobPostings(tenantId);
 
     // Apply filters
     if (search) {
-      const searchLower = (search as string).toLowerCase();
+      const searchLower = search.toLowerCase();
       jobPostings = jobPostings.filter(job => 
         job.jobTitle.toLowerCase().includes(searchLower) ||
         job.jobDescription.toLowerCase().includes(searchLower)
@@ -47,7 +48,7 @@ router.get('/jobs', async (req: Request, res: Response) => {
       jobPostings = jobPostings.filter(job => job.workArrangement === workArrangement);
     }
 
-    res.json({
+    return c.json({
       success: true,
       data: jobPostings,
       total: jobPostings.length
@@ -55,59 +56,60 @@ router.get('/jobs', async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error('Get careers jobs error:', error);
-    res.status(500).json({
-      success: false,
+    throw new HTTPException(500, {
       message: 'Failed to fetch job postings',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * GET /api/careers/jobs/:id
+ * GET /jobs/:id
  * Get job posting details for public view
  */
-router.get('/jobs/:id', async (req: Request, res: Response) => {
+app.get('/jobs/:id', async (c) => {
   try {
-    const { id } = req.params;
+    const id = c.req.param('id');
     
     const jobPosting = await recruitmentService.getPublishedJobPostingById(id);
 
     if (!jobPosting) {
-      return res.status(404).json({
-        success: false,
+      throw new HTTPException(404, {
         message: 'Job posting not found or no longer available'
       });
     }
 
-    res.json({
+    return c.json({
       success: true,
       data: jobPosting
     });
 
   } catch (error) {
     console.error('Get career job error:', error);
-    res.status(500).json({
-      success: false,
+    
+    if (error instanceof HTTPException) {
+      throw error;
+    }
+    
+    throw new HTTPException(500, {
       message: 'Failed to fetch job posting',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * POST /api/careers/jobs/:id/apply
+ * POST /jobs/:id/apply
  * Submit job application (public endpoint)
  */
-router.post('/jobs/:id/apply', async (req: Request, res: Response) => {
+app.post('/jobs/:id/apply', async (c) => {
   try {
-    const { id: jobPostingId } = req.params;
-    const applicationData = req.body;
+    const jobPostingId = c.req.param('id');
+    const applicationData = await c.req.json();
 
     // Validate required fields
     if (!applicationData.firstName || !applicationData.lastName || !applicationData.email) {
-      return res.status(400).json({
-        success: false,
+      throw new HTTPException(400, {
         message: 'First name, last name, and email are required'
       });
     }
@@ -115,8 +117,7 @@ router.post('/jobs/:id/apply', async (req: Request, res: Response) => {
     // Check if job posting exists and is published
     const jobPosting = await recruitmentService.getPublishedJobPostingById(jobPostingId);
     if (!jobPosting) {
-      return res.status(404).json({
-        success: false,
+      throw new HTTPException(404, {
         message: 'Job posting not found or no longer accepting applications'
       });
     }
@@ -125,8 +126,7 @@ router.post('/jobs/:id/apply', async (req: Request, res: Response) => {
     if (jobPosting.applicationDeadline) {
       const deadline = new Date(jobPosting.applicationDeadline);
       if (new Date() > deadline) {
-        return res.status(400).json({
-          success: false,
+        throw new HTTPException(400, {
           message: 'Application deadline has passed'
         });
       }
@@ -150,32 +150,36 @@ router.post('/jobs/:id/apply', async (req: Request, res: Response) => {
     // TODO: In a real implementation, save to database
     console.log('New application received:', application);
 
-    res.status(201).json({
+    return c.json({
       success: true,
       data: {
         applicationId: application.applicationId,
         applicationCode: application.applicationCode,
         message: 'Application submitted successfully'
       }
-    });
+    }, 201);
 
   } catch (error) {
     console.error('Submit application error:', error);
-    res.status(500).json({
-      success: false,
+    
+    if (error instanceof HTTPException) {
+      throw error;
+    }
+    
+    throw new HTTPException(500, {
       message: 'Failed to submit application',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * GET /api/careers/application/:code
+ * GET /application/:code
  * Get application status by application code (public endpoint)
  */
-router.get('/application/:code', async (req: Request, res: Response) => {
+app.get('/application/:code', async (c) => {
   try {
-    const { code } = req.params;
+    const code = c.req.param('code');
     
     // TODO: In a real implementation, fetch from database
     // For now, return a mock response
@@ -187,30 +191,29 @@ router.get('/application/:code', async (req: Request, res: Response) => {
       lastUpdated: new Date()
     };
 
-    res.json({
+    return c.json({
       success: true,
       data: mockApplication
     });
 
   } catch (error) {
     console.error('Get application status error:', error);
-    res.status(500).json({
-      success: false,
+    throw new HTTPException(500, {
       message: 'Failed to fetch application status',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * GET /api/careers/stats
+ * GET /stats
  * Get basic statistics for careers page
  */
-router.get('/stats', async (req: Request, res: Response) => {
+app.get('/stats', async (c) => {
   try {
-    const { tenantId } = req.query;
+    const { tenantId } = c.req.query();
     
-    const jobPostings = await recruitmentService.getPublishedJobPostings(tenantId as string);
+    const jobPostings = await recruitmentService.getPublishedJobPostings(tenantId);
     
     // Calculate basic stats
     const totalJobs = jobPostings.length;
@@ -228,7 +231,7 @@ router.get('/stats', async (req: Request, res: Response) => {
       return acc;
     }, {} as Record<string, number>);
 
-    res.json({
+    return c.json({
       success: true,
       data: {
         totalJobs,
@@ -240,12 +243,11 @@ router.get('/stats', async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error('Get careers stats error:', error);
-    res.status(500).json({
-      success: false,
+    throw new HTTPException(500, {
       message: 'Failed to fetch careers statistics',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
-export default router;
+export default app;

@@ -1,8 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Hono } from 'hono';
 import { z } from 'zod';
+import { zValidator } from '@hono/zod-validator';
+import { HTTPException } from 'hono/http-exception';
 import { RecruitmentService } from '../services/recruitment.service';
 
-const router = Router();
+const app = new Hono();
 const recruitmentService = new RecruitmentService();
 
 // Helper function to safely extract error message
@@ -23,28 +25,25 @@ function isAuthError(error: unknown): boolean {
 }
 
 // Helper function to extract user info from headers or token
-function getUserFromRequest(req: Request) {
+function getUserFromRequest(c: any) {
   // Option 1: From headers (simple approach)
-  const userId = req.headers['x-user-id'] as string;
-  const tenantId = req.headers['x-tenant-id'] as string;
-  const organizationId = req.headers['x-organization-id'] as string;
+  const userId = c.req.header('x-user-id');
+  const tenantId = c.req.header('x-tenant-id');
+  const organizationId = c.req.header('x-organization-id');
 
   // Option 2: From Authorization header (JWT token)
-  // const token = req.headers.authorization?.replace('Bearer ', '');
+  // const token = c.req.header('authorization')?.replace('Bearer ', '');
   // const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  // Option 3: From session
-  // const userId = req.session?.user?.id;
-
   if (!userId || !tenantId) {
-    throw new Error('Authentication required');
+    throw new HTTPException(401, { message: 'Authentication required' });
   }
 
   return {
     userId,
     tenantId,
     organizationId: organizationId || tenantId, // fallback
-    role: req.headers['x-user-role'] as string || 'employee'
+    role: c.req.header('x-user-role') || 'employee'
   };
 }
 
@@ -69,145 +68,139 @@ const createJobPostingSchema = z.object({
   isPublished: z.boolean().default(false)
 });
 
+const querySchema = z.object({
+  page: z.string().optional().default('1'),
+  limit: z.string().optional().default('10'),
+  status: z.string().optional(),
+  department: z.string().optional(),
+  jobPostingId: z.string().optional(),
+  search: z.string().optional(),
+  sortBy: z.string().optional().default('createdAt'),
+  sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
+  startDate: z.string().optional(),
+  endDate: z.string().optional()
+});
+
+const applicationActionSchema = z.object({
+  notes: z.string().optional(),
+  reason: z.string().optional()
+});
+
 // ========================================================================
 // JOB POSTING ROUTES
 // ========================================================================
 
 /**
- * GET /api/recruitment/jobs
+ * GET /jobs
  * Get all job postings
  */
-router.get('/jobs', async (req: Request, res: Response) => {
+app.get('/jobs', zValidator('query', querySchema), async (c) => {
   try {
-    // Handle authentication inline
-    const user = getUserFromRequest(req);
-
-    const {
-      page = '1',
-      limit = '10',
-      status,
-      department,
-      search,
-      sortBy = 'createdAt',
-      sortOrder = 'desc'
-    } = req.query;
+    const user = getUserFromRequest(c);
+    const query = c.req.valid('query');
 
     const filters = {
-      page: parseInt(page as string),
-      limit: parseInt(limit as string),
-      status: status as string,
-      department: department as string,
-      search: search as string,
-      sortBy: sortBy as string,
-      sortOrder: sortOrder as 'asc' | 'desc'
+      page: parseInt(query.page),
+      limit: parseInt(query.limit),
+      status: query.status,
+      department: query.department,
+      search: query.search,
+      sortBy: query.sortBy,
+      sortOrder: query.sortOrder
     };
 
     const result = await recruitmentService.getJobPostings(user.tenantId, filters);
 
-    res.json({
+    return c.json({
       success: true,
       data: result.jobPostings,
       pagination: {
-        page: parseInt(page as string),
-        limit: parseInt(limit as string),
+        page: parseInt(query.page),
+        limit: parseInt(query.limit),
         total: result.total,
-        totalPages: Math.ceil(result.total / parseInt(limit as string))
+        totalPages: Math.ceil(result.total / parseInt(query.limit))
       }
     });
 
   } catch (error) {
     console.error('Get job postings error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to fetch job postings',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * POST /api/recruitment/jobs
+ * POST /jobs
  * Create a new job posting
  */
-router.post('/jobs', async (req: Request, res: Response) => {
+app.post('/jobs', zValidator('json', createJobPostingSchema), async (c) => {
   try {
-    // Handle authentication inline
-    const user = getUserFromRequest(req);
+    const user = getUserFromRequest(c);
 
     // Check permissions (simple role-based check)
     if (!['hr_manager', 'admin'].includes(user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Insufficient permissions'
-      });
+      throw new HTTPException(403, { message: 'Insufficient permissions' });
     }
 
-    const validation = createJobPostingSchema.safeParse(req.body);
-    if (!validation.success) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation failed',
-        errors: validation.error.errors
-      });
-    }
+    const data = c.req.valid('json');
 
     const jobPosting = await recruitmentService.createJobPosting(
       user.tenantId,
-      validation.data,
+      data,
       user.userId
     );
 
-    res.status(201).json({
+    return c.json({
       success: true,
       data: jobPosting,
       message: 'Job posting created successfully'
-    });
+    }, 201);
 
   } catch (error) {
     console.error('Create job posting error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to create job posting',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * GET /api/recruitment/jobs/:id
+ * GET /jobs/:id
  * Get job posting by ID
  */
-router.get('/jobs/:id', async (req: Request, res: Response) => {
+app.get('/jobs/:id', async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { id } = req.params;
+    const user = getUserFromRequest(c);
+    const id = c.req.param('id');
 
     const jobPosting = await recruitmentService.getJobPostingById(id, user.tenantId);
 
     if (!jobPosting) {
-      return res.status(404).json({
-        success: false,
-        message: 'Job posting not found'
-      });
+      throw new HTTPException(404, { message: 'Job posting not found' });
     }
 
-    res.json({
+    return c.json({
       success: true,
       data: jobPosting
     });
@@ -215,55 +208,45 @@ router.get('/jobs/:id', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Get job posting error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to fetch job posting',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * PUT /api/recruitment/jobs/:id
+ * PUT /jobs/:id
  * Update job posting
  */
-router.put('/jobs/:id', async (req: Request, res: Response) => {
+app.put('/jobs/:id', zValidator('json', createJobPostingSchema.partial()), async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { id } = req.params;
+    const user = getUserFromRequest(c);
+    const id = c.req.param('id');
 
     // Check permissions
     if (!['hr_manager', 'admin'].includes(user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Insufficient permissions'
-      });
+      throw new HTTPException(403, { message: 'Insufficient permissions' });
     }
 
-    const validation = createJobPostingSchema.partial().safeParse(req.body);
-    if (!validation.success) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation failed',
-        errors: validation.error.errors
-      });
-    }
+    const data = c.req.valid('json');
 
     const updatedJobPosting = await recruitmentService.updateJobPosting(
       id,
       user.tenantId,
-      validation.data,
+      data,
       user.userId
     );
 
-    res.json({
+    return c.json({
       success: true,
       data: updatedJobPosting,
       message: 'Job posting updated successfully'
@@ -272,36 +255,33 @@ router.put('/jobs/:id', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Update job posting error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to update job posting',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * POST /api/recruitment/jobs/:id/publish
+ * POST /jobs/:id/publish
  * Publish job posting
  */
-router.post('/jobs/:id/publish', async (req: Request, res: Response) => {
+app.post('/jobs/:id/publish', async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { id } = req.params;
+    const user = getUserFromRequest(c);
+    const id = c.req.param('id');
 
     // Check permissions
     if (!['hr_manager', 'admin'].includes(user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Insufficient permissions'
-      });
+      throw new HTTPException(403, { message: 'Insufficient permissions' });
     }
 
     const result = await recruitmentService.publishJobPosting(
@@ -310,7 +290,7 @@ router.post('/jobs/:id/publish', async (req: Request, res: Response) => {
       user.userId
     );
 
-    res.json({
+    return c.json({
       success: true,
       data: result,
       message: 'Job posting published successfully'
@@ -319,36 +299,33 @@ router.post('/jobs/:id/publish', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Publish job posting error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to publish job posting',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * POST /api/recruitment/jobs/:id/close
+ * POST /jobs/:id/close
  * Close job posting
  */
-router.post('/jobs/:id/close', async (req: Request, res: Response) => {
+app.post('/jobs/:id/close', async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { id } = req.params;
+    const user = getUserFromRequest(c);
+    const id = c.req.param('id');
 
     // Check permissions
     if (!['hr_manager', 'admin'].includes(user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Insufficient permissions'
-      });
+      throw new HTTPException(403, { message: 'Insufficient permissions' });
     }
 
     const result = await recruitmentService.closeJobPosting(
@@ -357,7 +334,7 @@ router.post('/jobs/:id/close', async (req: Request, res: Response) => {
       user.userId
     );
 
-    res.json({
+    return c.json({
       success: true,
       data: result,
       message: 'Job posting closed successfully'
@@ -366,17 +343,17 @@ router.post('/jobs/:id/close', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Close job posting error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to close job posting',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
@@ -386,83 +363,71 @@ router.post('/jobs/:id/close', async (req: Request, res: Response) => {
 // ========================================================================
 
 /**
- * GET /api/recruitment/applications
+ * GET /applications
  * Get all applications
  */
-router.get('/applications', async (req: Request, res: Response) => {
+app.get('/applications', zValidator('query', querySchema), async (c) => {
   try {
-    const user = getUserFromRequest(req);
-
-    const {
-      page = '1',
-      limit = '10',
-      status,
-      jobPostingId,
-      search,
-      sortBy = 'appliedAt',
-      sortOrder = 'desc'
-    } = req.query;
+    const user = getUserFromRequest(c);
+    const query = c.req.valid('query');
 
     const filters = {
-      page: parseInt(page as string),
-      limit: parseInt(limit as string),
-      status: status as string,
-      jobPostingId: jobPostingId as string,
-      search: search as string,
-      sortBy: sortBy as string,
-      sortOrder: sortOrder as 'asc' | 'desc'
+      page: parseInt(query.page),
+      limit: parseInt(query.limit),
+      status: query.status,
+      jobPostingId: query.jobPostingId,
+      search: query.search,
+      sortBy: query.sortBy || 'appliedAt',
+      sortOrder: query.sortOrder
     };
 
     const result = await recruitmentService.getApplications(user.tenantId, filters);
 
-    res.json({
+    return c.json({
       success: true,
       data: result.applications,
       pagination: {
-        page: parseInt(page as string),
-        limit: parseInt(limit as string),
+        page: parseInt(query.page),
+        limit: parseInt(query.limit),
         total: result.total,
-        totalPages: Math.ceil(result.total / parseInt(limit as string))
+        totalPages: Math.ceil(result.total / parseInt(query.limit))
       }
     });
 
   } catch (error) {
     console.error('Get applications error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to fetch applications',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * GET /api/recruitment/applications/:id
+ * GET /applications/:id
  * Get application by ID
  */
-router.get('/applications/:id', async (req: Request, res: Response) => {
+app.get('/applications/:id', async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { id } = req.params;
+    const user = getUserFromRequest(c);
+    const id = c.req.param('id');
 
     const application = await recruitmentService.getApplicationById(id, user.tenantId);
 
     if (!application) {
-      return res.status(404).json({
-        success: false,
-        message: 'Application not found'
-      });
+      throw new HTTPException(404, { message: 'Application not found' });
     }
 
-    res.json({
+    return c.json({
       success: true,
       data: application
     });
@@ -470,37 +435,34 @@ router.get('/applications/:id', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Get application error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to fetch application',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * POST /api/recruitment/applications/:id/shortlist
+ * POST /applications/:id/shortlist
  * Shortlist application
  */
-router.post('/applications/:id/shortlist', async (req: Request, res: Response) => {
+app.post('/applications/:id/shortlist', zValidator('json', applicationActionSchema), async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { id } = req.params;
-    const { notes } = req.body;
+    const user = getUserFromRequest(c);
+    const id = c.req.param('id');
+    const { notes } = c.req.valid('json');
 
     // Check permissions
     if (!['hr_manager', 'admin'].includes(user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Insufficient permissions'
-      });
+      throw new HTTPException(403, { message: 'Insufficient permissions' });
     }
 
     const result = await recruitmentService.shortlistApplication(
@@ -510,7 +472,7 @@ router.post('/applications/:id/shortlist', async (req: Request, res: Response) =
       notes
     );
 
-    res.json({
+    return c.json({
       success: true,
       data: result,
       message: 'Application shortlisted successfully'
@@ -519,37 +481,34 @@ router.post('/applications/:id/shortlist', async (req: Request, res: Response) =
   } catch (error) {
     console.error('Shortlist application error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to shortlist application',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
 /**
- * POST /api/recruitment/applications/:id/reject
+ * POST /applications/:id/reject
  * Reject application
  */
-router.post('/applications/:id/reject', async (req: Request, res: Response) => {
+app.post('/applications/:id/reject', zValidator('json', applicationActionSchema), async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { id } = req.params;
-    const { reason, notes } = req.body;
+    const user = getUserFromRequest(c);
+    const id = c.req.param('id');
+    const { reason, notes } = c.req.valid('json');
 
     // Check permissions
     if (!['hr_manager', 'admin'].includes(user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Insufficient permissions'
-      });
+      throw new HTTPException(403, { message: 'Insufficient permissions' });
     }
 
     const result = await recruitmentService.rejectApplication(
@@ -560,7 +519,7 @@ router.post('/applications/:id/reject', async (req: Request, res: Response) => {
       notes
     );
 
-    res.json({
+    return c.json({
       success: true,
       data: result,
       message: 'Application rejected successfully'
@@ -569,17 +528,17 @@ router.post('/applications/:id/reject', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Reject application error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to reject application',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
@@ -589,23 +548,23 @@ router.post('/applications/:id/reject', async (req: Request, res: Response) => {
 // ========================================================================
 
 /**
- * GET /api/recruitment/dashboard
+ * GET /dashboard
  * Get recruitment dashboard statistics
  */
-router.get('/dashboard', async (req: Request, res: Response) => {
+app.get('/dashboard', zValidator('query', querySchema), async (c) => {
   try {
-    const user = getUserFromRequest(req);
-    const { startDate, endDate } = req.query;
+    const user = getUserFromRequest(c);
+    const query = c.req.valid('query');
     
     const analytics = await recruitmentService.getRecruitmentAnalytics(
       user.tenantId,
       {
-        startDate: startDate ? new Date(startDate as string) : undefined,
-        endDate: endDate ? new Date(endDate as string) : undefined
+        startDate: query.startDate ? new Date(query.startDate) : undefined,
+        endDate: query.endDate ? new Date(query.endDate) : undefined
       }
     );
 
-    res.json({
+    return c.json({
       success: true,
       data: analytics
     });
@@ -613,19 +572,19 @@ router.get('/dashboard', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Get dashboard stats error:', error);
     
-    if (isAuthError(error)) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
+    if (error instanceof HTTPException) {
+      throw error;
     }
 
-    res.status(500).json({
-      success: false,
+    if (isAuthError(error)) {
+      throw new HTTPException(401, { message: 'Authentication required' });
+    }
+
+    throw new HTTPException(500, { 
       message: 'Failed to fetch dashboard statistics',
-      error: getErrorMessage(error)
+      cause: getErrorMessage(error)
     });
   }
 });
 
-export default router;
+export default app;
