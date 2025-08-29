@@ -10,7 +10,7 @@
       "options": {
         "outputPath": "dist/apps/backend",
         "tsConfig": "apps/backend/tsconfig.json",
-        "main": "apps/backend/src/main.ts"
+        "main": "apps/backend/src/index.ts"
       }
     },
     "serve": {
