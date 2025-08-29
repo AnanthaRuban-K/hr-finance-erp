@@ -11754,11 +11754,6 @@
         "source": "backend",
         "target": "npm:zod",
         "type": "static"
-      },
-      {
-        "source": "backend",
-        "target": "npm:express",
-        "type": "static"
       }
     ],
     "npm:@ampproject/remapping": [
