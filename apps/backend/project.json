@@ -5,6 +5,14 @@
   "sourceRoot": "apps/backend/src",
   "targets": {
     "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/backend"],
+      "options": {
+        "command": "node --max_old_space_size=4096 ./node_modules/typescript/bin/tsc -p apps/backend/tsconfig.json --outDir dist/apps/backend",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "build-nx": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
