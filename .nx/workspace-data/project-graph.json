@@ -84,14 +84,63 @@
         "metadata": {
           "targetGroups": {
             "NPM Scripts": [
-              "dev",
-              "db:generate",
-              "db:migrate",
-              "db:studio"
+              "build:incremental",
+              "build:fast",
+              "clean",
+              "clean:unix",
+              "dev"
             ]
           }
         },
         "targets": {
+          "build:incremental": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build:incremental"
+            },
+            "metadata": {
+              "scriptContent": "node --max_old_space_size=8192 ./node_modules/typescript/bin/tsc --incremental",
+              "runCommand": "npm run build:incremental"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build:fast": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build:fast"
+            },
+            "metadata": {
+              "scriptContent": "node --max_old_space_size=8192 ./node_modules/typescript/bin/tsc --skipLibCheck --incremental",
+              "runCommand": "npm run build:fast"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "clean": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "clean"
+            },
+            "metadata": {
+              "scriptContent": "if exist dist rmdir /s /q dist && if exist tsconfig.tsbuildinfo del tsconfig.tsbuildinfo",
+              "runCommand": "npm run clean"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "clean:unix": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "clean:unix"
+            },
+            "metadata": {
+              "scriptContent": "rm -rf dist tsconfig.tsbuildinfo",
+              "runCommand": "npm run clean:unix"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
           "dev": {
             "executor": "nx:run-script",
             "options": {
@@ -100,42 +149,6 @@
             "metadata": {
               "scriptContent": "tsx watch src/index.ts",
               "runCommand": "npm run dev"
-            },
-            "configurations": {},
-            "parallelism": true
-          },
-          "db:generate": {
-            "executor": "nx:run-script",
-            "options": {
-              "script": "db:generate"
-            },
-            "metadata": {
-              "scriptContent": "drizzle-kit generate:pg",
-              "runCommand": "npm run db:generate"
-            },
-            "configurations": {},
-            "parallelism": true
-          },
-          "db:migrate": {
-            "executor": "nx:run-script",
-            "options": {
-              "script": "db:migrate"
-            },
-            "metadata": {
-              "scriptContent": "tsx src/db/migrate.ts",
-              "runCommand": "npm run db:migrate"
-            },
-            "configurations": {},
-            "parallelism": true
-          },
-          "db:studio": {
-            "executor": "nx:run-script",
-            "options": {
-              "script": "db:studio"
-            },
-            "metadata": {
-              "scriptContent": "drizzle-kit studio",
-              "runCommand": "npm run db:studio"
             },
             "configurations": {},
             "parallelism": true
@@ -150,6 +163,21 @@
             "parallelism": true
           },
           "build": {
+            "executor": "nx:run-commands",
+            "outputs": [
+              "{workspaceRoot}/dist/apps/backend"
+            ],
+            "options": {
+              "command": "node --max_old_space_size=4096 ./node_modules/typescript/bin/tsc -p apps/backend/tsconfig.json --outDir dist/apps/backend",
+              "cwd": ""
+            },
+            "configurations": {},
+            "parallelism": true,
+            "dependsOn": [
+              "^build"
+            ]
+          },
+          "build-nx": {
             "executor": "@nx/js:tsc",
             "outputs": [
               "{options.outputPath}"
@@ -157,13 +185,10 @@
             "options": {
               "outputPath": "dist/apps/backend",
               "tsConfig": "apps/backend/tsconfig.json",
-              "main": "apps/backend/src/main.ts"
+              "main": "apps/backend/src/index.ts"
             },
             "configurations": {},
-            "parallelism": true,
-            "dependsOn": [
-              "^build"
-            ]
+            "parallelism": true
           },
           "serve": {
             "executor": "nx:run-commands",
