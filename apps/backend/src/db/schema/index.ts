@@ -3,6 +3,7 @@ export * from './14-recruitment';
 export * from './00-master';
 export * from './01-organization';
 export * from './02-users';
+export * from './payrollSchema';
 
 // Add types to existing type exports
 export type {

@@ -70,6 +70,10 @@
           "hash": "3244421341483603138"
         },
         {
+          "file": "apps/backend/src/controllers/payrollController.ts",
+          "hash": "11705726241326161257"
+        },
+        {
           "file": "apps/backend/src/db/index.ts",
           "hash": "1289725018218814826",
           "deps": [
@@ -142,8 +146,23 @@
           ]
         },
         {
+          "file": "apps/backend/src/db/schema/customer.ts",
+          "hash": "7578391823059916423",
+          "deps": [
+            "npm:dotenv",
+            "npm:drizzle-orm"
+          ]
+        },
+        {
           "file": "apps/backend/src/db/schema/index.ts",
-          "hash": "17557319689310027377"
+          "hash": "10633179950533266362"
+        },
+        {
+          "file": "apps/backend/src/db/schema/payrollSchema.ts",
+          "hash": "5476909314560993019",
+          "deps": [
+            "npm:drizzle-orm"
+          ]
         },
         {
           "file": "apps/backend/src/index.ts",
@@ -174,6 +193,10 @@
           "hash": "17299104533461964805"
         },
         {
+          "file": "apps/backend/src/routes/payrollRoutes.ts",
+          "hash": "3257175843020683029"
+        },
+        {
           "file": "apps/backend/src/routes/recruitment.ts",
           "hash": "8349822447407792435",
           "deps": [
@@ -183,6 +206,13 @@
         {
           "file": "apps/backend/src/routes/upload.ts",
           "hash": "12865151988242395402"
+        },
+        {
+          "file": "apps/backend/src/services/payrollService.ts",
+          "hash": "11484148379953438922",
+          "deps": [
+            "npm:drizzle-orm"
+          ]
         },
         {
           "file": "apps/backend/src/services/recruitment.service.ts",
@@ -197,7 +227,7 @@
         },
         {
           "file": "apps/backend/tsconfig.tsbuildinfo",
-          "hash": "17001603439966670488"
+          "hash": "8626718545083060561"
         }
       ],
       "frontend": [
@@ -560,6 +590,20 @@
           ]
         },
         {
+          "file": "apps/frontend/src/app/(dashboard)/payroll/layout.tsx",
+          "hash": "12508053901127598951",
+          "deps": [
+            "npm:next"
+          ]
+        },
+        {
+          "file": "apps/frontend/src/app/(dashboard)/payroll/page.tsx",
+          "hash": "14943500653311224353",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/app/(dashboard)/reports/attendance/page.tsx",
           "hash": "10819323215415866663",
           "deps": [
@@ -648,10 +692,9 @@
         },
         {
           "file": "apps/frontend/src/components/app-providers.tsx",
-          "hash": "17811014424990223341",
+          "hash": "353025395694918783",
           "deps": [
-            "npm:react",
-            "npm:next"
+            "npm:react"
           ]
         },
         {
@@ -996,11 +1039,22 @@
           ]
         },
         {
+          "file": "apps/frontend/src/hooks/usePayroll.ts",
+          "hash": "6315985236235501513",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
           "file": "apps/frontend/src/hooks/useRecruitment.ts",
           "hash": "9240322024007089735",
           "deps": [
             "npm:react"
           ]
+        },
+        {
+          "file": "apps/frontend/src/lib/api/payrollApi.ts",
+          "hash": "9070038003768180976"
         },
         {
           "file": "apps/frontend/src/lib/api/recruitment.ts",
